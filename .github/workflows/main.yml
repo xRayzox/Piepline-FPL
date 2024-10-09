@@ -33,12 +33,7 @@ jobs:
       run: |
         python main.py
 
-    # Upload the generated files in the 'data' folder as artifacts
-    - name: Upload generated data files
-      uses: actions/upload-artifact@v3
-      with:
-        name: data-files
-        path: data/
+    # Commit and push changes
     - name: Commit changes
       run: |
         git add data/*
