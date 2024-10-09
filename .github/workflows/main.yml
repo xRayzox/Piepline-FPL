@@ -33,13 +33,24 @@ jobs:
       run: |
         python main.py
 
-    # Commit and push changes
+    # Commit changes
     - name: Commit changes
       run: |
         git config --global user.name 'xRayzox'
         git config --global user.email 'wael.hcine@esprit.tn'
         git add data
-        git commit -m "Add generated data files"
+        git commit -m "Add generated data files" || echo "No changes to commit"
+
+    # Stash any unstaged changes (if any)
+    - name: Stash unstaged changes
+      run: git stash || echo "No changes to stash"
+
+    # Fetch latest changes and rebase
+    - name: Rebase changes
+      run: |
         git fetch origin
-        git rebase --strategy-option=theirs origin/main
-        git push
+        git rebase origin/main
+
+    # Push the changes
+    - name: Push changes
+      run: git push
