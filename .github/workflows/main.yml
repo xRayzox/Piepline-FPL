@@ -40,5 +40,4 @@ jobs:
         git config --global user.email 'wael.hcine@esprit.tn'
         git add data/*
         git commit -m "Add generated data files"
-        git push origin main
-
+        git push https://xRayzox:${{ secrets.PAT_TOKEN }}@github.com/xRayzox/Piepline-FPL.git HEAD:main
