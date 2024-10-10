@@ -1,54 +1,45 @@
-name: FPL Data Pipeline
+"""
+name: Run FPL Pipeline
 
 on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 0 * * *' # This runs the job daily at midnight (optional)
 
 jobs:
   run-pipeline:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # Set up Python environment
-      - name: Set up Python 3.x
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+    # Set up Python environment
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
 
-      # Install Python dependencies from requirements.txt
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    # Install Python dependencies from requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    # Run the Python script
+    - name: Run FPL Pipeline
+      run: |
+        python main.py
+    # Commit and push changes
+    - name: Commit changes
+      run: |
+        git config --global user.name 'xRayzox'
+        git config --global user.email 'wael.hcine@esprit.tn'
+        git add data
+        """
+        #git commit -m "Add generated data files"
+        #git push https://xRayzox:${{ secrets.PAT_TOKEN }}@github.com/xRayzox/Piepline-FPL.git HEAD:main
 
-      # Run the Python script
-      - name: Run FPL Pipeline
-        run: |
-          python main.py
-
-      # Check for changes in the 'data' directory
-      - name: Check for changes in data directory
-        id: changes
-        run: |
-          git fetch
-          if git diff --quiet HEAD^ HEAD -- data; then
-            echo "No changes in data directory."
-            echo "changes=false" >> $GITHUB_ENV
-          else
-            echo "Changes found in data directory."
-            echo "changes=true" >> $GITHUB_ENV
-
-      # Commit and push changes only if there are changes in the 'data' directory
-      - name: Commit changes
-        if: env.changes == 'true'
-        run: |
-          git config --global user.name 'xRayzox'
-          git config --global user.email 'wael.hcine@esprit.tn'
-          git add data
-          git commit -m "Add generated data files"
-          git push https://xRayzox:${{ secrets.PAT_TOKEN }}@github.com/xRayzox/Piepline-FPL.git HEAD:main
+        
