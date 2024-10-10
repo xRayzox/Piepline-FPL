@@ -36,7 +36,7 @@ upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 # Initialize a list to hold the FDR records
 fdr_records = []
 
-# Iterate over each fixture to assign FDR opponent names
+# Iterate over each fixture to assign FDR opponent names and values
 for index, row in upcoming_gameweeks.iterrows():
     # Assign difficulty based on team_a and team_h
     team_a = row['team_a']
@@ -49,6 +49,7 @@ for index, row in upcoming_gameweeks.iterrows():
         'Team': team_a_short,  # Use the short name for display
         'Opponent': team_h_short,  # Display the opponent's team
         'Gameweek': row['event'],
+        'FDR': row['team_a_difficulty'],  # Keep the FDR value for coloring
     })
 
     # Create a record for team_h vs team_a
@@ -56,16 +57,37 @@ for index, row in upcoming_gameweeks.iterrows():
         'Team': team_h_short,  # Use the short name for display
         'Opponent': team_a_short,  # Display the opponent's team
         'Gameweek': row['event'],
+        'FDR': row['team_h_difficulty'],  # Keep the FDR value for coloring
     })
 
 # Step 2: Create a DataFrame from the records
 fdr_results = pd.DataFrame(fdr_records)
 
-# Step 3: Create a formatted FDR table
-fdr_table = fdr_results.pivot(index='Team', columns='Gameweek', values='Opponent')
+# Step 3: Pivot the DataFrame to create the FDR table
+fdr_table = fdr_results.pivot(index='Team', columns='Gameweek', values=['Opponent', 'FDR'])
 
-# Step 4: Add some additional formatting if needed
-fdr_table.fillna('', inplace=True)  # Fill NaN values with empty strings for better display
+# Step 4: Define a function to color the DataFrame based on FDR values
+def color_fdr(val):
+    if pd.isna(val):  # Handle NaN values
+        return 'background-color: white;'  # Neutral color for NaN
+    elif val == 1:  # Class for FDR 1
+        return 'background-color: #257d5a;'  # Green
+    elif val == 2:  # Class for FDR 2
+        return 'background-color: #00ff86;'  # Light Green
+    elif val == 3:  # Class for FDR 3
+        return 'background-color: #ebebe4;'  # Yellow
+    elif val == 4:  # Class for FDR 4
+        return 'background-color: #ff005a;'  # Orange
+    elif val == 5:  # Class for FDR 5
+        return 'background-color: #861d46;'  # Red
+    else:
+        return ''  # No color for other values
+
+# Step 5: Create a styled DataFrame for display
+styled_fdr_table = fdr_table['Opponent'].style.applymap(lambda val: '', subset=pd.IndexSlice[:, :])  # Base styling
+for gameweek in fdr_table.columns.levels[1]:  # Iterate through each gameweek
+    styled_fdr_table = styled_fdr_table.applymap(color_fdr, subset=pd.IndexSlice[:, gameweek])
+
 
 # Step 4: Define a function to color the DataFrame based on FDR values
 def color_fdr(val):
