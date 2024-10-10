@@ -1,0 +1,667 @@
+code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,full_name
+438098,1,Fábio Vieira,3,1,3,0,Has joined Portuguese side FC Porto on loan for the 2024/25 season,0.0,Fábio Ferreira Vieira
+205651,2,G.Jesus,4,1,3,0,No news,0.4,Gabriel Fernando de Jesus
+226597,3,Gabriel,2,1,3,1,No news,6.3,Gabriel dos Santos Magalhães
+219847,4,Havertz,4,1,3,1,Knee injury - 75% chance of playing,4.8,Kai Havertz
+463748,5,Hein,1,1,3,0,Loaned to Real Valladolid,0.0,Karl Hein
+445122,6,J.Timber,2,1,3,0,Muscle injury - 75% chance of playing,3.5,Jurriën Timber
+85955,7,Jorginho,3,1,3,0,No news,0.8,Jorge Luiz Frello Filho
+440854,8,Kiwior,2,1,3,0,No news,0.4,Jakub Kiwior
+444145,9,Martinelli,3,1,3,1,No news,4.9,Gabriel Martinelli Silva
+499175,12,Nwaneri,3,1,3,0,No news,0.4,Ethan Nwaneri
+184029,13,Ødegaard,3,1,3,0,Ankle injury - Unknown return date,0.9,Martin Ødegaard
+154561,15,Raya,1,1,3,1,No news,6.4,David Raya Martin
+204480,16,Rice,3,1,3,0,No news,1.3,Declan Rice
+223340,17,Saka,3,1,3,2,No news,5.3,Bukayo Saka
+462424,18,Saliba,2,1,3,0,No news,3.7,William Saliba
+167199,20,Thomas,3,1,3,0,No news,4.6,Thomas Partey
+192895,21,Tierney,2,1,3,0,Hamstring injury - Unknown return date,0.0,Kieran Tierney
+223723,22,Tomiyasu,2,1,3,0,No news,0.2,Tomiyasu Takehiro
+116216,23,Trossard,3,1,3,1,No news,3.3,Leandro Trossard
+198869,24,White,2,1,3,0,Groin Injury - 75% chance of playing,3.3,Benjamin White
+206325,25,Zinchenko,2,1,3,0,Calf injury - 50% chance of playing,1.5,Oleksandr Zinchenko
+69752,73,Neto,1,1,3,0,Ineligible to face his parent club on 19/10. - Expected back 27 Oct,1.6,Norberto Murara Neto
+103955,186,Sterling,3,1,3,0,No news,0.4,Raheem Sterling
+466075,578,Calafiori,2,1,3,1,No news,2.2,Riccardo Calafiori
+499169,597,Lewis-Skelly,3,1,3,0,No news,0.0,Myles Lewis-Skelly
+195384,633,Merino,3,1,3,0,No news,0.2,Mikel Merino
+498046,638,Oulad M'hand,3,1,3,0,No news,0.0,Salah-Eddine Oulad M'hand
+551221,639,Setford,1,1,3,0,No news,0.0,Tommy Setford
+588793,657,Kacurri,2,1,3,0,No news,0.0,Maldini Kacurri
+606745,658,Heaven,2,1,3,0,No news,0.0,Ayden Heaven
+588796,659,Kabia,3,1,3,0,No news,0.0,Ismeal Kabia
+499167,662,Nichols,2,1,3,0,No news,0.0,Josh Nichols
+461025,665,Butler-Oyedeji,4,1,3,0,No news,0.0,Nathan Butler-Oyedeji
+215711,28,Bailey,3,2,7,0,No news,2.1,Leon Bailey
+88894,29,Barkley,3,2,7,0,No news,1.7,Ross Barkley
+491287,30,Barrenechea,3,2,7,0,Loaned to Valencia CF,0.0,Enzo Barrenechea
+195546,31,Buendia,3,2,7,0,No news,0.6,Emiliano Buendía Stati
+199796,32,Cash,2,2,7,0,No news,2.0,Matty Cash
+151589,33,Dendoncker,3,2,7,0,On loan to Anderlecht for the rest of the season,0.0,Leander Dendoncker
+243557,34,Diaby,3,2,7,0,Permanent transfer to Al Ittihad,0.0,Moussa Diaby
+165659,35,Diego Carlos,2,2,7,0,No news,2.0,Diego Carlos Santos Silva
+101188,36,Digne,2,2,7,1,No news,5.2,Lucas Digne
+461421,37,Dobbin,3,2,7,0,Permanent transfer to West Bromwich Albion,0.0,Lewis Dobbin
+476344,38,Duran,4,2,7,0,No news,4.4,Jhon Durán
+462492,39,Gauci,1,2,7,0,No news,0.0,Joe Gauci
+123354,40,Hause,2,2,7,0,No news,0.0,Kortney Hause
+469247,41,Iling Jr,3,2,7,0,Season long loan to Bologna,0.0,Samuel Iling-Junior
+226944,42,Kamara,3,2,7,0,Lack of match fitness - 50% chance of playing,0.0,Boubacar Kamara
+465390,43,Kesler-Hayden,2,2,7,0,Has joined Preston North End for the rest of the season,0.0,Kaine Kesler-Hayden
+199798,44,Konsa,2,2,7,1,Hamstring injury - 75% chance of playing,3.8,Ezri Konsa Ngoyo
+441302,45,Maatsen,2,2,7,0,No news,1.5,Ian Maatsen
+462381,46,Marschall,1,2,7,0,Has joined MK Dons for the rest of the season,0.0,Filip Marschall
+98980,47,Martinez,1,2,7,0,No news,4.0,Emiliano Martínez Romero
+122806,48,McGinn,3,2,7,0,Hamstring injury - Unknown return date,1.7,John McGinn
+149484,49,Mings,2,2,7,0,Lack of match fitness - 50% chance of playing,0.0,Tyrone Mings
+578545,50,Nedeljkovic,2,2,7,0,No news,0.8,Kosta Nedeljković
+111782,51,Olsen,1,2,7,0,No news,0.0,Robin Olsen
+244954,52,Pau,2,2,7,0,No news,3.1,Pau Torres
+232653,53,Ramsey,3,2,7,0,Groin Injury - 75% chance of playing,2.4,Jacob Ramsey
+244850,54,Rogers,3,2,7,1,No news,5.3,Morgan Rogers
+248164,55,Sinisalo,1,2,7,0,Permanent transfer to Celtic,0.0,Viljami Sinisalo
+514315,56,Sousa,2,2,7,0,Loaned to  Bristol Rovers,0.0,Lino da Cruz Sousa
+166989,57,Tielemans,3,2,7,0,No news,4.0,Youri Tielemans
+178301,58,Watkins,4,2,7,2,No news,4.5,Ollie Watkins
+449871,233,Onana,3,2,7,0,Hamstring injury - 75% chance of playing,4.9,Amadou Onana
+481624,569,Jaden,3,2,7,0,No news,0.9,Jaden Philogene
+515597,598,Bogarde,2,2,7,0,No news,0.5,Lamare Bogarde
+514287,640,Swinkels,2,2,7,0,No news,0.0,Sil Swinkels
+516159,641,Zych,1,2,7,0,No news,0.0,Oliwier Zych
+537403,656,Young,3,2,7,0,No news,0.0,Kadan Young
+232980,59,Aarons,2,3,91,0,No news,0.0,Max Aarons
+200785,60,Adams,3,3,91,0,Back injury - 50% chance of playing,0.0,Tyler Adams
+444180,61,Anthony,3,3,91,0,Season long loan to Burnley,0.0,Jaidon Anthony
+111317,62,Brooks,3,3,91,0,No news,0.2,David Brooks
+158499,63,Christie,3,3,91,0,No news,2.4,Ryan Christie
+155408,64,Cook,3,3,91,0,No news,4.8,Lewis Cook
+168636,65,Enes Ünal,4,3,91,0,No news,0.7,Enes Ünal
+441240,66,Faivre,3,3,91,0,Loaned to Brest,0.0,Romain Faivre
+424044,67,H.Traorè,3,3,91,0,Season long loan to A.J.Auxerre,0.0,Hamed Traorè
+463981,68,Hill,2,3,91,0,No news,0.0,James Hill
+523700,69,Jebbison,4,3,91,0,Loaned to Watford,0.4,Daniel Jebbison
+544877,70,Kerkez,2,3,91,0,No news,2.2,Milos Kerkez
+222683,71,Kluivert,3,3,91,0,No news,2.3,Justin Kluivert
+223911,72,Mepham,2,3,91,0,On loan to Sunderland for the season,0.0,Chris Mepham
+533463,74,O.Dango,3,3,91,0,No news,3.4,Dango Ouattara
+495145,75,Paulsen,1,3,91,0,Loaned to Auckland FC,0.0,Alex Paulsen
+168991,76,Philip,3,3,91,0,No news,0.4,Philip Billing
+503139,77,Scott,3,3,91,0,No news,1.6,Alex Scott
+437730,78,Semenyo,3,3,91,0,No news,5.4,Antoine Semenyo
+221466,79,Senesi,2,3,91,0,No news,1.2,Marcos Senesi
+224995,80,Sinisterra,3,3,91,1,No news,3.6,Luis Sinisterra
+54469,81,Smith,2,3,91,0,No news,3.1,Adam Smith
+201658,83,Tavernier,3,3,91,0,No news,4.4,Marcus Tavernier
+229600,84,Travers,1,3,91,0,No news,0.5,Mark Travers
+477580,85,Zabarnyi,2,3,91,0,No news,2.7,Illia Zabarnyi
+109745,152,Arrizabalaga,1,3,91,0,No news,2.4,Kepa Arrizabalaga
+554605,580,Huijsen,2,3,91,0,No news,0.7,Dean Huijsen
+436893,592,J.Araujo,2,3,91,0,No news,1.3,Julián Araujo Zúñiga
+444172,599,Dennis,1,3,91,0,No news,0.0,Will Dennis
+444102,617,Evanilson,4,3,91,0,No news,2.9,Francisco Evanilson de Lima Barbosa
+191866,86,Ajer,2,4,94,0,No news,1.6,Kristoffer Ajer
+494041,87,Brierley,3,4,94,0,No news,0.0,Ethan Brierley
+432830,88,Collins,2,4,94,1,No news,5.6,Nathan Collins
+440089,89,Damsgaard,3,4,94,0,No news,4.4,Mikkel Damsgaard
+183656,90,Dasilva,3,4,94,0,Knee injury - Unknown return date,0.0,Josh Dasilva
+118342,91,Flekken,1,4,94,0,No news,4.2,Mark Flekken
+194010,92,Henry,2,4,94,0,Lack of match fitness - 50% chance of playing,0.0,Rico Henry
+472713,93,Hickey,2,4,94,0,Hamstring injury - Unknown return date,0.0,Aaron Hickey
+204580,94,Janelt,3,4,94,0,No news,3.5,Vitaly Janelt
+207283,95,Jensen,3,4,94,0,Calf injury - 50% chance of playing,1.7,Mathias Jensen
+570241,96,Ji-soo,2,4,94,0,No news,0.0,Kim Ji-soo
+628204,97,Konak,3,4,94,0,No news,0.7,Yunus Emre Konak
+249231,98,Lewis-Potter,3,4,94,0,No news,3.4,Keane Lewis-Potter
+446008,99,Mbeumo,3,4,94,1,No news,6.8,Bryan Mbeumo
+51927,100,Mee,2,4,94,0,No news,0.2,Ben Mee
+128295,101,Nørgaard,3,4,94,0,No news,2.9,Christian Nørgaard
+428580,102,Onyeka,3,4,94,0,Loaned to FC Augsburg,0.4,Frank Onyeka
+450539,103,Peart-Harris,3,4,94,0,Loaned to Swansea City,0.0,Myles Peart-Harris
+231065,104,Pinnock,2,4,94,0,No news,2.9,Ethan Pinnock
+226956,105,Roerslev,2,4,94,0,No news,1.6,Mads Roerslev Rasmussen
+513418,106,Schade,3,4,94,0,No news,2.6,Kevin Schade
+502500,107,Thiago,4,4,94,0,Knee injury - Expected back 29 Dec,0.0,Igor Thiago Nascimento Rodrigues
+144485,108,Toney,4,4,94,0,Transferred to Al-Ahli,0.0,Ivan Toney
+507433,109,Valdimarsson,1,4,94,0,No news,0.0,Hákon Valdimarsson
+216646,110,Wissa,4,4,94,1,Ankle injury - Expected back 23 Nov,4.7,Yoane Wissa
+508395,111,Yarmoliuk,3,4,94,0,No news,0.9,Yehor Yarmoliuk
+48760,112,Zanka,2,4,94,0,Joined Anderlecht,0.0,Mathias Jorgensen
+244858,314,Carvalho,3,4,94,0,No news,3.8,Fábio Freitas Gouveia Carvalho
+444765,338,Van den Berg,2,4,94,0,No news,1.5,Sepp van den Berg
+591357,602,Trevitt,3,4,94,0,No news,0.2,Ryan Trevitt
+626464,634,G.Nunes,3,4,94,0,Back injury - 50% chance of playing,0.0,Gustavo Nunes Fernandes Gomes
+499717,649,Meghoma,2,4,94,0,No news,0.0,Jayden Meghoma
+592662,661,Yogane,3,4,94,0,No news,0.0,Tony Yogane
+535818,113,Adingra,3,5,36,0,Muscle injury - 50% chance of playing,2.5,Simon Adingra
+475480,114,Baker-Boaitey,3,5,36,0,Loaned to Port Vale,0.0,Benicio Baker-Boaitey
+535301,115,Baleba,3,5,36,1,No news,4.2,Carlos Baleba
+543158,116,Barco,2,5,36,0,Loaned to Sevilla,0.0,Valentín Barco
+519324,118,Cozier-Duberry,3,5,36,0,Loaned to Blackburn Rovers,0.0,Amario Cozier-Duberry
+168090,119,Dahoud,3,5,36,0,Transferred to Eintracht Frankfurt,0.0,Mahmoud Dahoud
+83299,120,Dunk,2,5,36,0,No news,3.6,Lewis Dunk
+474120,121,Enciso,3,5,36,0,No news,0.9,Julio Enciso
+204214,122,Estupiñan,2,5,36,0,No news,0.4,Pervis Estupiñán
+487117,123,Ferguson,4,5,36,0,No news,0.5,Evan Ferguson
+243568,124,Gilmour,3,5,36,0,Transferred to Napoli,0.6,Billy Gilmour
+60307,125,Gross,3,5,36,0,Permanent transfer to Borussia Dortmund,0.0,Pascal Groß
+532529,126,Hinshelwood,3,5,36,1,No news,4.6,Jack Hinshelwood
+612855,127,I.Osman,3,5,36,0,Loaned to Feyenoord,0.0,Ibrahim Osman
+223434,128,Igor,2,5,36,0,No news,0.2,Igor Julio dos Santos de Paulo
+475168,129,João Pedro,4,5,36,0,Ankle injury - Unknown return date,3.5,João Pedro Junqueira de Jesus
+484658,130,Kozlowski,3,5,36,0,Permanent transfer to Gaziantep FK,0.0,Kacper Kozłowski
+232792,131,Lamptey,2,5,36,0,No news,0.0,Tariq Lamptey
+109345,132,March,3,5,36,0,Lack of match fitness - 75% chance of playing,0.0,Solly March
+550141,133,Mazilu,3,5,36,0,Has joined Vitesse Arnhem on loan for the rest of the season,0.0,Adrian Mazilu
+15157,134,Milner,3,5,36,0,Lack of match fitness - 75% chance of playing,1.0,James Milner
+592031,135,Minteh,3,5,36,0,No news,3.9,Yankuba Minteh
+451340,136,Mitoma,3,5,36,0,No news,4.7,Mitoma Kaoru
+243505,137,Moder,3,5,36,0,No news,0.0,Jakub Moder
+574402,138,O’Mahony,4,5,36,0,Season long to Portsmouth,0.0,Mark O’Mahony
+445548,139,Offiah,2,5,36,0,Loaned to Blackpool,0.0,Odeluga Offiah
+491598,140,Peupion,3,5,36,0,No news,0.0,Cameron Peupion
+441192,141,Sarmiento,3,5,36,0,Loaned to Burnley,0.2,Jeremy Sarmiento Morante
+49262,142,Steele,1,5,36,0,No news,2.0,Jason Steele
+450434,143,Undav,4,5,36,0,Transferred to Stuttgart,0.0,Deniz Undav
+469142,144,Van Hecke,2,5,36,0,Groin Injury - Expected back 02 Nov,4.2,Jan Paul van Hecke
+111478,145,Veltman,2,5,36,1,No news,4.7,Joël Veltman
+489639,146,Verbruggen,1,5,36,0,No news,2.2,Bart Verbruggen
+110735,147,Webster,2,5,36,0,Knock - 75% chance of playing,0.2,Adam Webster
+50175,148,Welbeck,4,5,36,1,No news,7.1,Danny Welbeck
+467779,149,Wieffer,3,5,36,0,No news,1.8,Mats Wieffer
+513433,595,Gruda,3,5,36,0,No news,0.2,Brajan Gruda
+509416,600,Ayari,3,5,36,0,No news,1.6,Yasin Ayari
+513834,601,Moran,3,5,36,0,Loaned to Stoke City,0.0,Andrew Moran
+472739,615,Rushworth,1,5,36,0,Loaned to Hull City,0.0,Carl Rushworth
+463067,618,Georginio,3,5,36,1,No news,4.5,Georginio Rutter
+231416,628,F.Kadıoğlu,2,5,36,0,No news,0.2,Ferdi Kadioglu
+219249,629,O'Riley,3,5,36,0,Ankle injury - Unknown return date,0.0,Matt O'Riley
+447720,663,Samuels,2,5,36,0,No news,0.0,Imari Samuels
+532605,150,Andrey Santos,3,6,8,0,Has joined Strasbourg on a season-long loan,0.0,Andrey Nascimento dos Santos
+518620,151,Ângelo,3,6,8,0,Transferred to Al-Nassr,0.0,Ângelo Gabriel Borges Damaceno
+242880,153,B.Badiashile,2,6,8,0,No news,0.0,Benoît Badiashile
+482158,154,Bergström,1,6,8,0,No news,0.0,Lucas Bergström
+122074,155,Bettinelli,1,6,8,0,No news,0.0,Marcus Bettinelli
+486672,157,Caicedo,3,6,8,0,No news,3.5,Moisés Caicedo Corozo
+505187,158,Casadei,3,6,8,0,No news,0.0,Cesare Casadei
+172850,160,Chilwell,2,6,8,0,No news,0.0,Ben Chilwell
+478912,161,Chukwuemeka,3,6,8,0,Illness - 75% chance of playing,0.0,Carney Chukwuemeka
+460028,162,Colwill,2,6,8,0,No news,3.9,Levi Colwill
+179268,163,Cucurella,2,6,8,0,Suspended until 27 Oct,3.0,Marc Cucurella Saseta
+520295,164,D.D.Fofana,4,6,8,0,Transferred to AEK Athens,0.0,David Datro Fofana
+617054,165,Deivid,4,6,8,0,No news,0.0,Deivid Washington de Souza Eugênio
+215413,166,Dewsbury-Hall,3,6,8,0,No news,0.5,Kiernan Dewsbury-Hall
+220362,167,Disasi,2,6,8,0,No news,1.6,Axel Disasi
+448047,168,Enzo,3,6,8,0,No news,2.4,Enzo Fernández
+232787,169,Gallagher,3,6,8,0,Transferred to Atletico Madrid,0.0,Conor Gallagher
+514280,170,Gilchrist,2,6,8,0,Has joined Sheffield United on a season-long,0.0,Alfie Gilchrist
+482609,171,Gusto,2,6,8,0,No news,1.2,Malo Gusto
+225796,172,James,2,6,8,0,Hamstring injury - Unknown return date,0.0,Reece James
+549068,173,Kellyman,3,6,8,0,Hamstring injury - Unknown return date,0.0,Omari Kellyman
+514356,174,Lavia,3,6,8,0,No news,0.7,Roméo Lavia
+66749,175,Lukaku,4,6,8,0,Permanent transfer to Napoli,0.0,Romelu Lukaku Bolingoli
+204727,176,M.Sarr,2,6,8,0,Permanent move to RC Lens,0.0,Malang Sarr
+248857,177,Madueke,3,6,8,1,No news,6.6,Noni Madueke
+499309,178,Marc Guiu,4,6,8,0,No news,0.2,Marc Guiu Paz
+465920,179,Mudryk,3,6,8,0,No news,0.6,Mykhailo Mudryk
+517052,180,N.Jackson,4,6,8,2,No news,5.3,Nicolas Jackson
+213198,181,Nkunku,3,6,8,0,No news,2.2,Christopher Nkunku
+244851,182,Palmer,3,6,8,2,No news,6.2,Cole Palmer
+457569,183,Petrović,1,6,8,0,Loaned to Strasbourg,0.0,Đorđe Petrović
+551230,184,Renato Veiga,3,6,8,0,No news,1.1,Renato Palma Veiga
+215059,185,Sánchez,1,6,8,2,No news,7.7,Robert Sánchez
+109646,187,Tosin,2,6,8,0,No news,1.8,Tosin Adarabioyo
+444463,189,W.Fofana,2,6,8,0,Suspended until 27 Oct,2.4,Wesley Fofana
+209243,386,Sancho,3,6,8,0,No news,2.8,Jadon Sancho
+247632,560,Neto,3,6,8,0,No news,1.3,Pedro Lomba Neto
+488464,575,Wiley,2,6,8,0,Loaned to Strasbourg,0.0,Caleb Wiley
+508479,581,Jørgensen,1,6,8,0,No news,0.0,Filip Jørgensen
+428399,621,João Félix,3,6,8,0,No news,1.5,João Félix Sequeira
+205533,11,Nketiah,4,7,31,0,No news,1.2,Eddie Nketiah
+180736,159,Chalobah,2,7,31,0,No news,0.5,Trevoh Chalobah
+466117,190,Ahamada,3,7,31,0,Loaned to Rennes,0.0,Naouirou Ahamada
+438464,193,C.Doucouré,3,7,31,0,Toe Injury - 50% chance of playing,1.2,Cheick Doucouré
+427623,194,C.Richards,2,7,31,0,Hamstring injury - Unknown return date,2.0,Chris Richards
+515621,195,Chadi Riad,2,7,31,0,Knee injury - Expected back 23 Nov,0.2,Chadi Riad Dnanou
+57328,196,Clyne,2,7,31,0,No news,2.0,Nathaniel Clyne
+450535,197,Ebiowei,3,7,31,0,Season long loan to Oxford United,0.0,Malcolm Ebiowei
+232413,199,Eze,3,7,31,1,No news,3.4,Eberechi Eze
+209036,200,Guéhi,2,7,31,1,No news,4.8,Marc Guéhi
+172649,201,Henderson,1,7,31,0,No news,4.7,Dean Henderson
+156074,202,Holding,2,7,31,0,No news,0.0,Rob Holding
+108413,203,Hughes,3,7,31,0,No news,0.8,Will Hughes
+209400,205,Kamada,3,7,31,0,No news,2.1,Daichi Kamada
+152551,206,Lerma,3,7,31,0,No news,1.5,Jefferson Lerma Solís
+231747,207,Mateta,4,7,31,1,No news,3.0,Jean-Philippe Mateta
+536694,208,M.França,3,7,31,0,Groin Injury - Expected back 04 Jan,0.0,Matheus França de Oliveira
+169593,209,Matthews,1,7,31,0,No news,0.0,Remi Matthews
+244723,210,Mitchell,2,7,31,0,No news,3.3,Tyrick Mitchell
+247348,211,Muñoz,2,7,31,0,Groin Injury - 75% chance of playing,3.1,Daniel Muñoz
+531989,212,Ozoh,3,7,31,0,Season long loan to Derby County,0.0,David Ozoh
+450542,213,Rak-Sakyi,3,7,31,0,Loaned to Sheffield United,0.0,Jesurun Rak-Sakyi
+86417,214,Schlupp,3,7,31,0,No news,1.0,Jeffrey Schlupp
+55494,215,Ward,2,7,31,0,No news,0.0,Joel Ward
+496221,216,Wharton,3,7,31,0,No news,2.5,Adam Wharton
+224068,445,Turner,1,7,31,0,Ineligible to face his parent club on 21/10. - Expected back 27 Oct,0.0,Matt Turner
+232185,585,I.Sarr,3,7,31,0,No news,1.7,Ismaïla Sarr
+574398,644,Umeh-Chibueze,3,7,31,0,No news,0.0,Franco Umeh-Chibueze
+489706,645,Devenny,3,7,31,0,No news,0.0,Justin Devenny
+579075,646,Agbinone,3,7,31,0,No news,0.0,Asher Agbinone
+530318,647,Rodney,3,7,31,0,No news,0.0,Kaden Rodney
+437499,650,Lacroix,2,7,31,0,No news,2.7,Maxence Lacroix
+590012,666,Kporha,2,7,31,0,No news,0.0,Caleb Kporha
+440323,156,Broja,4,8,11,0,Foot injury - Unknown return date,0.0,Armando Broja
+121599,217,A.Doucoure,3,8,11,0,No news,2.1,Abdoulaye Doucouré
+486385,218,Beto,4,8,11,0,No news,0.8,Norberto Bercique Gomes Betuncal
+480455,219,Branthwaite,2,8,11,0,Thigh injury - 75% chance of playing,0.4,Jarrad Branthwaite
+177815,220,Calvert-Lewin,4,8,11,1,No news,4.5,Dominic Calvert-Lewin
+59949,221,Coleman,2,8,11,0,Calf injury - 50% chance of playing,0.2,Séamus Coleman
+80801,222,Gana,3,8,11,0,No news,2.0,Idrissa Gueye
+232928,223,Garner,3,8,11,0,No news,1.4,James Garner
+221399,224,Harrison,3,8,11,0,No news,2.8,Jack Harrison
+194164,225,Holgate,2,8,11,0,Loaned to West Bromwich Albion,0.2,Mason Holgate
+490094,226,Iroegbunam,3,8,11,0,No news,1.8,Tim Iroegbunam
+222627,227,J.Virginia,1,8,11,0,No news,0.0,João Neves Virgínia
+106611,228,Keane,2,8,11,0,No news,3.8,Michael Keane
+115382,229,Maupay,4,8,11,0,Transferred to Marseille,0.0,Neal Maupay
+433154,230,McNeil,3,8,11,2,No news,7.2,Dwight McNeil
+224967,231,Mykolenko,2,8,11,0,Calf injury - 75% chance of playing,1.2,Vitalii Mykolenko
+440993,232,Ndiaye,4,8,11,0,No news,3.3,Iliman Ndiaye
+243571,234,Patterson,2,8,11,0,Lack of match fitness - 75% chance of playing,0.0,Nathan Patterson
+111234,235,Pickford,1,8,11,1,No news,5.2,Jordan Pickford
+17761,236,Tarkowski,2,8,11,0,No news,2.9,James Tarkowski
+491012,237,Y. Chermiti,4,8,11,0,Foot injury - Unknown return date,0.0,Youssef Ramalho Chermiti
+18892,238,Young,2,8,11,0,No news,3.3,Ashley Young
+463903,577,Lindstrøm,3,8,11,0,No news,1.2,Jesper Lindstrøm
+512462,582,O'Brien,2,8,11,0,No news,0.0,Jake O'Brien
+609873,603,Armstrong,3,8,11,0,No news,0.2,Harrison Armstrong
+491557,614,Metcalfe,3,8,11,0,Season long loan to Chesterfield,0.0,Jenson Metcalfe
+40349,624,Begovic,1,8,11,0,No news,0.0,Asmir Begovic
+496178,627,Dixon,2,8,11,0,No news,0.0,Roman Dixon
+179519,651,Mangala,3,8,11,0,No news,1.2,Orel Mangala
+200641,10,Nelson,3,9,54,0,No news,2.6,Reiss Nelson
+209289,19,Smith Rowe,3,9,54,0,No news,6.0,Emile Smith Rowe
+174874,191,Andersen,2,9,54,0,No news,3.0,Joachim Andersen
+159533,239,Adama,3,9,54,0,No news,5.5,Adama Traoré
+156689,240,Andreas,3,9,54,0,No news,4.3,Andreas Hoelgebaum Pereira
+232892,241,Bassey,2,9,54,0,No news,3.3,Calvin Bassey
+428971,242,Benda,1,9,54,0,No news,0.0,Steven Benda
+76357,243,Cairney,3,9,54,0,No news,0.6,Tom Cairney
+166477,244,Castagne,2,9,54,0,No news,0.2,Timothy Castagne
+219924,245,Diop,2,9,54,0,No news,1.8,Issa Diop
+515024,246,Harris,3,9,54,0,Season long loan to Birmingham City,0.0,Luke Harris
+153133,247,Iwobi,3,9,54,0,No news,4.9,Alex Iwobi
+80201,248,Leno,1,9,54,0,No news,4.0,Bernd Leno
+212314,249,Lukić,3,9,54,0,No news,2.2,Saša Lukić
+120721,250,Mbabu,2,9,54,0,Transferred to FC Midtjylland,0.0,Kevin Mbabu
+244042,251,Muniz,4,9,54,0,No news,3.1,Rodrigo Muniz Carvalho
+102057,252,Raúl,4,9,54,0,No news,5.7,Raúl Jiménez
+82514,253,Ream,2,9,54,0,Permanent transfer to Charlotte FC,0.0,Tim Ream
+153366,254,Reed,3,9,54,0,No news,0.8,Harrison Reed
+169528,255,Robinson,2,9,54,0,No news,5.3,Antonee Robinson
+490146,256,Stansfield,4,9,54,0,Transferred to Birmingham City,0.2,Jay Stansfield
+167074,257,Tete,2,9,54,0,No news,3.3,Kenny Tete
+245824,258,Vinicius,4,9,54,0,Calf injury - 50% chance of playing,0.0,Carlos Vinícius Alves Morais
+153682,259,Wilson,3,9,54,0,No news,0.4,Harry Wilson
+184349,579,Sessegnon,2,9,54,0,No news,0.0,Ryan Sessegnon
+246301,586,J.Cuenca,2,9,54,0,Ankle injury - Unknown return date,0.0,Jorge Cuenca Barreno
+577725,604,King,3,9,54,0,No news,0.0,Josh King
+573062,605,Godo,3,9,54,0,No news,0.0,Martial Godo
+207189,622,Berge,3,9,54,0,No news,1.2,Sander Berge
+462387,260,Al-Hamadi,4,10,40,0,Knock - 75% chance of playing,0.2,Ali Al-Hamadi
+517178,261,Baggott,2,10,40,0,Season long loan to Blackpool,0.0,Elkan Baggott
+173818,262,Broadhead,3,10,40,0,No news,0.0,Nathan Broadhead
+122411,263,Burgess,2,10,40,0,No news,0.0,Cameron Burgess
+149929,264,Burns,3,10,40,0,No news,1.2,Wes Burns
+196411,265,Chaplin,3,10,40,0,No news,1.3,Conor Chaplin
+232228,266,H.Clarke,2,10,40,0,No news,0.0,Harry Clarke
+455084,267,Davis,2,10,40,1,No news,4.0,Leif Davis
+463034,268,Delap,4,10,40,1,No news,5.5,Liam Delap
+214964,269,Edmundson,2,10,40,0,Loaned to Middlesbrough,0.2,George Edmundson
+449429,270,Greaves,2,10,40,0,No news,2.7,Jacob Greaves
+167191,271,Harness,3,10,40,0,Loaned to Derby County,0.4,Marcus Myers-Harness
+222625,272,Hirst,4,10,40,0,No news,0.7,George Hirst
+524180,273,Humphreys,3,10,40,0,Loaned to Wycombe,0.0,Cameron Humphreys
+503301,274,Hutchinson,3,10,40,0,No news,3.0,Omari Giraud-Hutchinson
+222018,275,Johnson,2,10,40,0,No news,1.0,Ben Johnson
+94926,276,Ladapo,4,10,40,0,Mutual termination of contract,0.0,Freddie Ladapo
+106606,277,Luongo,3,10,40,0,Ankle injury - 75% chance of playing,1.3,Massimo Luongo
+74944,278,Morsy,3,10,40,0,No news,3.7,Sam Morsy
+246265,279,Ndaba,2,10,40,0,Permanent transfer to Kilmarnock,0.0,Corrie Ndaba
+434044,280,Slicker,1,10,40,0,No news,0.0,Cieran Slicker
+231899,281,Taylor,3,10,40,0,No news,0.8,Jack Taylor
+180804,282,Tuanzebe,2,10,40,0,Knock - 75% chance of playing,2.8,Axel Tuanzebe
+108813,283,Walton,1,10,40,0,No news,0.5,Christian Walton
+220583,284,Woolfenden,2,10,40,0,No news,0.5,Luke Woolfenden
+155405,359,Phillips,3,10,40,0,No news,1.6,Kalvin Phillips
+232917,568,Muric,1,10,40,0,No news,4.3,Arijanet Muric
+108053,583,Townsend,2,10,40,0,No news,0.0,Conor Townsend
+172453,611,Szmodics,3,10,40,0,No news,2.4,Sam Szmodics
+454667,619,Cajuste,3,10,40,0,Knee injury - 50% chance of playing,0.7,Jens Cajuste
+216616,630,O'Shea,2,10,40,0,No news,2.2,Dara O'Shea
+443261,631,J.Clarke,3,10,40,0,No news,1.6,Jack Clarke
+229164,632,Ogbene,3,10,40,0,No news,1.2,Chiedozie Ogbene
+536916,117,Buonanotte,3,11,13,1,No news,5.6,Facundo Buonanotte
+80146,192,J.Ayew,3,11,13,0,No news,1.7,Jordan Ayew
+199670,198,Edouard,4,11,13,0,No news,1.1,Odsonne Edouard
+225902,285,B.Soumaré,3,11,13,0,No news,0.2,Boubakary Soumaré
+461416,286,Cannon,4,11,13,0,Loaned to Stoke City,0.0,Tom Cannon
+197469,287,Choudhury,3,11,13,0,Shoulder injury - Unknown return date,0.2,Hamza Choudhury
+94147,288,Coady,2,11,13,0,No news,0.0,Conor Coady
+245419,289,Daka,4,11,13,0,Ankle injury - Unknown return date,0.0,Patson Daka
+96994,290,De Cordova-Reid,3,11,13,0,No news,1.3,Bobby De Cordova-Reid
+218218,291,Faes,2,11,13,0,No news,4.4,Wout Faes
+549640,292,Golding,3,11,13,0,No news,0.0,Michael Golding
+467189,293,Hermansen,1,11,13,0,No news,4.7,Mads Hermansen
+207270,294,Iversen,1,11,13,0,No news,0.0,Daniel Iversen
+220627,295,Justin,2,11,13,2,No news,6.3,James Justin
+481510,296,Kristiansen,2,11,13,0,No news,2.7,Victor Kristiansen
+461584,297,Marcal,3,11,13,0,Loaned to De Graafschap,0.0,Wanya Marçal-Madivádua
+154048,298,Mavididi,3,11,13,0,No news,4.7,Stephy Mavididi
+461587,299,McAteer,3,11,13,0,No news,0.6,Kasey McAteer
+203341,300,Ndidi,3,11,13,1,No news,4.6,Wilfred Ndidi
+473341,301,Okoli,2,11,13,0,No news,2.8,Caleb Okoli
+111931,302,Ricardo,2,11,13,0,No news,0.0,Ricardo Barbosa Pereira
+194190,303,Souttar,2,11,13,0,Season long loan to Sheffield United,0.0,Harry Souttar
+436680,304,Stolarczyk,1,11,13,0,Ankle injury - Expected back 25 Jan,0.0,Jakub Stolarczyk
+244619,305,Thomas,2,11,13,0,No news,0.0,Luke Thomas
+101668,306,Vardy,4,11,13,0,No news,4.2,Jamie Vardy
+93100,307,Vestergaard,2,11,13,0,No news,0.5,Jannik Vestergaard
+95463,308,Ward,1,11,13,0,No news,0.0,Danny Ward
+157668,309,Winks,3,11,13,0,No news,2.4,Harry Winks
+209042,501,Skipp,3,11,13,0,No news,1.6,Oliver Skipp
+531442,570,A.Fatawu,3,11,13,0,No news,3.0,Abdul Fatawu
+532534,606,Alves,3,11,13,0,No news,0.0,Will Alves
+501770,616,Nelson,2,11,13,0,Loaned to Oxford United,0.0,Ben Nelson
+513527,635,El Khannouss,3,11,13,0,No news,0.6,Bilal El Khannouss
+116535,310,A.Becker,1,12,14,1,Hamstring injury - 25% chance of playing,6.4,Alisson Ramses Becker
+169187,311,Alexander-Arnold,2,12,14,1,No news,5.8,Trent Alexander-Arnold
+535928,312,Bajcetic,3,12,14,0,Loaned to RB Salzburg,0.0,Stefan Bajčetić Maquieira
+492777,313,Bradley,2,12,14,0,No news,0.9,Conor Bradley
+491970,315,Clark,3,12,14,0,Transferred to RB Salzburg,0.0,Bobby Clark
+447203,316,Darwin,4,12,14,0,No news,1.3,Darwin Núñez Ribeiro
+194634,317,Diogo J.,3,12,14,0,No news,4.6,Diogo Teixeira da Silva
+496208,318,Doak,3,12,14,0,Loaned to Middlesbrough,0.0,Ben Doak
+444884,319,Elliott,3,12,14,0,Foot injury - 50% chance of playing,0.2,Harvey Elliott
+158983,320,Endo,3,12,14,0,No news,0.4,Endo Wataru
+243298,321,Gakpo,4,12,14,0,No news,1.3,Cody Gakpo
+171287,322,Gomez,2,12,14,0,No news,0.2,Joe Gomez
+441266,323,Gravenberch,3,12,14,0,No news,3.6,Ryan Gravenberch
+206915,324,Jones,3,12,14,0,No news,1.1,Curtis Jones
+200720,325,Kelleher,1,12,14,0,No news,2.0,Caoimhin Kelleher
+204716,326,Konaté,2,12,14,0,No news,7.1,Ibrahima Konaté
+244731,327,Luis Díaz,3,12,14,3,No news,6.7,Luis Díaz
+118748,328,M.Salah,3,12,14,2,No news,4.9,Mohamed Salah
+243016,329,Mac Allister,3,12,14,0,No news,2.4,Alexis Mac Allister
+491501,330,McConnell,3,12,14,0,No news,0.0,James McConnell
+440148,331,Morton,3,12,14,0,No news,0.0,Tyler Morton
+197464,332,N.Phillips,2,12,14,0,Loaned to Derby County,0.0,Nathaniel Phillips
+441428,333,Quansah,2,12,14,0,No news,0.2,Jarell Quansah
+219937,334,R.Williams,2,12,14,0,Loaned to Morecambe,0.0,Rhys Williams
+122798,335,Robertson,2,12,14,0,No news,4.7,Andrew Robertson
+424876,336,Szoboszlai,3,12,14,0,No news,3.4,Dominik Szoboszlai
+214285,337,Tsimikas,2,12,14,0,No news,1.9,Konstantinos Tsimikas
+97032,339,Virgil,2,12,14,0,No news,6.0,Virgil van Dijk
+223541,636,Chiesa,3,12,14,0,Knock - 50% chance of playing,0.1,Federico Chiesa
+432987,660,Jaros,1,12,14,0,No news,0.2,Vítezslav Jaros
+211975,340,Akanji,2,13,43,0,No news,2.9,Manuel Akanji
+126184,341,Aké,2,13,43,0,Muscle injury - 50% chance of playing,0.2,Nathan Aké
+165809,342,Bernardo,3,13,43,0,No news,3.8,Bernardo Veiga de Carvalho e Silva
+477555,343,Bobb,3,13,43,0,Leg injury - Expected back 14 Dec,0.0,Oscar Bobb
+17601,344,Carson,1,13,43,0,No news,0.0,Scott Carson
+61366,345,De Bruyne,3,13,43,1,Groin Injury - 50% chance of playing,1.9,Kevin De Bruyne
+248875,346,Doku,3,13,43,0,No news,2.5,Jérémy Doku
+121160,347,Ederson M.,1,13,43,0,No news,3.8,Ederson Santana de Moraes
+209244,348,Foden,3,13,43,0,No news,0.5,Phil Foden
+114283,349,Grealish,3,13,43,0,No news,2.2,Jack Grealish
+477424,350,Gvardiol,2,13,43,0,No news,3.9,Joško Gvardiol
+223094,351,Haaland,4,13,43,3,No news,4.4,Erling Haaland
+461358,352,J.Alvarez,4,13,43,0,Transferred to Atletico Madrid,0.0,Julián Álvarez
+121145,353,João Cancelo,2,13,43,0,Permanent transfer to Saudi club Al-Hilal,0.0,João Cavaco Cancelo
+91651,354,Kovačić,3,13,43,2,No news,6.5,Mateo Kovačić
+477064,355,Lewis,2,13,43,0,No news,4.5,Rico Lewis
+465351,356,Matheus N.,3,13,43,0,No news,1.4,Matheus Luiz Nunes
+432714,357,McAtee,3,13,43,0,No news,0.2,James McAtee
+88248,358,Ortega Moreno,1,13,43,0,No news,0.0,Stefan Ortega Moreno
+220566,360,Rodrigo,3,13,43,0,Knee injury - Expected back 01 Jun,0.3,Rodrigo 'Rodri' Hernandez
+171314,361,Rúben,2,13,43,0,No news,1.8,Rúben Gato Alves Dias
+97299,362,Stones,2,13,43,0,No news,1.9,John Stones
+58621,363,Walker,2,13,43,0,No news,1.3,Kyle Walker
+510281,571,Sávio,3,13,43,0,No news,2.9,Sávio 'Savinho' Moreira de Oliveira
+472769,607,O’Reilly,3,13,43,0,No news,0.0,Nico O'Reilly
+59859,625,Gündogan,3,13,43,0,No news,1.5,Ilkay Gündogan
+476369,626,Kaboré,2,13,43,0,Loaned to Benfica,0.0,Issa Kaboré
+493250,364,Amad,3,14,1,0,No news,4.0,Amad Diallo
+467169,365,Antony,3,14,1,0,No news,0.3,Antony Matheus dos Santos
+141746,366,B.Fernandes,3,14,1,0,No news,2.0,Bruno Borges Fernandes
+451302,367,Bayindir,1,14,1,0,No news,0.0,Altay Bayindir
+61256,368,Casemiro,3,14,1,0,No news,1.9,Carlos Henrique Casimiro
+216051,369,Dalot,2,14,1,2,No news,6.9,Diogo Dalot Teixeira
+80607,370,Eriksen,3,14,1,0,No news,1.7,Christian Eriksen
+37642,371,Evans,2,14,1,1,No news,2.5,Jonny Evans
+493105,372,Garnacho,3,14,1,0,Knee injury - 75% chance of playing,3.2,Alejandro Garnacho
+465527,373,Hannibal,3,14,1,0,Permanent move to Burnley,0.0,Hannibal Mejbri
+21205,374,Heaton,1,14,1,0,No news,0.0,Tom Heaton
+497894,375,Højlund,4,14,1,0,No news,0.6,Rasmus Højlund
+184667,376,Lindelof,2,14,1,0,No news,0.0,Victor Lindelöf
+95658,377,Maguire,2,14,1,0,Knock - 75% chance of playing,1.6,Harry Maguire
+516895,378,Mainoo,3,14,1,0,Knock - 75% chance of playing,2.5,Kobbie Mainoo
+222690,379,Malacia,2,14,1,0,Knee injury - 50% chance of playing,0.0,Tyrell Malacia
+221820,380,Martinez,2,14,1,0,No news,4.2,Lisandro Martínez
+195851,381,McTominay,3,14,1,0,Transferred to Napoli,0.4,Scott McTominay
+184341,382,Mount,3,14,1,0,Head injury - 75% chance of playing,0.5,Mason Mount
+202641,383,Onana,1,14,1,0,No news,7.8,André Onana
+488404,384,Pellistri,3,14,1,0,Transferred to Panathinaikos,0.0,Facundo Pellistri Rebollo
+176297,385,Rashford,3,14,1,0,No news,2.9,Marcus Rashford
+106760,387,Shaw,2,14,1,0,Calf injury - 50% chance of playing,0.0,Luke Shaw
+458249,389,Zirkzee,4,14,1,0,No news,2.4,Joshua Zirkzee
+550864,572,Yoro,2,14,1,0,Foot injury - Expected back 02 Nov,0.0,Leny Yoro
+209365,593,De Ligt,2,14,1,1,No news,5.0,Matthijs de Ligt
+230001,594,Mazraoui,2,14,1,1,Knock - 75% chance of playing,5.7,Noussair Mazraoui
+490881,613,Collyer,3,14,1,0,No news,0.2,Toby Collyer
+575034,648,Wheatley,4,14,1,0,No news,0.0,Ethan Wheatley
+232112,652,Ugarte,3,14,1,0,No news,0.6,Manuel Ugarte
+545477,390,A.Murphy,2,15,4,0,No news,0.0,Alex Murphy
+179018,391,Almirón,3,15,4,0,No news,0.5,Miguel Almirón Rejala
+201666,392,Barnes,3,15,4,0,No news,5.8,Harvey Barnes
+220237,393,Botman,2,15,4,0,Knee injury - Expected back 28 Dec,0.0,Sven Botman
+208706,394,Bruno G.,3,15,4,0,No news,3.0,Bruno Guimarães Rodriguez Moura
+78916,395,Burn,2,15,4,0,No news,4.1,Dan Burn
+67089,396,Dúbravka,1,15,4,0,Knee injury - 50% chance of playing,0.0,Martin Dúbravka
+232826,398,Gordon,3,15,4,0,No news,4.0,Anthony Gordon
+487838,399,Hall,2,15,4,0,No news,4.0,Lewis Hall
+153127,400,Hayden,3,15,4,0,No news,0.0,Isaac Hayden
+219168,401,Isak,4,15,4,0,Toe Injury - 50% chance of playing,2.3,Alexander Isak
+114243,402,J.Murphy,3,15,4,0,No news,3.1,Jacob Murphy
+180974,403,Joelinton,3,15,4,1,No news,3.2,Joelinton Cássio Apolinário de Lira
+235530,404,Kelly,2,15,4,0,No news,1.8,Lloyd Kelly
+111773,405,Krafth,2,15,4,0,No news,2.2,Emil Krafth
+564510,406,Kuol,3,15,4,0,No news,0.0,Garang Kuol
+101148,407,Lascelles,2,15,4,0,Knee injury - Expected back 28 Dec,0.0,Jamaal Lascelles
+194799,408,Lewis,2,15,4,0,Loaned to  Sao Paulo,0.0,Jamal Lewis
+441191,409,Livramento,2,15,4,0,No news,3.3,Tino Livramento
+180135,410,Longstaff,3,15,4,0,No news,1.9,Sean Longstaff
+547719,411,Miley,3,15,4,0,Foot injury - 50% chance of playing,0.0,Lewis Miley
+111452,412,Odysseas,1,15,4,0,No news,0.0,Odysseas Vlachodimos
+98747,413,Pope,1,15,4,1,No news,6.2,Nick Pope
+19236,414,Ruddy,1,15,4,0,No news,0.0,John Ruddy
+119471,415,Schär,2,15,4,0,No news,2.4,Fabian Schär
+169359,416,Targett,2,15,4,0,Lack of match fitness - 50% chance of playing,0.0,Matt Targett
+432422,417,Tonali,3,15,4,0,No news,1.3,Sandro Tonali
+77794,418,Trippier,2,15,4,0,Muscle injury - 75% chance of playing,2.3,Kieran Trippier
+461484,419,White,3,15,4,0,Loaned to MK Dons,0.0,Joe White
+200089,420,Willock,3,15,4,0,No news,1.7,Joe Willock
+75115,421,Wilson,4,15,4,0,Back injury - 50% chance of playing,0.0,Callum Wilson
+578512,574,Pivas,2,15,4,0,Loaned to Willem II,0.0,Miodrag Pivaš
+538207,590,Osula,4,15,4,0,No news,0.2,William Osula
+106468,26,Alex Moreno,2,16,17,0,No news,2.3,Álex Moreno Lopera
+159506,422,Aina,2,16,17,2,No news,5.3,Ola Aina
+215379,423,Anderson,3,16,17,0,No news,3.4,Elliot Anderson
+210156,424,Awoniyi,4,16,17,0,No news,0.7,Taiwo Awoniyi
+90585,425,Boly,2,16,17,0,No news,0.7,Willy Boly
+245830,426,Bowler,3,16,17,0,Loaned to  Preston North End,0.0,Josh Bowler
+475123,427,C.Miguel,1,16,17,0,No news,0.0,Carlos Miguel dos Santos Pereira
+569014,428,Da Silva Moreira,3,16,17,0,No news,0.0,Eric da Silva Moreira
+513046,429,Danilo,3,16,17,0,Ankle injury - Unknown return date,0.2,Danilo dos Santos de Oliveira
+230251,430,Dennis,4,16,17,0,No news,0.0,Emmanuel Dennis
+250199,431,Dominguez,3,16,17,0,No news,0.8,Nicolás Domínguez
+449434,432,Elanga,3,16,17,0,No news,2.3,Anthony Elanga
+222531,433,Gibbs-White,3,16,17,0,Ankle injury - 75% chance of playing,2.7,Morgan Gibbs-White
+209046,434,Hudson-Odoi,3,16,17,0,No news,4.1,Callum Hudson-Odoi
+244930,435,Mighten,3,16,17,0,Season long loan to Port Vale,0.0,Alex Mighten
+575476,436,Murillo,2,16,17,0,No news,4.7,Murillo Santiago Costa dos Santos
+215136,437,N.Williams,2,16,17,0,No news,2.4,Neco Williams
+204822,438,O.Richards,2,16,17,0,Loaned to Rio Ave,0.0,Omar Richards
+243345,439,O'Brien,3,16,17,0,On loan to Los Angeles Football Club for the rest of the season,0.0,Lewis O'Brien
+466404,440,Omobamidele,2,16,17,0,No news,0.0,Andrew Omobamidele
+209035,441,Panzo,2,16,17,0,On a season long loan to Rio Ave,0.0,Jonathan Panzo
+210462,442,Sangaré,3,16,17,0,Hamstring injury - Expected back 23 Nov,0.9,Ibrahim Sangaré
+85633,443,Sels,1,16,17,0,No news,5.8,Matz Sels
+114241,444,Toffolo,2,16,17,0,No news,0.2,Harry Toffolo
+201440,446,Ui-jo,4,16,17,0,Transferred to Alanyaspor,0.0,Hwang Ui-jo
+60689,447,Wood,4,16,17,0,No news,6.3,Chris Wood
+208912,448,Worrall,2,16,17,0,Transferred to Burnley,0.0,Joe Worrall
+204968,449,Yates,3,16,17,0,No news,3.1,Ryan Yates
+101178,531,Ward-Prowse,3,16,17,0,Suspended until 25 Oct,1.0,James Ward-Prowse
+227444,573,Milenković,2,16,17,0,No news,4.9,Nikola Milenković
+510500,596,Jota Silva,3,16,17,0,No news,1.4,João Pedro Ferreira Silva
+502222,620,Sosa,3,16,17,0,No news,1.5,Ramón Sosa
+485047,653,Morato,2,16,17,0,No news,0.7,Felipe Rodrigues da Silva
+225321,14,Ramsdale,1,17,20,0,No news,2.7,Aaron Ramsdale
+433979,27,Archer,4,17,20,0,No news,2.4,Cameron Archer
+503714,188,Ugochukwu,3,17,20,0,No news,0.9,Lesley Ugochukwu
+90105,397,Fraser,3,17,20,0,No news,0.6,Ryan Fraser
+502697,450,Alcaraz,3,17,20,0,Permanent transfer to Flamengo,0.2,Carlos Alcaraz Durán
+499724,451,Amo-Ameyaw,3,17,20,0,No news,0.2,Samuel Amo-Ameyaw
+193204,452,Aribo,3,17,20,0,No news,2.0,Joe Aribo
+155511,453,Armstrong,4,17,20,0,No news,1.1,Adam Armstrong
+456350,454,Bazunu,1,17,20,0,Achilles injury - Expected back 15 Feb,0.0,Gavin Bazunu
+171771,455,Bednarek,2,17,20,0,No news,2.0,Jan Bednarek
+477386,456,Bella-Kotchap,2,17,20,0,No news,0.0,Armel Bella-Kotchap
+184386,457,Bree,2,17,20,0,No news,0.0,James Bree
+463210,458,Charles,3,17,20,0,Has joined Sheffield Wednesday on a season-long loan,0.0,Shea Charles
+490503,459,Edozie,3,17,20,0,Loaned to Anderlecht,0.2,Samuel Edozie
+500926,460,Edwards,2,17,20,0,No news,0.0,Ronnie Edwards
+245719,461,Harwood-Bellis,2,17,20,0,No news,3.5,Taylor Harwood-Bellis
+504783,462,Kamaldeen,3,17,20,0,Ankle injury - 50% chance of playing,0.0,Kamaldeen Sulemana
+39155,463,Lallana,3,17,20,0,No news,1.8,Adam Lallana
+515571,464,Larios,2,17,20,0,No news,0.0,Juan Larios López
+200428,465,Lis,1,17,20,0,Transferred to Göztepe,0.0,Mateusz Lis
+167888,466,Lumley,1,17,20,0,No news,0.0,Joe Lumley
+204863,467,Manning,2,17,20,0,No news,0.2,Ryan Manning
+476888,468,Mara,4,17,20,0,Transferred to Strasbourg,0.0,Sékou Mara
+58376,469,McCarthy,1,17,20,0,No news,1.4,Alex McCarthy
+147611,470,Onuachu,4,17,20,0,No news,0.2,Paul Onuachu
+214466,471,Smallbone,3,17,20,0,Hamstring injury - 50% chance of playing,1.0,Will Smallbone
+88900,472,Stephens,2,17,20,0,Suspended until 26 Oct,0.5,Jack Stephens
+230348,473,Stewart,4,17,20,0,Muscle injury - 75% chance of playing,0.7,Ross Stewart
+219279,474,Sugawara,2,17,20,1,No news,3.1,Sugawara Yukinari
+103914,475,Taylor,2,17,20,0,No news,1.0,Charlie Taylor
+158534,476,Walker-Peters,2,17,20,0,No news,1.4,Kyle Walker-Peters
+244845,477,Wood,2,17,20,0,No news,0.0,Nathan Wood-Gordon
+149519,515,Cornet,3,17,20,0,No news,0.2,Maxwel Cornet
+220585,518,Downes,3,17,20,0,No news,2.2,Flynn Downes
+204814,584,Brereton Díaz,3,17,20,0,No news,1.7,Ben Brereton Díaz
+496661,608,Dibling,3,17,20,1,No news,3.9,Tyler Dibling
+551226,623,M.Fernandes,3,17,20,0,No news,2.6,Mateus Gonçalo Espanha Fernandes
+154566,82,Solanke,4,18,6,0,No news,2.8,Dominic Solanke-Mitchell
+548308,478,A.Phillips,2,18,6,0,Loaned to Stoke City,0.0,Ashley Phillips
+214572,479,Austin,1,18,6,0,No news,0.0,Brandon Austin
+202993,480,Bentancur,3,18,6,0,No news,1.8,Rodrigo Bentancur
+570526,481,Bergvall,3,18,6,0,No news,1.1,Lucas Bergvall
+227127,482,Bissouma,3,18,6,0,No news,2.2,Yves Bissouma
+436234,483,Bryan,3,18,6,0,On loan to Girona for the season,0.0,Bryan Gil Salvatierra
+115556,484,Davies,2,18,6,0,No news,0.0,Ben Davies
+496179,485,Devine,3,18,6,0,Loaned to Westerlo,0.0,Alfie Devine
+493125,486,Dragusin,2,18,6,0,No news,0.5,Radu Drăgușin
+241157,487,E.Royal,2,18,6,0,Transferred to AC Milan,0.0,Emerson Leite de Souza Junior
+40383,488,Forster,1,18,6,0,No news,0.0,Fraser Forster
+547701,489,Gray,3,18,6,0,No news,0.6,Archie Gray
+132015,490,Højbjerg,3,18,6,0,On loan to Marseille for the season,0.0,Pierre-Emile Højbjerg
+242898,491,Johnson,3,18,6,0,No news,5.5,Brennan Johnson
+445044,492,Kulusevski,3,18,6,0,No news,3.9,Dejan Kulusevski
+200826,493,Lo Celso,3,18,6,0,Transferred to Real Betis,0.0,Giovani Lo Celso
+172780,494,Maddison,3,18,6,1,No news,5.2,James Maddison
+441164,495,Pedro Porro,2,18,6,1,No news,4.7,Pedro Porro
+199249,496,Reguilón,2,18,6,0,No news,0.0,Sergio Reguilón
+212319,497,Richarlison,4,18,6,0,Muscle injury - Unknown return date,0.3,Richarlison de Andrade
+221632,498,Romero,2,18,6,1,No news,5.5,Cristian Romero
+482442,499,P.M.Sarr,3,18,6,0,No news,2.0,Pape Matar Sarr
+490145,500,Scarlett,4,18,6,0,Loaned to Oxford United,0.0,Dane Scarlett
+235674,502,Solomon,3,18,6,0,Season long loan to Leeds United,0.0,Manor Solomon
+85971,503,Son,3,18,6,1,Hamstring injury - 25% chance of playing,3.3,Son Heung-min
+232859,504,Spence,2,18,6,0,No news,0.5,Djed Spence
+487053,505,Udogie,2,18,6,0,No news,2.7,Destiny Udogie
+491279,506,Van de Ven,2,18,6,1,No news,5.4,Micky van de Ven
+536908,507,Veliz,4,18,6,0,Loaned to Espanyol,0.0,Alejo Véliz
+184254,508,Vicario,1,18,6,1,No news,4.2,Guglielmo Vicario
+165153,509,Werner,3,18,6,0,No news,1.8,Timo Werner
+175941,510,Whiteman,1,18,6,0,No news,0.0,Alfie Whiteman
+552427,609,Lankshear,4,18,6,0,No news,0.0,Will Lankshear
+499721,610,Moore,3,18,6,0,No news,0.7,Mikey Moore
+550839,612,Odobert,3,18,6,0,Muscle injury - Unknown return date,1.1,Wilson Odobert
+214590,388,Wan-Bissaka,2,19,21,0,No news,2.0,Aaron Wan-Bissaka
+213999,511,Álvarez,3,19,21,0,No news,1.0,Edson Álvarez Velázquez
+57531,512,Antonio,4,19,21,1,No news,5.6,Michail Antonio
+84182,513,Areola,1,19,21,0,No news,3.6,Alphonse Areola
+178186,514,Bowen,3,19,21,1,No news,4.9,Jarrod Bowen
+164555,516,Coufal,2,19,21,0,No news,2.0,Vladimír Coufal
+55459,517,Cresswell,2,19,21,0,No news,0.8,Aaron Cresswell
+490885,519,Earthy,3,19,21,0,Loaned to Bristol City,0.0,George Earthy
+109533,520,Emerson,2,19,21,0,No news,2.5,Emerson Palmieri dos Santos
+37096,521,Fabianski,1,19,21,0,No news,0.2,Łukasz Fabiański
+82143,522,Foderingham,1,19,21,0,No news,0.0,Wes Foderingham
+84939,523,Ings,4,19,21,0,No news,2.0,Danny Ings
+214048,524,Kilman,2,19,21,1,No news,4.0,Max Kilman
+460842,525,Kudus,3,19,21,0,No news,3.0,Mohammed Kudus
+577114,526,L.Guilherme,3,19,21,0,No news,0.2,Luis Guilherme Lira dos Santos
+224024,527,L.Paquetá,3,19,21,0,No news,4.1,Lucas Tolentino Coelho de Lima
+233963,528,Mavropanos,2,19,21,0,No news,3.1,Konstantinos Mavropanos
+210494,529,N.Aguerd,2,19,21,0,On loan to Real Sociedad for the season,0.0,Nayef Aguerd
+215439,530,Souček,3,19,21,0,No news,5.4,Tomáš Souček
+103192,532,Zouma,2,19,21,0,On loan to Al-Orobah for the rest of the season,0.0,Kurt Zouma
+229384,576,Irving,3,19,21,0,No news,0.2,Andy Irving
+450070,587,Summerville,3,19,21,0,No news,1.1,Crysencio Summerville
+197024,588,G.Rodríguez,3,19,21,0,No news,2.4,Guido Rodríguez
+91889,589,Füllkrug,4,19,21,0,Achilles injury - 50% chance of playing,0.4,Niclas Füllkrug
+462116,591,Todibo,2,19,21,0,No news,1.4,Jean-Clair Todibo
+518438,643,Casey,2,19,21,0,No news,0.0,Kaelan Casey
+224860,654,C.Soler,3,19,21,0,No news,0.4,Carlos Soler
+101982,204,Johnstone,1,20,39,0,No news,2.3,Sam Johnstone
+448514,533,Aït-Nouri,2,20,39,1,No news,5.0,Rayan Aït-Nouri
+476502,534,B.Traore,3,20,39,0,Knee injury - Unknown return date,0.0,Boubacar Traoré
+231057,535,Bellegarde,3,20,39,0,No news,4.0,Jean-Ricner Bellegarde
+79602,536,Bentley,1,20,39,0,No news,0.0,Daniel Bentley
+510363,537,Chiquinho,3,20,39,0,Season long loan to RCD Mallorca,0.2,Francisco Jorge Tomás Oliveira
+497606,538,Chirewa,3,20,39,0,Loaened to Derby County,0.0,Tawanda Chirewa
+589507,539,Chiwome,4,20,39,0,No news,0.0,Leon Chiwome
+245923,540,Cundle,3,20,39,0,No news,0.0,Luke Cundle
+430871,541,Cunha,4,20,39,0,No news,4.6,Matheus Santos Carneiro Da Cunha
+60232,542,Dawson,2,20,39,0,No news,1.1,Craig Dawson
+87835,543,Doherty,2,20,39,0,No news,0.5,Matt Doherty
+220394,544,Doyle,3,20,39,0,No news,1.0,Tommy Doyle
+449988,545,Fábio Silva,4,20,39,0,Season long loan to Las Palmas,0.0,Fábio Silva
+531363,546,Fraser,4,20,39,0,Loaned to Zulte Waregem,0.0,Nathan Fraser
+593001,547,Gonzalez,3,20,39,0,Knee injury - Unknown return date,0.0,Enso González
+181284,548,Guedes,3,20,39,0,No news,0.8,Gonçalo Manuel Ganchinho Guedes
+490721,549,H.Bueno,2,20,39,0,Loaned to Feyenoord,0.0,Hugo Bueno López
+184754,550,Hee Chan,3,20,39,0,No news,1.1,Hwang Hee-chan
+240299,551,Hodge,3,20,39,0,Season long to Huddersfield Town,0.0,Joe Hodge
+441271,552,Hoever,2,20,39,0,Loaned to Auxerre,0.0,Ki-Jana Hoever
+448089,553,J.Gomes,3,20,39,0,No news,2.0,João Victor Gomes da Silva
+149065,554,José Sá,1,20,39,0,No news,0.2,José Malheiro de Sá
+429414,555,Kalajdžić,4,20,39,0,Knee injury - Unknown return date,0.0,Saša Kalajdžić
+138001,556,King,1,20,39,0,No news,0.0,Tom King
+151086,557,Mario Jr.,3,20,39,1,No news,4.8,Mario Lemina
+501837,558,Mosquera,2,20,39,0,Knee injury - Expected back 01 Jun,0.8,Yerson Mosquera
+200402,559,N.Semedo,2,20,39,0,No news,1.3,Nélson Cabral Semedo
+641221,561,Pedro Lima,2,20,39,0,No news,0.0,Pedro Cardoso de Lima
+200600,562,Podence,3,20,39,0,Transferred to Al-Shabab,0.4,Daniel Castelo Podence
+483081,563,R.Gomes,3,20,39,0,No news,0.8,Rodrigo Martins Gomes
+231480,564,S.Bueno,2,20,39,0,No news,0.2,Santiago Bueno
+88484,565,Sarabia,3,20,39,0,No news,0.4,Pablo Sarabia
+247412,566,Strand Larsen,4,20,39,0,No news,4.5,Jørgen Strand Larsen
+510362,567,Toti,2,20,39,0,No news,0.9,Toti António Gomes
+560248,637,Meupiyou,2,20,39,0,Knock - 50% chance of playing,0.0,Bastien Meupiyou
+509291,642,André,3,20,39,0,No news,1.2,André Trindade da Costa Neto
+463212,655,Forbs,3,20,39,0,No news,0.4,Carlos Roberto Forbs Borges
+517179,664,Pond,2,20,39,0,No news,0.0,Alfie Pond
