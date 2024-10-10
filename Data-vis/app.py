@@ -99,10 +99,10 @@ team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_d
 df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
 df_fixtures['team_h'] = df_fixtures['team_h'].replace(team_name_mapping)
 
-# Add a 'datetime' column by combining the 'kickoff_time' and converting it to datetime format
+# Add a 'datetime' column by converting the 'kickoff_time' to datetime format
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
 
-# Extract the local time for display (assumes your system's timezone)
+# Extract the local time for display
 df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
 
 # Get the unique gameweeks
@@ -113,16 +113,24 @@ if 'selected_gameweek' not in st.session_state:
     st.session_state['selected_gameweek'] = gameweeks[0]
 
 # Step 2: Add buttons to navigate between gameweeks
-col1, col2 = st.columns([1, 1])
-if col1.button("Previous Gameweek"):
+st.markdown("<h3 style='text-align: center;'>Gameweek Navigation</h3>", unsafe_allow_html=True)
+col1, col2, col3 = st.columns([1, 2, 1])
+
+if col1.button("⬅️ Previous Gameweek"):
     current_index = gameweeks.index(st.session_state['selected_gameweek'])
     if current_index > 0:
         st.session_state['selected_gameweek'] = gameweeks[current_index - 1]
 
-if col2.button("Next Gameweek"):
+col3.button("➡️ Next Gameweek", on_click=lambda: next_gameweek(gameweeks))
+
+# Helper function to move to the next gameweek
+def next_gameweek(gameweeks):
     current_index = gameweeks.index(st.session_state['selected_gameweek'])
     if current_index < len(gameweeks) - 1:
         st.session_state['selected_gameweek'] = gameweeks[current_index + 1]
+
+# Display the current gameweek title
+st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}</h2>", unsafe_allow_html=True)
 
 # Step 3: Filter the fixtures based on the selected gameweek
 current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
@@ -130,18 +138,31 @@ current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state
 # Step 4: Group fixtures by time
 grouped_fixtures = current_gameweek_fixtures.groupby('local_time')
 
-# Step 5: Display the fixtures in a list format
-st.title(f"Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}")
-
+# Step 5: Improved display of the fixtures
 for time, matches in grouped_fixtures:
-    st.subheader(f"🕒 {time}")
+    st.markdown(f"<div style='text-align: center;'><strong>🕒 {time}</strong></div>", unsafe_allow_html=True)
     for _, match in matches.iterrows():
         if match['finished']:
-            st.write(f"🏟️ {match['team_h']} {match['team_h_score']} - {match['team_a_score']} {match['team_a']}")
+            # If the match is finished, display the result in a visually clearer way
+            st.markdown(f"""
+                <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                    <p style='text-align: center;'><strong>{match['team_h']}</strong> 
+                    <span style='color: green;'> {match['team_h_score']} - {match['team_a_score']} </span> 
+                    <strong>{match['team_a']}</strong></p>
+                </div>
+                """, unsafe_allow_html=True)
         else:
-            st.write(f"🏟️ {match['team_h']} vs {match['team_a']} (Kickoff at {match['local_time'].split()[-1]})")
+            # Display upcoming matches with neutral colors
+            st.markdown(f"""
+                <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                    <p style='text-align: center;'><strong>{match['team_h']}</strong> 
+                    vs 
+                    <strong>{match['team_a']}</strong> 
+                    <span style='color: gray;'>Kickoff at {match['local_time'].split()[-1]}</span></p>
+                </div>
+                """, unsafe_allow_html=True)
 
-# Display navigation
-st.write(f"Gameweek {st.session_state['selected_gameweek']} of {max(gameweeks)}")
+# Display navigation and gameweek info
+st.markdown(f"<p style='text-align: center;'>Gameweek {st.session_state['selected_gameweek']} of {max(gameweeks)}</p>", unsafe_allow_html=True)
 
 
