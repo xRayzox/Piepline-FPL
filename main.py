@@ -57,7 +57,7 @@ def main():
     save_to_csv(transformed_positions, 'Positions.csv')
     save_to_csv(transformed_gameweeks, 'Gameweeks.csv')
     save_to_csv(transformed_current_season, 'Fact_Player.csv')
-    save_to_csv(transformed_previous_season, 'Player_history.csv')*
+    save_to_csv(transformed_previous_season, 'Player_history.csv')
     save_to_csv(fixture_df, 'Fixtures.csv')
 
 if __name__ == "__main__":
