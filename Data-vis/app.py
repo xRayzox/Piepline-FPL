@@ -90,10 +90,16 @@ for team in fdr_display_table.index:
         if (team, gameweek) in fdr_table.index:
             opponent_name = fdr_table.loc[team, ('Opponent', gameweek)]
             fdr_value = fdr_table.loc[team, ('FDR', gameweek)]
-            fdr_display_table.loc[team, gameweek] = f"{opponent_name} ({fdr_value})"  # Format as "Opponent (FDR)"
+            fdr_display_table.loc[team, gameweek] = f"{opponent_name} ({fdr_value})" if isinstance(fdr_value, (int, float)) else ''  # Format as "Opponent (FDR)"
 
 # Step 7: Apply the same coloring to the display table based on FDR values
-styled_fdr_display_table = fdr_display_table.style.applymap(lambda val: color_fdr(float(val.split('(')[-1][:-1])) if '(' in val else '', subset=pd.IndexSlice[:, :])
+def apply_color_to_display(val):
+    if isinstance(val, str) and '(' in val:
+        fdr_value = int(val.split('(')[-1][:-1])  # Extract FDR value from the string
+        return color_fdr(fdr_value)
+    return ''  # No color for non-FDR values
+
+styled_fdr_display_table = fdr_display_table.style.applymap(apply_color_to_display)
 
 # Display the FDR table with opponent names and colors
 st.write("### Fixture Difficulty Ratings (Opponents)")
