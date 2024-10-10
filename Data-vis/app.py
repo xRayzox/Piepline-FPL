@@ -88,26 +88,9 @@ styled_fdr_table = fdr_table['Opponent'].style.applymap(lambda val: '', subset=p
 for gameweek in fdr_table.columns.levels[1]:  # Iterate through each gameweek
     styled_fdr_table = styled_fdr_table.applymap(color_fdr, subset=pd.IndexSlice[:, gameweek])
 
-
-# Step 4: Define a function to color the DataFrame based on FDR values
-def color_fdr(val):
-    if pd.isna(val):  # Handle NaN values
-        return 'background-color: white;'  # Neutral color for NaN
-    elif val == 1:  # Class for FDR 1
-        return 'background-color: #257d5a;'  # Green
-    elif val == 2:  # Class for FDR 2
-        return 'background-color: #00ff86;'  # Light Green
-    elif val == 3:  # Class for FDR 3
-        return 'background-color: #ebebe4;'  # Yellow
-    elif val == 4:  # Class for FDR 4
-        return 'background-color: #ff005a;'  # Orange
-    elif val == 5:  # Class for FDR 5
-        return 'background-color: #861d46;'  # Red
-    else:
-        return ''  # No color for other values
-
-# Step 5: Apply the color function to the DataFrame using applymap
-styled_fdr_table = fdr_table.style.applymap(color_fdr)
+# Display the FDR table with opponent names and colors
+st.write("### Fixture Difficulty Ratings (Opponents)")
+st.write(styled_fdr_table)
 #############################################
 # Add gameweek data
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
