@@ -29,11 +29,7 @@ df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_nam
 df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 filtered_fixtures = df_fixtures[(df_fixtures['finished'] == False) & (df_fixtures['finished_provisional'] == False)]
 
-
-import pandas as pd
-
 # Step 1: Prepare the Data
-# Get the upcoming fixtures for Gameweek 8 and beyond
 upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 
 # Initialize a list to hold the FDR records
@@ -41,7 +37,6 @@ fdr_records = []
 
 # Iterate over each fixture to assign FDR
 for index, row in upcoming_gameweeks.iterrows():
-    # Assign difficulty based on team_a and team_h
     team_a = row['team_a']
     team_a_short = row['team_a_short']  # Get the short name for team_a
     team_h = row['team_h']
@@ -51,14 +46,16 @@ for index, row in upcoming_gameweeks.iterrows():
     fdr_records.append({
         'Team': team_a_short,  # Use the short name for display
         'Gameweek': row['event'],
-        'FDR': row['team_a_difficulty']
+        'FDR': row['team_a_difficulty'],
+        'tooltip': f"{team_a_short} - FDR {row['team_a_difficulty']}"  # Add tooltip for team_a
     })
 
     # Create a record for team_h
     fdr_records.append({
         'Team': team_h_short,  # Use the short name for display
         'Gameweek': row['event'],
-        'FDR': row['team_h_difficulty']
+        'FDR': row['team_h_difficulty'],
+        'tooltip': f"{team_h_short} - FDR {row['team_h_difficulty']}"  # Add tooltip for team_h
     })
 
 # Step 2: Create a DataFrame from the records
@@ -67,7 +64,29 @@ fdr_results = pd.DataFrame(fdr_records)
 # Step 3: Pivot the DataFrame to create the FDR table
 fdr_table = fdr_results.pivot(index='Team', columns='Gameweek', values='FDR')
 
-# Step 4: Define a function to color the DataFrame based on FDR values
+# Create a corresponding pivot table for tooltips
+tooltip_table = fdr_results.pivot(index='Team', columns='Gameweek', values='tooltip')
+
+# Step 4: Define a function to format the DataFrame with team name and tooltip
+def format_fdr_with_tooltip(val, tooltip):
+    if pd.isna(val):  # Handle NaN values
+        return '', ''  # No display for NaN
+    else:
+        return f"{val}", tooltip  # Display value with tooltip
+
+# Step 5: Create a function to apply styling with tooltips
+def apply_tooltip(fdr_df, tooltip_df):
+    formatted_table = fdr_df.copy()
+
+    for col in fdr_df.columns:
+        formatted_table[col] = fdr_df[col].apply(lambda x: f'<span title="{tooltip_df[col][x]}">{x}</span>' if not pd.isna(x) else '')
+
+    return formatted_table
+
+# Step 6: Apply the tooltips to the FDR table
+styled_fdr_table = apply_tooltip(fdr_table, tooltip_table)
+
+# Step 7: Define a function to color the DataFrame based on FDR values
 def color_fdr(val):
     if pd.isna(val):  # Handle NaN values
         return 'background-color: white;'  # Neutral color for NaN
@@ -84,13 +103,11 @@ def color_fdr(val):
     else:
         return ''  # No color for other values
 
-# Step 5: Apply the color function to the DataFrame using applymap
+# Step 8: Apply the color function to the DataFrame using applymap
 styled_fdr_table = fdr_table.style.applymap(color_fdr)
 
 # Title of the app
 st.title('Fantasy Premier League Fixture Difficulty Ratings')
 
-# Display the styled table
+# Display the styled table with tooltips
 st.write(styled_fdr_table)
-
-
