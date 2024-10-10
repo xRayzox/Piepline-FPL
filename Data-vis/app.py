@@ -126,12 +126,12 @@ if 'selected_gameweek' not in st.session_state:
 st.markdown("<h3 style='text-align: center;'>Gameweek Navigation</h3>", unsafe_allow_html=True)
 col1, col2, col3 = st.columns([1, 2, 1])
 
-if col1.button("⬅️ Previous Gameweek"):
+if col1.button("⬅️ Previous"):
     current_index = gameweeks.index(st.session_state['selected_gameweek'])
     if current_index > 0:
         st.session_state['selected_gameweek'] = gameweeks[current_index - 1]
 
-if col3.button("➡️ Next Gameweek"):
+if col3.button("➡️ Next"):
     current_index = gameweeks.index(st.session_state['selected_gameweek'])
     if current_index < len(gameweeks) - 1:
         st.session_state['selected_gameweek'] = gameweeks[current_index + 1]
@@ -161,13 +161,15 @@ for date, matches in grouped_fixtures:
         else:
             # Display upcoming matches with only the time (local_hour)
             st.markdown(f"""
-                <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
-                    <p style='text-align: center;'><strong>{match['team_h']}</strong> 
-                    vs 
-                    <strong>{match['team_a']}</strong> 
-                    <span style='color: gray;'>Kickoff at {match['local_hour']}</span></p>
-                </div>
-                """, unsafe_allow_html=True)
+    <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+        <p style='text-align: center;'>
+            <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
+        </p>
+        <p style='text-align: center; color: gray;'>
+            Kickoff at {match['local_hour']}
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Display navigation and gameweek info
 st.markdown(f"<p style='text-align: center;'>Gameweek {st.session_state['selected_gameweek']} of {max(gameweeks)}</p>", unsafe_allow_html=True)
