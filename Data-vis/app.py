@@ -36,23 +36,24 @@ upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 # Initialize a list to hold the FDR records
 fdr_records = []
 
-# Iterate over each fixture to assign FDR and opponent names
+# Iterate over each fixture to assign FDR
 for index, row in upcoming_gameweeks.iterrows():
-    team_a_short = row['team_a_short']  # Short name for team_a
-    team_h_short = row['team_h_short']  # Short name for team_h
+    # Assign difficulty based on team_a and team_h
+    team_a = row['team_a']
+    team_a_short = row['team_a_short']  # Get the short name for team_a
+    team_h = row['team_h']
+    team_h_short = row['team_h_short']  # Get the short name for team_h
     
-    # Create a record for team_a vs team_h
+    # Create a record for team_a
     fdr_records.append({
-        'Team': team_a_short,
-        'Opponent': team_h_short,
+        'Team': team_a_short,  # Use the short name for display
         'Gameweek': row['event'],
         'FDR': row['team_a_difficulty']
     })
 
-    # Create a record for team_h vs team_a
+    # Create a record for team_h
     fdr_records.append({
-        'Team': team_h_short,
-        'Opponent': team_a_short,
+        'Team': team_h_short,  # Use the short name for display
         'Gameweek': row['event'],
         'FDR': row['team_h_difficulty']
     })
@@ -61,7 +62,7 @@ for index, row in upcoming_gameweeks.iterrows():
 fdr_results = pd.DataFrame(fdr_records)
 
 # Step 3: Pivot the DataFrame to create the FDR table
-fdr_table = fdr_results.pivot(index='Team', columns='Gameweek', values=['Opponent', 'FDR'])
+fdr_table = fdr_results.pivot(index='Team', columns='Gameweek', values='FDR')
 
 # Step 4: Define a function to color the DataFrame based on FDR values
 def color_fdr(val):
@@ -80,30 +81,8 @@ def color_fdr(val):
     else:
         return ''  # No color for other values
 
-# Step 5: Create a styled DataFrame for display
-styled_fdr_table = fdr_table['FDR'].style.applymap(color_fdr)  # Only color the FDR column
-
-# Step 6: Combine Opponent and FDR for Display
-fdr_display_table = pd.DataFrame(index=fdr_table.index, columns=fdr_table.columns)
-for team in fdr_display_table.index:
-    for gameweek in fdr_display_table.columns.levels[1]:
-        if (team, gameweek) in fdr_table.index:
-            opponent_name = fdr_table.loc[team, ('Opponent', gameweek)]
-            fdr_value = fdr_table.loc[team, ('FDR', gameweek)]
-            fdr_display_table.loc[team, gameweek] = f"{opponent_name} ({fdr_value})" if isinstance(fdr_value, (int, float)) else ''  # Format as "Opponent (FDR)"
-
-# Step 7: Apply the same coloring to the display table based on FDR values
-def apply_color_to_display(val):
-    if isinstance(val, str) and '(' in val:
-        fdr_value = int(val.split('(')[-1][:-1])  # Extract FDR value from the string
-        return color_fdr(fdr_value)
-    return ''  # No color for non-FDR values
-
-styled_fdr_display_table = fdr_display_table.style.applymap(apply_color_to_display)
-
-# Display the FDR table with opponent names and colors
-st.write("### Fixture Difficulty Ratings (Opponents)")
-st.write(styled_fdr_display_table)
+# Step 5: Apply the color function to the DataFrame using applymap
+styled_fdr_table = fdr_table.style.applymap(color_fdr)
 #############################################
 # Add gameweek data
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
