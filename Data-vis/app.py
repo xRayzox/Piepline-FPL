@@ -36,7 +36,7 @@ upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 # Initialize a list to hold the FDR records
 fdr_records = []
 
-# Iterate over each fixture to assign FDR
+# Iterate over each fixture to assign FDR opponent names
 for index, row in upcoming_gameweeks.iterrows():
     # Assign difficulty based on team_a and team_h
     team_a = row['team_a']
@@ -44,25 +44,28 @@ for index, row in upcoming_gameweeks.iterrows():
     team_h = row['team_h']
     team_h_short = row['team_h_short']  # Get the short name for team_h
     
-    # Create a record for team_a
+    # Create a record for team_a vs team_h
     fdr_records.append({
         'Team': team_a_short,  # Use the short name for display
+        'Opponent': team_h_short,  # Display the opponent's team
         'Gameweek': row['event'],
-        'FDR': row['team_a_difficulty']
     })
 
-    # Create a record for team_h
+    # Create a record for team_h vs team_a
     fdr_records.append({
         'Team': team_h_short,  # Use the short name for display
+        'Opponent': team_a_short,  # Display the opponent's team
         'Gameweek': row['event'],
-        'FDR': row['team_h_difficulty']
     })
 
 # Step 2: Create a DataFrame from the records
 fdr_results = pd.DataFrame(fdr_records)
 
-# Step 3: Pivot the DataFrame to create the FDR table
-fdr_table = fdr_results.pivot(index='Team', columns='Gameweek', values='FDR')
+# Step 3: Create a formatted FDR table
+fdr_table = fdr_results.pivot(index='Team', columns='Gameweek', values='Opponent')
+
+# Step 4: Add some additional formatting if needed
+fdr_table.fillna('', inplace=True)  # Fill NaN values with empty strings for better display
 
 # Step 4: Define a function to color the DataFrame based on FDR values
 def color_fdr(val):
@@ -83,7 +86,7 @@ def color_fdr(val):
 
 # Step 5: Apply the color function to the DataFrame using applymap
 styled_fdr_table = fdr_table.style.applymap(color_fdr)
-
+#############################################
 # Add gameweek data
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
 df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
