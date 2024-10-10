@@ -108,9 +108,15 @@ df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London
 # Get the unique gameweeks
 gameweeks = sorted(df_fixtures['event'].unique())
 
+# Find the next gameweek that is not completely finished
+next_gameweek = next(
+    (gw for gw in gameweeks if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
+    gameweeks[0]  # fallback to first gameweek if all are finished
+)
+
 # Step 1: Initialize session state to keep track of the current gameweek
 if 'selected_gameweek' not in st.session_state:
-    st.session_state['selected_gameweek'] = gameweeks[0]
+    st.session_state['selected_gameweek'] = next_gameweek
 
 # Step 2: Add buttons to navigate between gameweeks
 st.markdown("<h3 style='text-align: center;'>Gameweek Navigation</h3>", unsafe_allow_html=True)
@@ -121,10 +127,7 @@ if col1.button("⬅️ Previous Gameweek"):
     if current_index > 0:
         st.session_state['selected_gameweek'] = gameweeks[current_index - 1]
 
-col3.button("➡️ Next Gameweek", on_click=lambda: next_gameweek(gameweeks))
-
-# Helper function to move to the next gameweek
-def next_gameweek(gameweeks):
+if col3.button("➡️ Next Gameweek"):
     current_index = gameweeks.index(st.session_state['selected_gameweek'])
     if current_index < len(gameweeks) - 1:
         st.session_state['selected_gameweek'] = gameweeks[current_index + 1]
@@ -164,5 +167,3 @@ for time, matches in grouped_fixtures:
 
 # Display navigation and gameweek info
 st.markdown(f"<p style='text-align: center;'>Gameweek {st.session_state['selected_gameweek']} of {max(gameweeks)}</p>", unsafe_allow_html=True)
-
-
