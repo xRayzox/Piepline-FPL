@@ -105,6 +105,10 @@ df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
 # Extract the local time for display
 df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
 
+# Separate date and time
+df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y')
+df_fixtures['local_hour'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%H:%M')
+
 # Get the unique gameweeks
 gameweeks = sorted(df_fixtures['event'].unique())
 
@@ -138,15 +142,15 @@ st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek
 # Step 3: Filter the fixtures based on the selected gameweek
 current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
 
-# Step 4: Group fixtures by time
-grouped_fixtures = current_gameweek_fixtures.groupby('local_time')
+# Step 4: Group fixtures by date (local_date) and display each match by time (local_hour)
+grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
-# Step 5: Improved display of the fixtures
-for time, matches in grouped_fixtures:
-    st.markdown(f"<div style='text-align: center;'><strong>🕒 {time}</strong></div>", unsafe_allow_html=True)
+# Step 5: Display grouped fixtures with the date as the title and time for each match
+for date, matches in grouped_fixtures:
+    st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
     for _, match in matches.iterrows():
         if match['finished']:
-            # If the match is finished, display the result in a visually clearer way
+            # Display finished matches with the result
             st.markdown(f"""
                 <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
                     <p style='text-align: center;'><strong>{match['team_h']}</strong> 
@@ -155,13 +159,13 @@ for time, matches in grouped_fixtures:
                 </div>
                 """, unsafe_allow_html=True)
         else:
-            # Display upcoming matches with neutral colors
+            # Display upcoming matches with only the time (local_hour)
             st.markdown(f"""
                 <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
                     <p style='text-align: center;'><strong>{match['team_h']}</strong> 
                     vs 
                     <strong>{match['team_a']}</strong> 
-                    <span style='color: gray;'>Kickoff at {match['local_time'].split()[-1]}</span></p>
+                    <span style='color: gray;'>Kickoff at {match['local_hour']}</span></p>
                 </div>
                 """, unsafe_allow_html=True)
 
