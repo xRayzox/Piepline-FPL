@@ -4,13 +4,13 @@ import numpy as np
 import streamlit as st
 
 # Load all CSV files
-df_fact_player = pd.read_csv('../data/Fact_Player.csv')
-df_gameweeks = pd.read_csv('../data/Gameweeks.csv')
-df_player_history = pd.read_csv('../data/Player_history.csv')
-df_players = pd.read_csv('../data/Players.csv')
-df_positions = pd.read_csv('../data/Positions.csv')
-df_teams = pd.read_csv('../data/Teams.csv')
-df_fixtures=pd.read_csv('../data/Fixtures.csv')
+df_fact_player = pd.read_csv('./data/Fact_Player.csv')
+df_gameweeks = pd.read_csv('./data/Gameweeks.csv')
+df_player_history = pd.read_csv('./data/Player_history.csv')
+df_players = pd.read_csv('./data/Players.csv')
+df_positions = pd.read_csv('./data/Positions.csv')
+df_teams = pd.read_csv('./data/Teams.csv')
+df_fixtures=pd.read_csv('./data/Fixtures.csv')
 
 # Create mappings of team IDs to team names and short names
 team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
