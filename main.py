@@ -32,7 +32,7 @@ def load_player_statistics():
 
 def load_fixture_data():
     fixture_df = load_fixture()
-    print(fixture_df)
+    return fixture_df
 
 # Function to save DataFrame to CSV in the data folder
 def save_to_csv(df, file_name):
@@ -46,8 +46,10 @@ def save_to_csv(df, file_name):
 
 # Main function to execute tasks in sequence
 def main():
+
     transformed_players, transformed_teams, transformed_positions, transformed_gameweeks = load_fpl_data()
     transformed_current_season, transformed_previous_season = load_player_statistics()
+    fixture_df=load_fixture_data()
 
     # Save the transformed DataFrames as CSV in the 'data' folder
     save_to_csv(transformed_players, 'Players.csv')
@@ -55,7 +57,8 @@ def main():
     save_to_csv(transformed_positions, 'Positions.csv')
     save_to_csv(transformed_gameweeks, 'Gameweeks.csv')
     save_to_csv(transformed_current_season, 'Fact_Player.csv')
-    save_to_csv(transformed_previous_season, 'Player_history.csv')
+    save_to_csv(transformed_previous_season, 'Player_history.csv')*
+    save_to_csv(fixture_df, 'Fixtures.csv')
 
 if __name__ == "__main__":
     main()
