@@ -2,15 +2,18 @@ import pandas as pd
 from datetime import datetime, timezone
 import numpy as np
 import streamlit as st
+import os
 
-# Load all CSV files
-df_fact_player = pd.read_csv('./data/Fact_Player.csv')
-df_gameweeks = pd.read_csv('./data/Gameweeks.csv')
-df_player_history = pd.read_csv('./data/Player_history.csv')
-df_players = pd.read_csv('./data/Players.csv')
-df_positions = pd.read_csv('./data/Positions.csv')
-df_teams = pd.read_csv('./data/Teams.csv')
-df_fixtures=pd.read_csv('./data/Fixtures.csv')
+# Get the absolute path for the data directory
+data_dir = os.path.join(os.path.dirname(__file__), 'data')
+
+df_fact_player = pd.read_csv(os.path.join(data_dir, 'Fact_Player.csv'))
+df_gameweeks = pd.read_csv(os.path.join(data_dir, 'Gameweeks.csv'))
+df_player_history = pd.read_csv(os.path.join(data_dir, 'Player_history.csv'))
+df_players = pd.read_csv(os.path.join(data_dir, 'Players.csv'))
+df_positions = pd.read_csv(os.path.join(data_dir, 'Positions.csv'))
+df_teams = pd.read_csv(os.path.join(data_dir, 'Teams.csv'))
+df_fixtures = pd.read_csv(os.path.join(data_dir, 'Fixtures.csv'))
 
 # Create mappings of team IDs to team names and short names
 team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
