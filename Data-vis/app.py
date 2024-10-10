@@ -27,10 +27,7 @@ df_fixtures['team_h'] = df_fixtures['team_h'].replace(team_name_mapping)
 df_fixtures['team_a_short'] = df_fixtures['team_a'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
 df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
 df_fixtures = df_fixtures.drop(columns=['pulse_id'])
-filtered_fixtures = df_fixtures[(df_fixtures['finished'] == False) & (df_fixtures['finished_provisional'] == False)]
 
-
-import pandas as pd
 
 # Step 1: Prepare the Data
 # Get the upcoming fixtures for Gameweek 8 and beyond
@@ -92,5 +89,59 @@ st.title('Fantasy Premier League Fixture Difficulty Ratings')
 
 # Display the styled table
 st.write(styled_fdr_table)
+
+
+###################
+# Create mappings of team IDs to team names
+team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
+
+# Replace team_a and team_h IDs with team names
+df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
+df_fixtures['team_h'] = df_fixtures['team_h'].replace(team_name_mapping)
+
+# Add a 'datetime' column by combining the 'kickoff_time' and converting it to datetime format
+df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
+
+# Extract the local time for display (assumes your system's timezone)
+df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
+
+# Get the unique gameweeks
+gameweeks = sorted(df_fixtures['event'].unique())
+
+# Step 1: Initialize session state to keep track of the current gameweek
+if 'selected_gameweek' not in st.session_state:
+    st.session_state['selected_gameweek'] = gameweeks[0]
+
+# Step 2: Add buttons to navigate between gameweeks
+col1, col2 = st.columns([1, 1])
+if col1.button("Previous Gameweek"):
+    current_index = gameweeks.index(st.session_state['selected_gameweek'])
+    if current_index > 0:
+        st.session_state['selected_gameweek'] = gameweeks[current_index - 1]
+
+if col2.button("Next Gameweek"):
+    current_index = gameweeks.index(st.session_state['selected_gameweek'])
+    if current_index < len(gameweeks) - 1:
+        st.session_state['selected_gameweek'] = gameweeks[current_index + 1]
+
+# Step 3: Filter the fixtures based on the selected gameweek
+current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
+
+# Step 4: Group fixtures by time
+grouped_fixtures = current_gameweek_fixtures.groupby('local_time')
+
+# Step 5: Display the fixtures in a list format
+st.title(f"Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}")
+
+for time, matches in grouped_fixtures:
+    st.subheader(f"🕒 {time}")
+    for _, match in matches.iterrows():
+        if match['finished']:
+            st.write(f"🏟️ {match['team_h']} {match['team_h_score']} - {match['team_a_score']} {match['team_a']}")
+        else:
+            st.write(f"🏟️ {match['team_h']} vs {match['team_a']} (Kickoff at {match['local_time'].split()[-1]})")
+
+# Display navigation
+st.write(f"Gameweek {st.session_state['selected_gameweek']} of {max(gameweeks)}")
 
 
