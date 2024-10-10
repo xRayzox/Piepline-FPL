@@ -64,7 +64,10 @@ fdr_results = pd.DataFrame(fdr_records)
 # Step 3: Pivot the DataFrame to create the FDR table
 fdr_table = fdr_results.pivot(index='Team', columns='Gameweek', values='FDR')
 
-# Step 4: Define a function to color the DataFrame based on FDR values
+# Step 4: Create a separate DataFrame to display team names (instead of FDR)
+display_table = fdr_results.pivot(index='Team', columns='Gameweek', values='Team')
+
+# Step 5: Define a function to color the DataFrame based on FDR values
 def color_fdr(val):
     if pd.isna(val):  # Handle NaN values
         return 'background-color: white;'  # Neutral color for NaN
@@ -81,8 +84,14 @@ def color_fdr(val):
     else:
         return ''  # No color for other values
 
-# Step 5: Apply the color function to the DataFrame using applymap
+# Step 6: Apply the color function to the FDR DataFrame using applymap
 styled_fdr_table = fdr_table.style.applymap(color_fdr)
+
+# Step 7: Merge the display_table and styled_fdr_table
+final_table = display_table.style.combine(styled_fdr_table)
+
+# Display the final_table
+final_table
 #############################################
 # Add gameweek data
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
