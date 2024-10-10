@@ -29,7 +29,7 @@ df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_nam
 df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 
 
-# Step 1: Prepare the Data
+# Step 1: Prepare the Data for FDR Table
 # Get the upcoming fixtures for Gameweek 8 and beyond
 upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 
@@ -84,92 +84,77 @@ def color_fdr(val):
 # Step 5: Apply the color function to the DataFrame using applymap
 styled_fdr_table = fdr_table.style.applymap(color_fdr)
 
-# Title of the app
-st.title('Fantasy Premier League Fixture Difficulty Ratings')
-
-# Display the styled table
-st.write(styled_fdr_table)
-
-
-###################
-# Create mappings of team IDs to team names
-team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
-
-# Replace team_a and team_h IDs with team names
-df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
-df_fixtures['team_h'] = df_fixtures['team_h'].replace(team_name_mapping)
-
-# Add a 'datetime' column by converting the 'kickoff_time' to datetime format
+# Add gameweek data
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
-
-# Extract the local time for display
 df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
-
-# Separate date and time
 df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y')
 df_fixtures['local_hour'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%H:%M')
 
-# Get the unique gameweeks
+# Get the unique gameweeks and next gameweek
 gameweeks = sorted(df_fixtures['event'].unique())
-
-# Find the next gameweek that is not completely finished
 next_gameweek = next(
     (gw for gw in gameweeks if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
     gameweeks[0]  # fallback to first gameweek if all are finished
 )
 
-# Step 1: Initialize session state to keep track of the current gameweek
+# Initialize session state to keep track of the current gameweek
 if 'selected_gameweek' not in st.session_state:
     st.session_state['selected_gameweek'] = next_gameweek
 
-# Step 2: Add buttons to navigate between gameweeks
-st.markdown("<h3 style='text-align: center;'>Gameweek Navigation</h3>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1, 2, 1])
-
-if col1.button("⬅️ Previous"):
-    current_index = gameweeks.index(st.session_state['selected_gameweek'])
-    if current_index > 0:
-        st.session_state['selected_gameweek'] = gameweeks[current_index - 1]
-
-if col3.button("➡️ Next"):
-    current_index = gameweeks.index(st.session_state['selected_gameweek'])
-    if current_index < len(gameweeks) - 1:
-        st.session_state['selected_gameweek'] = gameweeks[current_index + 1]
-
-# Display the current gameweek title
-st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}</h2>", unsafe_allow_html=True)
-
-# Step 3: Filter the fixtures based on the selected gameweek
+# Filter fixtures based on the selected gameweek
 current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
-
-# Step 4: Group fixtures by date (local_date) and display each match by time (local_hour)
 grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
-# Step 5: Display grouped fixtures with the date as the title and time for each match
-for date, matches in grouped_fixtures:
-    st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
-    for _, match in matches.iterrows():
-        if match['finished']:
-            # Display finished matches with the result
-            st.markdown(f"""
-                <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
-                    <p style='text-align: center;'><strong>{match['team_h']}</strong> 
-                    <span style='color: green;'> {match['team_h_score']} - {match['team_a_score']} </span> 
-                    <strong>{match['team_a']}</strong></p>
-                </div>
-                """, unsafe_allow_html=True)
-        else:
-            # Display upcoming matches with only the time (local_hour)
-            st.markdown(f"""
-    <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
-        <p style='text-align: center;'>
-            <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
-        </p>
-        <p style='text-align: center; color: gray;'>
-            Kickoff at {match['local_hour']}
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+# Step 6: Add a radio button to toggle between displays
+display_option = st.radio("Select Display", ('Fixture Difficulty Rating', 'Premier League Fixtures'))
 
-# Display navigation and gameweek info
-st.markdown(f"<p style='text-align: center;'>Gameweek {st.session_state['selected_gameweek']} of {max(gameweeks)}</p>", unsafe_allow_html=True)
+if display_option == 'Fixture Difficulty Rating':
+    # Title of the FDR table
+    st.title('Fantasy Premier League Fixture Difficulty Ratings')
+    
+    # Display the styled FDR table
+    st.write(styled_fdr_table)
+
+elif display_option == 'Premier League Fixtures':
+    # Display navigation buttons
+    st.markdown("<h3 style='text-align: center;'>Gameweek Navigation</h3>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 2, 1])
+
+    if col1.button("⬅️ Previous"):
+        current_index = gameweeks.index(st.session_state['selected_gameweek'])
+        if current_index > 0:
+            st.session_state['selected_gameweek'] = gameweeks[current_index - 1]
+
+    if col3.button("➡️ Next"):
+        current_index = gameweeks.index(st.session_state['selected_gameweek'])
+        if current_index < len(gameweeks) - 1:
+            st.session_state['selected_gameweek'] = gameweeks[current_index + 1]
+
+    # Display the current gameweek title
+    st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}</h2>", unsafe_allow_html=True)
+
+    # Display grouped fixtures with the date as the title and time for each match
+    for date, matches in grouped_fixtures:
+        st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
+        for _, match in matches.iterrows():
+            if match['finished']:
+                # Display finished matches with the result
+                st.markdown(f"""
+                    <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                        <p style='text-align: center;'><strong>{match['team_h']}</strong> 
+                        <span style='color: green;'> {match['team_h_score']} - {match['team_a_score']} </span> 
+                        <strong>{match['team_a']}</strong></p>
+                    </div>
+                    """, unsafe_allow_html=True)
+            else:
+                # Display upcoming matches with only the time (local_hour)
+                st.markdown(f"""
+        <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+            <p style='text-align: center;'>
+                <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
+            </p>
+            <p style='text-align: center; color: gray;'>
+                Kickoff at {match['local_hour']}
+            </p>
+        </div>
+                """, unsafe_allow_html=True)
