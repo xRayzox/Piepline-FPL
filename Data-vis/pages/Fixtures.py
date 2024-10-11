@@ -89,24 +89,32 @@ if selected_display == 'Premier League Fixtures':
         max_value=max_gameweek,
         value=next_gameweek  # Default to the next unfinished gameweek
     )
+
+    # --- Team Filter ---
+    all_teams = sorted(df_fixtures['team_h'].unique())  # Get all unique teams
+    selected_team = st.sidebar.selectbox(
+        "Filter by Team (Optional):",
+        ["All Teams"] + all_teams  # Add "All Teams" as the first option
+    )
 else:  # 'Fixture Difficulty Rating' 
     min_gameweek = int(next_gameweek)
     max_gameweek = int(df_fixtures[df_fixtures['finished'] == False]['event'].max())
     selected_gameweek = st.sidebar.slider(
-        "Select Gameweek:", 
+        "Select Gameweek Range:",
         min_value=min_gameweek, 
         max_value=max_gameweek, 
-        value=min_gameweek  # Default to the first available gameweek
+        value=(min_gameweek, min(min_gameweek + 9, max_gameweek))  # Default to 10 gameweeks or the maximum available
     )
 
 
 # --- FDR Matrix Calculation and Display ---
 if selected_display == 'Fixture Difficulty Rating': 
-    # --- Filter FDR Table for Next 10 Gameweeks ---
+    # --- Filter FDR Table for Selected Gameweeks ---
+    start_gw, end_gw = selected_gameweek
     filtered_fdr_matrix = fdr_matrix.copy()
-    filtered_fdr_matrix = filtered_fdr_matrix[[f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in filtered_fdr_matrix.columns]]
+    filtered_fdr_matrix = filtered_fdr_matrix[[f'GW{gw}' for gw in range(start_gw, end_gw + 1) if f'GW{gw}' in filtered_fdr_matrix.columns]]
 
-    st.markdown(f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**", unsafe_allow_html=True)
+    st.markdown(f"**Fixture Difficulty Rating (FDR) for Gameweeks {start_gw} to {end_gw}**", unsafe_allow_html=True)
     styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
     st.write(styled_filtered_fdr_table)
 
@@ -131,6 +139,14 @@ if selected_display == 'Fixture Difficulty Rating':
 elif selected_display == 'Premier League Fixtures':
     st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {selected_gameweek}</h2>", unsafe_allow_html=True)
     current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == selected_gameweek]
+
+    # --- Filter fixtures by selected team ---
+    if selected_team != "All Teams":
+        current_gameweek_fixtures = current_gameweek_fixtures[
+            (current_gameweek_fixtures['team_h'] == selected_team) | 
+            (current_gameweek_fixtures['team_a'] == selected_team)
+        ]
+
     grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
     for date, matches in grouped_fixtures:
