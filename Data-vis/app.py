@@ -33,56 +33,64 @@ df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 # Get the upcoming fixtures for Gameweek 8 and beyond
 upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 
-# Initialize a list to hold the FDR records
-fdr_records = []
+# Create an empty DataFrame to hold the home/away labels
+teams = upcoming_gameweeks['team_a_short'].unique()  # Get unique team short names
+unique_gameweeks = upcoming_gameweeks['event'].unique()  # Get unique gameweeks from upcoming games
+fdr_matrix = pd.DataFrame(index=teams, columns=unique_gameweeks)  # Create matrix based on unique gameweeks
 
-# Iterate over each fixture to assign FDR
+# Dictionary to store original FDR values for color coding
+fdr_values = {}
+
+# Populate the FDR matrix with team names and home/away labels
 for index, row in upcoming_gameweeks.iterrows():
-    # Assign difficulty based on team_a and team_h
-    team_a = row['team_a']
-    team_a_short = row['team_a_short']  # Get the short name for team_a
-    team_h = row['team_h']
-    team_h_short = row['team_h_short']  # Get the short name for team_h
+    gameweek = row['event']
+    team_a = row['team_a_short']
+    team_h = row['team_h_short']
+    fdr_a = row['team_a_difficulty']  # FDR for team_a
+    fdr_h = row['team_h_difficulty']  # FDR for team_h
+
+    # Assign team name with home/away indication
+    fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"  # Team A is playing away
+    fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"  # Team H is playing at home
+
+    # Store FDR values for coloring later
+    fdr_values[(team_a, gameweek)] = fdr_a
+    fdr_values[(team_h, gameweek)] = fdr_h
+
+# Convert the FDR table to a proper format (e.g., string to prevent confusion with numerical FDR)
+fdr_matrix = fdr_matrix.astype(str)
+
+# Define a function to color the DataFrame based on original FDR values
+def color_fdr(team, gameweek):
+    fdr_value = fdr_values.get((team, gameweek), None)
     
-    # Create a record for team_a
-    fdr_records.append({
-        'Team': team_a_short,  # Use the short name for display
-        'Gameweek': row['event'],
-        'FDR': row['team_a_difficulty']
-    })
-
-    # Create a record for team_h
-    fdr_records.append({
-        'Team': team_h_short,  # Use the short name for display
-        'Gameweek': row['event'],
-        'FDR': row['team_h_difficulty']
-    })
-
-# Step 2: Create a DataFrame from the records
-fdr_results = pd.DataFrame(fdr_records)
-
-# Step 3: Pivot the DataFrame to create the FDR table
-fdr_table = fdr_results.pivot(index='Team', columns='Gameweek', values='FDR')
-
-# Step 4: Define a function to color the DataFrame based on FDR values
-def color_fdr(val):
-    if pd.isna(val):  # Handle NaN values
+    if fdr_value is None:  # Handle NaN values
         return 'background-color: white;'  # Neutral color for NaN
-    elif val == 1:  # Class for FDR 1
+
+    # Color coding based on FDR value
+    if fdr_value == 1:  # Class for FDR 1
         return 'background-color: #257d5a;'  # Green
-    elif val == 2:  # Class for FDR 2
+    elif fdr_value == 2:  # Class for FDR 2
         return 'background-color: #00ff86;'  # Light Green
-    elif val == 3:  # Class for FDR 3
+    elif fdr_value == 3:  # Class for FDR 3
         return 'background-color: #ebebe4;'  # Yellow
-    elif val == 4:  # Class for FDR 4
+    elif fdr_value == 4:  # Class for FDR 4
         return 'background-color: #ff005a;'  # Orange
-    elif val == 5:  # Class for FDR 5
+    elif fdr_value == 5:  # Class for FDR 5
         return 'background-color: #861d46;'  # Red
     else:
         return ''  # No color for other values
 
-# Step 5: Apply the color function to the DataFrame using applymap
-styled_fdr_table = fdr_table.style.applymap(color_fdr)
+# Create a styled DataFrame to visualize FDR values with color coding
+styled_fdr_matrix = fdr_matrix.copy()  # Copy to apply styles
+
+# Apply color to each cell based on FDR values while retaining team names
+def apply_color(row):
+    return [color_fdr(row.name, col) for col in row.index]
+
+# Applying the style to the entire DataFrame
+styled_fdr_matrix = styled_fdr_matrix.style.apply(apply_color, axis=1)
+
 #############################################
 # Add gameweek data
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
