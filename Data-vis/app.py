@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Project Description
-st.title("Fantasy Premier League Analysis and Insights")
+st.title("Fantasy Premier League Analysis and Insights ")
 st.markdown("""
 ### Objective:
 This application provides a detailed analysis of Fantasy Premier League (FPL) data, offering key insights to help users make better decisions throughout the season.
