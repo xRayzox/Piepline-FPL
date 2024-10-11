@@ -7,6 +7,7 @@ import os
 # Get the absolute path for the data directory
 data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
 
+# Load DataFrames (using sample data for demonstration)
 df_fact_player = pd.read_csv(os.path.join(data_dir, 'Fact_Player.csv'))
 df_gameweeks = pd.read_csv(os.path.join(data_dir, 'Gameweeks.csv'))
 df_player_history = pd.read_csv(os.path.join(data_dir, 'Player_history.csv'))
@@ -15,139 +16,95 @@ df_positions = pd.read_csv(os.path.join(data_dir, 'Positions.csv'))
 df_teams = pd.read_csv(os.path.join(data_dir, 'Teams.csv'))
 df_fixtures = pd.read_csv(os.path.join(data_dir, 'Fixtures.csv'))
 
-# Create mappings of team IDs to team names and short names
+# Data Preprocessing
 team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
 team_short_name_mapping = pd.Series(df_teams.short_name.values, index=df_teams.id).to_dict()
-
-# Replace team_a and team_h IDs with team names
 df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
 df_fixtures['team_h'] = df_fixtures['team_h'].replace(team_name_mapping)
-
-# Add team_a_short and team_h_short columns using the original team IDs
 df_fixtures['team_a_short'] = df_fixtures['team_a'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
 df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
 df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 
-# Step 1: Prepare the Data for FDR Table
-# Get upcoming gameweeks
-upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
-
-# Create an empty DataFrame to hold the display values
-teams = upcoming_gameweeks['team_a_short'].unique()  # Get unique team short names
-unique_gameweeks = upcoming_gameweeks['event'].unique()  # Get unique gameweeks from upcoming games
-
-# Format gameweek numbers with 'GW' prefix
-formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
-
-# Create a matrix based on unique gameweeks
-fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
-
-# Dictionary to store original FDR values for color coding
-fdr_values = {}
-
-# Populate the FDR matrix with display values and keep track of FDR values
-for index, row in upcoming_gameweeks.iterrows():
-    gameweek = f'GW{row["event"]}'  # Format gameweek with 'GW'
-    team_a = row['team_a_short']
-    team_h = row['team_h_short']
-    fdr_a = row['team_a_difficulty']  # FDR for team_a
-    fdr_h = row['team_h_difficulty']  # FDR for team_h
-
-    # Assign home/away display values to the matrix
-    fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"  # Team A is playing away
-    fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"  # Team H is playing at home
-
-    # Store FDR values for coloring later
-    fdr_values[(team_a, gameweek)] = fdr_a
-    fdr_values[(team_h, gameweek)] = fdr_h
-
-# Convert the FDR table to a proper format (e.g., string to prevent confusion with numerical FDR)
-fdr_matrix = fdr_matrix.astype(str)
-
-# Define a function to color the DataFrame based on original FDR values
-def color_fdr(team, gameweek):
-    fdr_value = fdr_values.get((team, gameweek), None)
-    
-    if fdr_value is None:  # Handle NaN values
-        return 'background-color: white; color: black;'  # Neutral color for NaN
-
-    # Color coding based on FDR value
-    colors = {
-        1: ('#257d5a', 'black'),  # Green
-        2: ('#00ff86', 'black'),  # Light Green
-        3: ('#ebebe4', 'black'),  # Yellow
-        4: ('#ff005a', 'white'),   # Orange
-        5: ('#861d46', 'white'),   # Red
-    }
-
-    bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
-    return f'background-color: {bg_color}; color: {font_color};'
-
-# Create a styled DataFrame to visualize FDR values with color coding
-styled_fdr_table = fdr_matrix.copy()  # Copy to apply styles
-
-# Apply color to each cell based on FDR values while retaining the display values
-styled_fdr_table = styled_fdr_table.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
-
-# Add gameweek data
+# Add datetime columns
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
 df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
 df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y')
 df_fixtures['local_hour'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%H:%M')
 
-# Get the unique gameweeks and next gameweek
+# FDR Matrix Calculation
+upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
+teams = upcoming_gameweeks['team_a_short'].unique()
+unique_gameweeks = upcoming_gameweeks['event'].unique()
+formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
+fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
+fdr_values = {}
+
+for index, row in upcoming_gameweeks.iterrows():
+    gameweek = f'GW{row["event"]}'
+    team_a = row['team_a_short']
+    team_h = row['team_h_short']
+    fdr_a = row['team_a_difficulty']
+    fdr_h = row['team_h_difficulty']
+
+    fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"
+    fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"
+    fdr_values[(team_a, gameweek)] = fdr_a
+    fdr_values[(team_h, gameweek)] = fdr_h
+
+fdr_matrix = fdr_matrix.astype(str)
+
+# Color Coding Function
+def color_fdr(team, gameweek):
+    fdr_value = fdr_values.get((team, gameweek), None)
+    colors = {
+        1: ('#257d5a', 'black'), 
+        2: ('#00ff86', 'black'),  
+        3: ('#ebebe4', 'black'), 
+        4: ('#ff005a', 'white'),  
+        5: ('#861d46', 'white'),   
+    }
+    bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
+    return f'background-color: {bg_color}; color: {font_color};'
+
+styled_fdr_table = fdr_matrix.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
+
+# --- Streamlit App ---
+st.title('Fantasy Premier League Dashboard')
+
+# Sidebar for Navigation
+st.sidebar.title("Navigation")
+selected_page = st.sidebar.radio("Go to", ["FDR & Fixtures", "Player Stats"])
+
+# Global Gameweek Selection
 gameweeks = sorted(df_fixtures['event'].unique())
 next_gameweek = next(
     (gw for gw in gameweeks if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
-    gameweeks[0]  # fallback to first gameweek if all are finished
+    gameweeks[0] 
 )
 
-# Initialize session state to keep track of the current gameweek
 if 'selected_gameweek' not in st.session_state:
     st.session_state['selected_gameweek'] = next_gameweek
 
-# Initialize session state for the selected display option
-if 'display_option' not in st.session_state:
-    st.session_state['display_option'] = 'Fixture Difficulty Rating'
+st.sidebar.markdown("### Gameweek Selection")
+st.session_state['selected_gameweek'] = st.sidebar.selectbox(
+    "Select Gameweek:", gameweeks, index=gameweeks.index(st.session_state['selected_gameweek'])
+)
 
-# Step 6: Add a radio button to toggle between displays
-st.title('Fantasy Premier League')
-
-display_option = st.radio("Select Display", ('Fixture Difficulty Rating', 'Premier League Fixtures'), index=0)
-
-# Update session state when the display option changes
-st.session_state['display_option'] = display_option
-
-# Filter fixtures based on the selected gameweek
-current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
-grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
-
-# Handle display option
-if st.session_state['display_option'] == 'Fixture Difficulty Rating':
+# Page 1: FDR & Fixtures
+if selected_page == "FDR & Fixtures":
+    st.markdown("<h2 style='text-align: center;'>Fixture Difficulty Rating</h2>", unsafe_allow_html=True)
     st.write(styled_fdr_table)
 
-elif st.session_state['display_option'] == 'Premier League Fixtures':
-    st.markdown("<h3 style='text-align: center;'>Gameweek Navigation</h3>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 2, 1])
+    st.markdown("<h2 style='text-align: center;'>Premier League Fixtures</h2>", unsafe_allow_html=True)
 
-    if col1.button("⬅️ Previous"):
-        current_index = gameweeks.index(st.session_state['selected_gameweek'])
-        if current_index > 0:
-            st.session_state['selected_gameweek'] = gameweeks[current_index - 1]
+    # Filter fixtures based on the selected gameweek
+    current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
+    grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
-    if col3.button("➡️ Next"):
-        current_index = gameweeks.index(st.session_state['selected_gameweek'])
-        if current_index < len(gameweeks) - 1:
-            st.session_state['selected_gameweek'] = gameweeks[current_index + 1]
-
-    st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}</h2>", unsafe_allow_html=True)
-
-    # Display grouped fixtures with the date as the title and time for each match
     for date, matches in grouped_fixtures:
         st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
         for _, match in matches.iterrows():
             if match['finished']:
-                # Display finished matches with the result
                 st.markdown(f"""
                     <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
                         <p style='text-align: center;'>
@@ -160,7 +117,6 @@ elif st.session_state['display_option'] == 'Premier League Fixtures':
                     </div>
                     """, unsafe_allow_html=True)
             else:
-                # Display upcoming matches with only the time (local_hour)
                 st.markdown(f"""
                     <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f0f0f0;'>
                         <p style='text-align: center;'>
@@ -171,3 +127,14 @@ elif st.session_state['display_option'] == 'Premier League Fixtures':
                         </p>
                     </div>
                     """, unsafe_allow_html=True)
+
+# Page 2: Player Stats (Example: Top Goal Scorers)
+elif selected_page == "Player Stats":
+    st.markdown("<h2 style='text-align: center;'>Player Stats</h2>", unsafe_allow_html=True)
+
+    # Example: Show top goal scorers for the selected gameweek
+    top_scorers = df_fact_player[df_fact_player['gameweek'] == st.session_state['selected_gameweek']].nlargest(10, 'goals_scored')
+    top_scorers = top_scorers.merge(df_players[['id', 'name']], left_on='player_id', right_on='id') 
+
+    st.write(f"Top 10 Goal Scorers for Gameweek {st.session_state['selected_gameweek']}")
+    st.table(top_scorers[['name', 'goals_scored']])  
