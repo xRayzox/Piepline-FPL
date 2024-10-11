@@ -2,6 +2,8 @@ import pandas as pd
 from datetime import datetime, timezone
 import streamlit as st
 import os
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 # Get the absolute path for the data directory
 data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
@@ -25,52 +27,15 @@ df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London
 df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y')
 df_fixtures['local_hour'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%H:%M')
 
-# --- FDR Matrix Calculation ---
-upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
-teams = upcoming_gameweeks['team_a_short'].unique()
-unique_gameweeks = upcoming_gameweeks['event'].unique()
-formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
-fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
-fdr_values = {}
-
-for index, row in upcoming_gameweeks.iterrows():
-    gameweek = f'GW{row["event"]}'
-    team_a = row['team_a_short']
-    team_h = row['team_h_short']
-    fdr_a = row['team_a_difficulty']
-    fdr_h = row['team_h_difficulty']
-
-    fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"
-    fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"
-    fdr_values[(team_a, gameweek)] = fdr_a
-    fdr_values[(team_h, gameweek)] = fdr_h
-
-fdr_matrix = fdr_matrix.astype(str)
-
-# --- Color Coding Function ---
-def color_fdr(team, gameweek):
-    fdr_value = fdr_values.get((team, gameweek), None)
-    colors = {
-        1: ('#257d5a', 'black'), 
-        2: ('#00ff86', 'black'),  
-        3: ('#ebebe4', 'black'), 
-        4: ('#ff005a', 'white'),  
-        5: ('#861d46', 'white'),   
-    }
-    bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
-    return f'background-color: {bg_color}; color: {font_color};'
+# --- FDR Calculation (Modified for bar chart) ---
+fdr_data = df_fixtures[df_fixtures['finished'] == False].copy()
 
 # --- Streamlit App ---
 st.title('Fantasy Premier League')
 
 # --- Sidebar: Display Options and Gameweek Selection ---
 st.sidebar.header("Navigation and Options")
-
-# Display Option
-selected_display = st.sidebar.radio(
-    "Select Display:", 
-    ['Premier League Fixtures', 'Fixture Difficulty Rating'] 
-)
+selected_display = st.sidebar.radio("Select Display:", ['Premier League Fixtures', 'Fixture Difficulty Rating'])
 
 # --- Gameweek Selection (Dynamic based on Display) ---
 gameweeks = sorted(df_fixtures['event'].unique())
@@ -84,7 +49,7 @@ if selected_display == 'Premier League Fixtures':
     selected_gameweek = st.sidebar.selectbox(
         "Select Gameweek:", 
         gameweeks,
-        index=gameweeks.index(next_gameweek) # Default to next unfinished gameweek
+        index=gameweeks.index(next_gameweek) 
     )
 else:  # 'Fixture Difficulty Rating'
     # Use a Slider for Gameweek selection (FDR)
@@ -97,28 +62,46 @@ else:  # 'Fixture Difficulty Rating'
         value=min_gameweek 
     )
 
-# --- FDR Matrix Calculation and Display ---
+# --- FDR Bar Chart Visualization ---
 if selected_display == 'Fixture Difficulty Rating': 
-    # --- Filter FDR Table for Next 10 Gameweeks ---
-    filtered_fdr_matrix = fdr_matrix.copy()
-    filtered_fdr_matrix = filtered_fdr_matrix[[f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in filtered_fdr_matrix.columns]]
-
     st.markdown(f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**", unsafe_allow_html=True)
-    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
-    st.write(styled_filtered_fdr_table)
 
-    # --- FDR Legend (Optimized) ---
-    st.sidebar.markdown("**Legend:**")
-    fdr_colors = { # Associate FDR values with colors
-        1: ('#257d5a', 'black'),  
-        2: ('#00ff86', 'black'), 
-        3: ('#ebebe4', 'black'), 
-        4: ('#ff005a', 'white'), 
-        5: ('#861d46', 'white')   
+    # Filter data for the selected gameweek range
+    fdr_data_filtered = fdr_data[fdr_data['event'] >= selected_gameweek].copy()
+    fdr_data_filtered['gameweek_label'] = 'GW' + fdr_data_filtered['event'].astype(str)
+
+    # Color mapping for FDR values
+    fdr_colors = { 
+        1: '#257d5a',  
+        2: '#00ff86', 
+        3: '#ebebe4', 
+        4: '#ff005a', 
+        5: '#861d46'   
     }
-    for fdr, (bg_color, font_color) in fdr_colors.items():
+
+    # Get unique teams from your filtered DataFrame
+    teams = fdr_data_filtered['team_a_short'].unique() 
+
+    # Create the bar charts
+    fig, axes = plt.subplots(len(teams), 1, figsize=(10, 2*len(teams)), sharex=True) 
+    plt.subplots_adjust(hspace=0.5) 
+
+    for i, team in enumerate(teams):
+        team_data = fdr_data_filtered[(fdr_data_filtered['team_a_short'] == team) | (fdr_data_filtered['team_h_short'] == team)]
+        team_data = team_data.head(10) # Get only the next 10 gameweeks
+        axes[i].bar(team_data['gameweek_label'], team_data['team_h_difficulty'], color=[fdr_colors[fdr] for fdr in team_data['team_h_difficulty']])
+        axes[i].set_title(team, fontsize=12)
+        axes[i].set_ylim(1, 5) # Set y-axis limits for better visualization
+        axes[i].set_yticks([1, 2, 3, 4, 5])  # Set y-axis ticks
+
+    plt.xticks(rotation=45, ha='right')  # Rotate x-axis labels for better readability
+    st.pyplot(fig)
+
+    # --- FDR Legend ---
+    st.sidebar.markdown("**Legend:**")
+    for fdr, color in fdr_colors.items():
         st.sidebar.markdown(
-            f"<span style='background-color: {bg_color}; color: {font_color}; padding: 2px 5px; border-radius: 3px;'>"
+            f"<span style='background-color: {color}; color: {'white' if fdr > 3 else 'black'}; padding: 2px 5px; border-radius: 3px;'>"
             f"{fdr} - {'Very Easy' if fdr == 1 else 'Easy' if fdr == 2 else 'Medium' if fdr == 3 else 'Difficult' if fdr == 4 else 'Very Difficult'}"
             f"</span>",
             unsafe_allow_html=True
