@@ -141,9 +141,7 @@ for date, matches in grouped_fixtures:
                     <p style='text-align: center;'>
                         <strong>{match['team_h']}</strong> 
                         <span style='color: green;'> 
-                            <div style='display: inline-block; text-align: center;'>
-                                {int(match['team_h_score'])} - {int(match['team_a_score'])}
-                            </div>
+                            {int(match['team_h_score'])} - {int(match['team_a_score'])}
                         </span> 
                         <strong>{match['team_a']}</strong>
                     </p>
@@ -161,3 +159,4 @@ for date, matches in grouped_fixtures:
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
+
