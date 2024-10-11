@@ -76,13 +76,19 @@ selected_display = st.sidebar.radio(
 min_gameweek = int(df_fixtures['event'].min())
 max_gameweek = int(df_fixtures['event'].max())
 
+# Get the next unfinished gameweek for FDR
+next_unfinished_gameweek = next(
+    (gw for gw in range(min_gameweek, max_gameweek + 1) if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
+    min_gameweek  # Default to the first gameweek if all games are finished
+)
+
 if selected_display == 'Fixture Difficulty Rating':
-    # Slider for FDR
+    # Slider for FDR starting from the upcoming gameweek
     selected_gameweek = st.sidebar.slider(
         "Select Gameweek:",
-        min_value=min_gameweek,
+        min_value=next_unfinished_gameweek,
         max_value=max_gameweek,
-        value=min_gameweek 
+        value=next_unfinished_gameweek
     )
 else:
     # Selectbox for Premier League Fixtures
@@ -104,7 +110,7 @@ if selected_display == 'Fixture Difficulty Rating':
 
     # --- FDR Legend ---
     st.sidebar.markdown("**Legend:**")
-    fdr_colors = {
+    fdr_colors = { 
         1: ('#257d5a', 'black'),  
         2: ('#00ff86', 'black'), 
         3: ('#ebebe4', 'black'), 
