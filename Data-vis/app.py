@@ -8,6 +8,6 @@ page = st.sidebar.radio("Select a page:", ["Home", "Fixtures"])
 if page == "Home":
     st.title("My Multi-Page Streamlit App")
     st.write("Welcome to the multi-page app!")
-elif page == "Page 1":
+elif page == "Fixtures":
     import fixture  # Import your page1.py
 
