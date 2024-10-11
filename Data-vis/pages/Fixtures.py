@@ -6,56 +6,70 @@ import os
 # --- Page Configuration ---
 st.set_page_config(
     page_title="FPL Fixtures & FDR",
-    layout="wide"  # Use the full width of the screen
+    layout="wide"  # Full-width layout for better presentation
 )
 
 # --- Theme Customization ---
 st.markdown(
     """
-<style>
-    body {
-        color: #333;
-        background-color: #f5f5f5;
-    }
-    .stMarkdown>h2 {
-        text-align: center;
-    }
-    /* Styles for the FDR table */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        text-align: center;
-        padding: 8px;
-        border: 1px solid #ddd; 
-    }
-    .fixture-container {
-        display: flex;
-        justify-content: space-around; /* Distribute columns evenly */
-        margin: 20px;
-    }
-    .fixture-column {
-        width: 48%; /* Adjust width for two columns */
-        text-align: center;
-    }
-    .fixture-box {
-        border: 1px solid #ddd;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        background-color: #f9f9f9;
-    }
-    .fixture-box p {
-        margin: 5px 0;  /* Adjust vertical spacing between elements */
-    }
-    .score {
-        color: green;
-        font-weight: bold;
-    }
-</style>
-""",
-    unsafe_allow_html=True,
+    <style>
+        body {
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        h2, h3 {
+            text-align: center;
+        }
+        /* Center all containers */
+        .stContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Centering the FDR matrix and fixture box */
+        .fixture-box, .fdr-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        /* Fixture Box Styling */
+        .fixture-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            width: 80%;
+            margin: auto;
+        }
+        .fixture-box p {
+            margin: 0;
+        }
+        .kickoff {
+            font-size: 0.8rem;
+            color: #555;
+        }
+        .score {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
 )
 
 # --- Data Loading and Preprocessing ---
@@ -66,7 +80,7 @@ data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__
 df_teams = pd.read_csv(os.path.join(data_dir, "Teams.csv"))
 df_fixtures = pd.read_csv(os.path.join(data_dir, "Fixtures.csv"))
 
-# --- Data Preprocessing (Including Fixtures) ---
+# --- Data Preprocessing ---
 team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
 team_short_name_mapping = pd.Series(df_teams.short_name.values, index=df_teams.id).to_dict()
 df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
@@ -103,7 +117,6 @@ with st.sidebar:
     )
 
     if selected_display == "Premier League Fixtures":
-        # --- Gameweek Selection (moved under Navigation)---
         if 'selected_gameweek' not in st.session_state:
             st.session_state.selected_gameweek = next_unfinished_gameweek
 
@@ -124,17 +137,17 @@ if selected_display == 'Premier League Fixtures':
     current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == selected_gameweek]
     grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
-    # Create two columns for fixtures
-    col1, col2 = st.columns(2) 
-
-    # Distribute fixtures evenly into the columns
-    i = 0
+    # Center fixtures content
     for date, matches in grouped_fixtures:
-        with col1 if i % 2 == 0 else col2:  # Alternate between columns
-            st.markdown(f"<h3 style='text-align: center;'>{date}</h3>", unsafe_allow_html=True)
-            for _, match in matches.iterrows():
-                with st.container():  
+        st.markdown(f"<h3 style='text-align: center;'>{date}</h3>", unsafe_allow_html=True)
+        for _, match in matches.iterrows():
+            # Fixture box for each match
+            with st.container():
+                col1, col2, col3 = st.columns([3, 1, 3])  # Adjusted for better layout
+
+                with col1:
                     st.markdown(f"**{match['team_h']}**")
+                with col2:
                     if match['finished']:
                         st.markdown(
                             f"<p class='score'>{int(match['team_h_score'])} - {int(match['team_a_score'])}</p>",
@@ -142,10 +155,11 @@ if selected_display == 'Premier League Fixtures':
                         )
                     else:
                         st.markdown(f"<p>vs</p>", unsafe_allow_html=True)
+                with col3:
                     st.markdown(f"**{match['team_a']}**")
-                    if not match['finished']:
-                        st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>", unsafe_allow_html=True) 
-        i += 1
+
+                if not match['finished']:
+                    st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>", unsafe_allow_html=True)
 
 # --- FDR Matrix Display ---
 elif selected_display == "Fixture Difficulty Rating":
@@ -184,7 +198,6 @@ elif selected_display == "Fixture Difficulty Rating":
         bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
         return f'background-color: {bg_color}; color: {font_color};'
     
-    # Slider for FDR starting from the upcoming gameweek
     selected_gameweek = st.sidebar.slider(
         "Select Gameweek:",
         min_value=next_unfinished_gameweek,
@@ -192,13 +205,16 @@ elif selected_display == "Fixture Difficulty Rating":
         value=next_unfinished_gameweek       
     )
 
-    # --- Filter FDR Table for Next 10 Gameweeks ---
+    # Filter FDR Table for Next 10 Gameweeks
     filtered_fdr_matrix = fdr_matrix.copy()
     filtered_fdr_matrix = filtered_fdr_matrix[[f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in filtered_fdr_matrix.columns]]
 
     st.markdown(f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**", unsafe_allow_html=True)
     styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
-    st.write(styled_filtered_fdr_table)
+
+    st.dataframe(styled_filtered_fdr_table.set_table_attributes("style='width:80%; margin:auto;'").set_table_styles({
+        ('', ''): {'border': '1px solid black'}
+    }), width=800)
 
     # --- FDR Legend ---
     with st.sidebar:
