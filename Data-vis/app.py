@@ -29,22 +29,23 @@ df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_nam
 df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 
 # Step 1: Prepare the Data for FDR Table
+# Get upcoming gameweeks
 upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 
-# Create an empty DataFrame to hold the home/away labels
+# Create an empty DataFrame to hold the display values
 teams = upcoming_gameweeks['team_a_short'].unique()  # Get unique team short names
 unique_gameweeks = upcoming_gameweeks['event'].unique()  # Get unique gameweeks from upcoming games
 
 # Format gameweek numbers with 'GW' prefix
 formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
 
-# Create matrix based on unique gameweeks
+# Create a matrix based on unique gameweeks
 fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
 
 # Dictionary to store original FDR values for color coding
 fdr_values = {}
 
-# Populate the FDR matrix with team names and home/away labels
+# Populate the FDR matrix with display values and keep track of FDR values
 for index, row in upcoming_gameweeks.iterrows():
     gameweek = f'GW{row["event"]}'  # Format gameweek with 'GW'
     team_a = row['team_a_short']
@@ -52,7 +53,7 @@ for index, row in upcoming_gameweeks.iterrows():
     fdr_a = row['team_a_difficulty']  # FDR for team_a
     fdr_h = row['team_h_difficulty']  # FDR for team_h
 
-    # Assign team name with home/away indication
+    # Assign home/away display values to the matrix
     fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"  # Team A is playing away
     fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"  # Team H is playing at home
 
@@ -83,7 +84,7 @@ def color_fdr(team, gameweek):
 # Create a styled DataFrame to visualize FDR values with color coding
 styled_fdr_table = fdr_matrix.copy()  # Copy to apply styles
 
-# Apply color to each cell based on FDR values while retaining team names
+# Apply color to each cell based on FDR values while retaining the display values
 styled_fdr_table = styled_fdr_table.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
 
 # Add gameweek data
@@ -103,18 +104,27 @@ next_gameweek = next(
 if 'selected_gameweek' not in st.session_state:
     st.session_state['selected_gameweek'] = next_gameweek
 
+# Initialize session state for the selected display option
+if 'display_option' not in st.session_state:
+    st.session_state['display_option'] = 'Fixture Difficulty Rating'
+
+# Step 6: Add a radio button to toggle between displays
+st.title('Fantasy Premier League')
+
+display_option = st.radio("Select Display", ('Fixture Difficulty Rating', 'Premier League Fixtures'), index=0)
+
+# Update session state when the display option changes
+st.session_state['display_option'] = display_option
+
 # Filter fixtures based on the selected gameweek
 current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
 grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
-# Step 6: Add a radio button to toggle between displays
-display_option = st.radio("Select Display", ('Fixture Difficulty Rating', 'Premier League Fixtures'))
-
-if display_option == 'Fixture Difficulty Rating':
-    st.title('Fantasy Premier League Fixture Difficulty Ratings')
+# Handle display option
+if st.session_state['display_option'] == 'Fixture Difficulty Rating':
     st.write(styled_fdr_table)
 
-elif display_option == 'Premier League Fixtures':
+elif st.session_state['display_option'] == 'Premier League Fixtures':
     st.markdown("<h3 style='text-align: center;'>Gameweek Navigation</h3>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 2, 1])
 
@@ -130,33 +140,32 @@ elif display_option == 'Premier League Fixtures':
 
     st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}</h2>", unsafe_allow_html=True)
 
-# Display grouped fixtures with the date as the title and time for each match
-for date, matches in grouped_fixtures:
-    st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
-    for _, match in matches.iterrows():
-        if match['finished']:
-            # Display finished matches with the result
-            st.markdown(f"""
-                <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
-                    <p style='text-align: center;'>
-                        <strong>{match['team_h']}</strong> 
-                        <span style='color: green;'> 
-                            {int(match['team_h_score'])} - {int(match['team_a_score'])}
-                        </span> 
-                        <strong>{match['team_a']}</strong>
-                    </p>
-                </div>
-                """, unsafe_allow_html=True)
-        else:
-            # Display upcoming matches with only the time (local_hour)
-            st.markdown(f"""
-                <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f0f0f0;'>
-                    <p style='text-align: center;'>
-                        <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
-                    </p>
-                    <p style='text-align: center; color: gray;'>
-                        Kickoff at {match['local_hour']}
-                    </p>
-                </div>
-                """, unsafe_allow_html=True)
-
+    # Display grouped fixtures with the date as the title and time for each match
+    for date, matches in grouped_fixtures:
+        st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
+        for _, match in matches.iterrows():
+            if match['finished']:
+                # Display finished matches with the result
+                st.markdown(f"""
+                    <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
+                        <p style='text-align: center;'>
+                            <strong>{match['team_h']}</strong> 
+                            <span style='color: green;'> 
+                                {int(match['team_h_score'])} - {int(match['team_a_score'])}
+                            </span> 
+                            <strong>{match['team_a']}</strong>
+                        </p>
+                    </div>
+                    """, unsafe_allow_html=True)
+            else:
+                # Display upcoming matches with only the time (local_hour)
+                st.markdown(f"""
+                    <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f0f0f0;'>
+                        <p style='text-align: center;'>
+                            <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
+                        </p>
+                        <p style='text-align: center; color: gray;'>
+                            Kickoff at {match['local_hour']}
+                        </p>
+                    </div>
+                    """, unsafe_allow_html=True)
