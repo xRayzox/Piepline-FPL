@@ -76,10 +76,10 @@ selected_display = st.sidebar.radio(
 min_gameweek = int(df_fixtures['event'].min())
 max_gameweek = int(df_fixtures['event'].max())
 
-# Get the next unfinished gameweek 
+# Get the next unfinished gameweek
 next_unfinished_gameweek = next(
     (gw for gw in range(min_gameweek, max_gameweek + 1) if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
-    min_gameweek  # Default to the first gameweek if all games are finished
+    min_gameweek
 )
 
 if selected_display == 'Fixture Difficulty Rating':
@@ -90,44 +90,34 @@ if selected_display == 'Fixture Difficulty Rating':
         max_value=max_gameweek,
         value=next_unfinished_gameweek       
     )
-else:
-    # Selectbox for Premier League Fixtures defaulting to upcoming gameweek
-    selected_gameweek = st.sidebar.selectbox(
-        "Select Gameweek:",
-        options=range(min_gameweek, max_gameweek + 1),
-        index=next_unfinished_gameweek - min_gameweek  # Default to upcoming gameweek
-    )
-
-# --- FDR Matrix Calculation and Display ---
-if selected_display == 'Fixture Difficulty Rating': 
-    # --- Filter FDR Table for Next 10 Gameweeks ---
-    filtered_fdr_matrix = fdr_matrix.copy()
-    filtered_fdr_matrix = filtered_fdr_matrix[[f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in filtered_fdr_matrix.columns]]
-
-    st.markdown(f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**", unsafe_allow_html=True)
-    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
-    st.write(styled_filtered_fdr_table)
-
-    # --- FDR Legend ---
-    st.sidebar.markdown("**Legend:**")
-    fdr_colors = { 
-        1: ('#257d5a', 'black'),  
-        2: ('#00ff86', 'black'), 
-        3: ('#ebebe4', 'black'), 
-        4: ('#ff005a', 'white'), 
-        5: ('#861d46', 'white')   
-    }
-    for fdr, (bg_color, font_color) in fdr_colors.items():
-        st.sidebar.markdown(
-            f"<span style='background-color: {bg_color}; color: {font_color}; padding: 2px 5px; border-radius: 3px;'>"
-            f"{fdr} - {'Very Easy' if fdr == 1 else 'Easy' if fdr == 2 else 'Medium' if fdr == 3 else 'Difficult' if fdr == 4 else 'Very Difficult'}"
-            f"</span>",
-            unsafe_allow_html=True
-        )
 
 # --- Premier League Fixtures Display ---
 elif selected_display == 'Premier League Fixtures':
-    st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {selected_gameweek}</h2>", unsafe_allow_html=True)
+    # --- Premier League Fixtures: Gameweek Navigation ---
+    if 'selected_gameweek' not in st.session_state:
+        st.session_state.selected_gameweek = next_unfinished_gameweek
+
+    col1, col2, col3 = st.columns([1,1,1])
+
+    with col1:
+        if st.button("Previous"):
+            st.session_state.selected_gameweek = max(
+                st.session_state.selected_gameweek - 1, min_gameweek
+            )
+
+    with col3:
+        if st.button("Next"):
+            st.session_state.selected_gameweek = min(
+                st.session_state.selected_gameweek + 1, max_gameweek
+            )
+
+    selected_gameweek = st.session_state.selected_gameweek
+
+    # --- Display Fixtures for Selected Gameweek ---
+    st.markdown(
+        f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {selected_gameweek}</h2>",
+        unsafe_allow_html=True,
+    )
     current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == selected_gameweek]
     grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
@@ -157,3 +147,30 @@ elif selected_display == 'Premier League Fixtures':
                         </p>
                     </div>
                     """, unsafe_allow_html=True)
+
+# --- FDR Matrix Calculation and Display ---
+if selected_display == 'Fixture Difficulty Rating': 
+    # --- Filter FDR Table for Next 10 Gameweeks ---
+    filtered_fdr_matrix = fdr_matrix.copy()
+    filtered_fdr_matrix = filtered_fdr_matrix[[f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in filtered_fdr_matrix.columns]]
+
+    st.markdown(f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**", unsafe_allow_html=True)
+    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
+    st.write(styled_filtered_fdr_table)
+
+    # --- FDR Legend ---
+    st.sidebar.markdown("**Legend:**")
+    fdr_colors = { 
+        1: ('#257d5a', 'black'),  
+        2: ('#00ff86', 'black'), 
+        3: ('#ebebe4', 'black'), 
+        4: ('#ff005a', 'white'), 
+        5: ('#861d46', 'white')   
+    }
+    for fdr, (bg_color, font_color) in fdr_colors.items():
+        st.sidebar.markdown(
+            f"<span style='background-color: {bg_color}; color: {font_color}; padding: 2px 5px; border-radius: 3px;'>"
+            f"{fdr} - {'Very Easy' if fdr == 1 else 'Easy' if fdr == 2 else 'Medium' if fdr == 3 else 'Difficult' if fdr == 4 else 'Very Difficult'}"
+            f"</span>",
+            unsafe_allow_html=True
+        )
