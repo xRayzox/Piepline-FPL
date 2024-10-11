@@ -9,6 +9,68 @@ st.set_page_config(
     layout="wide"  # Use the full width of the screen
 )
 
+# --- Theme Customization ---
+st.markdown(
+    """
+<style>
+    body {
+        color: #333;
+        background-color: #f5f5f5;
+    }
+    .stMarkdown>h2 {
+        text-align: center;
+    }
+    /* Styles for the FDR table */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #ddd; 
+    }
+    /* Center content */
+    .centered {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100vh;
+    }
+    .fixture-container {
+        margin: 5px; /* Reduced margin for compact layout */
+        width: 100%; /* Make fixture container take full width */
+    }
+    .fixture-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #ddd;
+        padding: 3px; /* Reduce padding for less space */
+        border-radius: 5px;
+        margin-bottom: 3px; /* Reduce margin for tighter spacing */
+        background-color: #f9f9f9;
+    }
+    .fixture-box p {
+        margin: 0;
+    }
+    .kickoff { 
+        font-size: 0.8rem;
+        color: #555;
+        text-align: center; /* Center kickoff time */
+        width: 100px; /* Optional: Set a width to center within the container */
+    }
+    .score {  
+        font-weight: bold;
+        color: green;
+        text-align: center; /* Center score */
+        width: 100px; /* Optional: Set a width to center within the container */
+    }
+</style>
+"""
+)
 
 # --- Data Loading and Preprocessing ---
 # Get the absolute path for the data directory
