@@ -130,28 +130,34 @@ elif display_option == 'Premier League Fixtures':
 
     st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}</h2>", unsafe_allow_html=True)
 
-    # Display grouped fixtures with the date as the title and time for each match
-    for date, matches in grouped_fixtures:
-        st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
-        for _, match in matches.iterrows():
-            if match['finished']:
-                # Display finished matches with the result
-                st.markdown(f"""
-                    <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
-                        <p style='text-align: center;'><strong>{match['team_h']}</strong> 
-                        <span style='color: green;'> {int(match['team_h_score'])} - {int(match['team_a_score'])} </span> 
-                        <strong>{match['team_a']}</strong></p>
-                    </div>
-                    """, unsafe_allow_html=True)
-            else:
-                # Display upcoming matches with only the time (local_hour)
-                st.markdown(f"""
-        <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f0f0f0;'>
-            <p style='text-align: center;'>
-                <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
-            </p>
-            <p style='text-align: center; color: gray;'>
-                Kickoff at {match['local_hour']}
-            </p>
-        </div>
+# Display grouped fixtures with the date as the title and time for each match
+for date, matches in grouped_fixtures:
+    st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
+    for _, match in matches.iterrows():
+        if match['finished']:
+            # Display finished matches with the result
+            st.markdown(f"""
+                <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
+                    <p style='text-align: center;'>
+                        <strong>{match['team_h']}</strong> 
+                        <span style='color: green;'> 
+                            <div style='display: inline-block; text-align: center;'>
+                                {int(match['team_h_score'])} - {int(match['team_a_score'])}
+                            </div>
+                        </span> 
+                        <strong>{match['team_a']}</strong>
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            # Display upcoming matches with only the time (local_hour)
+            st.markdown(f"""
+                <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f0f0f0;'>
+                    <p style='text-align: center;'>
+                        <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
+                    </p>
+                    <p style='text-align: center; color: gray;'>
+                        Kickoff at {match['local_hour']}
+                    </p>
+                </div>
                 """, unsafe_allow_html=True)
