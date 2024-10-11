@@ -73,11 +73,11 @@ def color_fdr(team, gameweek):
 
     # Color coding based on FDR value
     colors = {
-    1: '#A0DDA0',  # Light Green
-    2: '#B2F2B2',  # Very Light Green
-    3: '#E2E69C',  # Light Yellow
-    4: '#FFB2B2',  # Light Coral
-    5: '#D1A0B2',  # Light Red
+    1: '#4CAF50',  # Medium Green
+    2: '#8BC34A',  # Light Green
+    3: '#FFEB3B',  # Yellow
+    4: '#FF9800',  # Orange
+    5: '#F44336',  # Red
     }
     return f'background-color: {colors.get(fdr_value, "white")};'
 
