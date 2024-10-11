@@ -76,12 +76,21 @@ selected_display = st.sidebar.radio(
 min_gameweek = int(df_fixtures['event'].min())
 max_gameweek = int(df_fixtures['event'].max())
 
-# Use a selectbox for gameweek selection 
-selected_gameweek = st.sidebar.selectbox(
-    "Select Gameweek:",
-    options=range(min_gameweek, max_gameweek + 1),
-    index=0  # Set the initial index to 0 
-)
+if selected_display == 'Fixture Difficulty Rating':
+    # Slider for FDR
+    selected_gameweek = st.sidebar.slider(
+        "Select Gameweek:",
+        min_value=min_gameweek,
+        max_value=max_gameweek,
+        value=min_gameweek 
+    )
+else:
+    # Selectbox for Premier League Fixtures
+    selected_gameweek = st.sidebar.selectbox(
+        "Select Gameweek:",
+        options=range(min_gameweek, max_gameweek + 1),
+        index=0 
+    )
 
 # --- FDR Matrix Calculation and Display ---
 if selected_display == 'Fixture Difficulty Rating': 
@@ -93,9 +102,9 @@ if selected_display == 'Fixture Difficulty Rating':
     styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
     st.write(styled_filtered_fdr_table)
 
-    # --- FDR Legend (Optimized) ---
+    # --- FDR Legend ---
     st.sidebar.markdown("**Legend:**")
-    fdr_colors = { 
+    fdr_colors = {
         1: ('#257d5a', 'black'),  
         2: ('#00ff86', 'black'), 
         3: ('#ebebe4', 'black'), 
