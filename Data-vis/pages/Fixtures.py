@@ -77,7 +77,27 @@ st.markdown(
 )
 
 # --- Data Loading and Preprocessing ---
-# ... (This part remains the same as in the previous responses) 
+# Get the absolute path for the data directory
+data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
+
+# Load DataFrames
+df_teams = pd.read_csv(os.path.join(data_dir, "Teams.csv"))
+df_fixtures = pd.read_csv(os.path.join(data_dir, "Fixtures.csv"))
+
+# --- Data Preprocessing (Including Fixtures) ---
+team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
+team_short_name_mapping = pd.Series(df_teams.short_name.values, index=df_teams.id).to_dict()
+df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
+df_fixtures['team_h'] = df_fixtures['team_h'].replace(team_name_mapping)
+df_fixtures['team_a_short'] = df_fixtures['team_a'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
+df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
+df_fixtures = df_fixtures.drop(columns=['pulse_id'])
+
+# Add datetime columns
+df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
+df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
+df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y')
+df_fixtures['local_hour'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%H:%M')
 
 # --- Streamlit App ---
 st.title('Fantasy Premier League: Fixtures & FDR')
