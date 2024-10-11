@@ -31,19 +31,28 @@ df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 
 # Step 1: Prepare the Data for FDR Table
 # Get the upcoming fixtures for Gameweek 8 and beyond
+import pandas as pd
+
+# Sample DataFrame: df_fixtures
+# df_fixtures = pd.read_csv('your_file.csv')  # Ensure your DataFrame is already loaded.
 upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 
 # Create an empty DataFrame to hold the home/away labels
 teams = upcoming_gameweeks['team_a_short'].unique()  # Get unique team short names
 unique_gameweeks = upcoming_gameweeks['event'].unique()  # Get unique gameweeks from upcoming games
-fdr_matrix = pd.DataFrame(index=teams, columns=unique_gameweeks)  # Create matrix based on unique gameweeks
+
+# Format gameweek numbers with 'GW' prefix
+formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
+
+# Create matrix based on unique gameweeks
+fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
 
 # Dictionary to store original FDR values for color coding
 fdr_values = {}
 
 # Populate the FDR matrix with team names and home/away labels
 for index, row in upcoming_gameweeks.iterrows():
-    gameweek = row['event']
+    gameweek = f'GW{row["event"]}'  # Format gameweek with 'GW'
     team_a = row['team_a_short']
     team_h = row['team_h_short']
     fdr_a = row['team_a_difficulty']  # FDR for team_a
@@ -90,6 +99,7 @@ def apply_color(row):
 
 # Applying the style to the entire DataFrame
 styled_fdr_table = styled_fdr_table.style.apply(apply_color, axis=1)
+
 #############################################
 # Add gameweek data
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
