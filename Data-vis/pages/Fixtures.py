@@ -5,7 +5,7 @@ import streamlit as st
 import os
 
 # Get the absolute path for the data directory
-data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
 
 df_fact_player = pd.read_csv(os.path.join(data_dir, 'Fact_Player.csv'))
 df_gameweeks = pd.read_csv(os.path.join(data_dir, 'Gameweeks.csv'))
