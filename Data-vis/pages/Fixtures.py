@@ -10,7 +10,7 @@ data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__
 df_teams = pd.read_csv(os.path.join(data_dir, 'Teams.csv'))
 df_fixtures = pd.read_csv(os.path.join(data_dir, 'Fixtures.csv'))
 
-# Data Preprocessing
+# --- Data Preprocessing (Including Fixtures) ---
 team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
 team_short_name_mapping = pd.Series(df_teams.short_name.values, index=df_teams.id).to_dict()
 df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
@@ -19,7 +19,7 @@ df_fixtures['team_a_short'] = df_fixtures['team_a'].map(lambda x: team_short_nam
 df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
 df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 
-# Add datetime columns (if you need them for other parts of your app)
+# Add datetime columns
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
 df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
 df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y')
@@ -61,7 +61,7 @@ def color_fdr(team, gameweek):
     return f'background-color: {bg_color}; color: {font_color};'
 
 # --- Streamlit App ---
-st.title('Fantasy Premier League: Fixture Difficulty Rating')
+st.title('Fantasy Premier League')
 
 # --- Interactive Gameweek Selection ---
 st.sidebar.header("Gameweek Navigation")
@@ -94,3 +94,35 @@ for fdr, (bg_color, _) in enumerate(color_fdr(None, None).items()):
         f"</span>",
         unsafe_allow_html=True
     )
+    
+# --- Display Fixtures for the Selected Gameweek --- 
+st.markdown("<h2 style='text-align: center;'>Premier League Fixtures</h2>", unsafe_allow_html=True)
+current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == selected_gameweek]
+grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
+
+for date, matches in grouped_fixtures:
+    st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
+    for _, match in matches.iterrows():
+        if match['finished']:
+            st.markdown(f"""
+                <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
+                    <p style='text-align: center;'>
+                        <strong>{match['team_h']}</strong> 
+                        <span style='color: green;'> 
+                            {int(match['team_h_score'])} - {int(match['team_a_score'])}
+                        </span> 
+                        <strong>{match['team_a']}</strong>
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.markdown(f"""
+                <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f0f0f0;'>
+                    <p style='text-align: center;'>
+                        <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
+                    </p>
+                    <p style='text-align: center; color: gray;'>
+                        Kickoff at {match['local_hour']}
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
