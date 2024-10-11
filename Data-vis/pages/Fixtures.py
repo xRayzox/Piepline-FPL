@@ -30,28 +30,39 @@ st.markdown(
         padding: 8px;
         border: 1px solid #ddd; 
     }
-    .fixture-container {
+    /* Center content */
+    .centered {
         display: flex;
-        justify-content: space-around; /* Distribute columns evenly */
-        margin: 20px;
-    }
-    .fixture-column {
-        width: 48%; /* Adjust width for two columns */
+        flex-direction: column; /* Stack elements vertically */
+        justify-content: center;
+        align-items: center;
         text-align: center;
+        height: 100vh; /* Optional: Center vertically on the page */
+    }
+    .fixture-container {
+        margin: 10px; /* Reduced margin for compact layout */
+        width: 100%; /* Make fixture container take full width */
     }
     .fixture-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 5px;
         border-radius: 5px;
-        margin-bottom: 10px;
-        background-color: #f9f9f9;
+        margin-bottom: 5px;
+        background-color: #f9f9f9; /* Light background for fixture box */
     }
     .fixture-box p {
-        margin: 5px 0;  /* Adjust vertical spacing between elements */
+        margin: 0; /* Remove default paragraph margins for tight spacing */
     }
-    .score {
-        color: green;
+    .kickoff { /* Style for kickoff time */
+        font-size: 0.8rem; /* Slightly smaller font size */
+        color: #555; /* Darker gray color */
+    }
+    .score {  /* Style for the score */
         font-weight: bold;
+        color: green; /* Green color for the score */
     }
 </style>
 """,
@@ -116,6 +127,7 @@ with st.sidebar:
 
 # --- Premier League Fixtures Display ---
 if selected_display == 'Premier League Fixtures':
+    # --- Display Fixtures for Selected Gameweek ---
     st.markdown(
         f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {selected_gameweek}</h2>",
         unsafe_allow_html=True,
@@ -124,28 +136,30 @@ if selected_display == 'Premier League Fixtures':
     current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == selected_gameweek]
     grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
-    # Create two columns for fixtures
-    col1, col2 = st.columns(2) 
-
-    # Distribute fixtures evenly into the columns
-    i = 0
-    for date, matches in grouped_fixtures:
-        with col1 if i % 2 == 0 else col2:  # Alternate between columns
+    # Use centered container for fixtures
+    with st.container():  # Centering the content
+        for date, matches in grouped_fixtures:
             st.markdown(f"<h3 style='text-align: center;'>{date}</h3>", unsafe_allow_html=True)
             for _, match in matches.iterrows():
-                with st.container():  
-                    st.markdown(f"**{match['team_h']}**")
-                    if match['finished']:
-                        st.markdown(
-                            f"<p class='score'>{int(match['team_h_score'])} - {int(match['team_a_score'])}</p>",
-                            unsafe_allow_html=True
-                        )
-                    else:
-                        st.markdown(f"<p>vs</p>", unsafe_allow_html=True)
-                    st.markdown(f"**{match['team_a']}**")
+                # Create a fixture box for each match
+                with st.container():
+                    col1, col2, col3 = st.columns([3, 1, 3])  
+
+                    with col1:
+                        st.markdown(f"**{match['team_h']}**")
+                    with col2:
+                        if match['finished']:
+                            st.markdown(
+                                f"<p class='score'>{int(match['team_h_score'])} - {int(match['team_a_score'])}</p>",
+                                unsafe_allow_html=True
+                            )
+                        else:
+                            st.markdown(f"<p>vs</p>", unsafe_allow_html=True)
+                    with col3:
+                        st.markdown(f"**{match['team_a']}**")
+
                     if not match['finished']:
-                        st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>", unsafe_allow_html=True) 
-        i += 1
+                        st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>", unsafe_allow_html=True)
 
 # --- FDR Matrix Display ---
 elif selected_display == "Fixture Difficulty Rating":
@@ -217,3 +231,4 @@ elif selected_display == "Fixture Difficulty Rating":
                 f"</span>",
                 unsafe_allow_html=True,
             )
+
