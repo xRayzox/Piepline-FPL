@@ -63,7 +63,7 @@ def color_fdr(team, gameweek):
 # --- Streamlit App ---
 st.title('Fantasy Premier League')
 
-# --- Sidebar: Gameweek Navigation and Display Options ---
+# --- Sidebar: Display Options and Gameweek Selection ---
 st.sidebar.header("Navigation and Options")
 
 # Display Option
@@ -72,33 +72,30 @@ selected_display = st.sidebar.radio(
     ['Premier League Fixtures', 'Fixture Difficulty Rating'] 
 )
 
-# Get the next gameweek that has not yet finished
+# --- Gameweek Selection (Dynamic based on Display) ---
 gameweeks = sorted(df_fixtures['event'].unique())
 next_gameweek = next(
     (gw for gw in gameweeks if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
-    gameweeks[0]  # Fallback to the first gameweek if all games are finished
+    gameweeks[0]
 )
 
-# Dynamic Gameweek Selection based on Display Option
 if selected_display == 'Premier League Fixtures':
-    min_gameweek = int(df_fixtures['event'].min()) 
-    max_gameweek = int(df_fixtures['event'].max())
-    selected_gameweek = st.sidebar.slider(
-        "Select Gameweek:",
-        min_value=min_gameweek,
-        max_value=max_gameweek,
-        value=next_gameweek  # Default to the next unfinished gameweek
+    # Use a Selectbox for Gameweek selection (Fixtures)
+    selected_gameweek = st.sidebar.selectbox(
+        "Select Gameweek:", 
+        gameweeks,
+        index=gameweeks.index(next_gameweek) # Default to next unfinished gameweek
     )
-else:  # 'Fixture Difficulty Rating' 
+else:  # 'Fixture Difficulty Rating'
+    # Use a Slider for Gameweek selection (FDR)
     min_gameweek = int(next_gameweek)
     max_gameweek = int(df_fixtures[df_fixtures['finished'] == False]['event'].max())
     selected_gameweek = st.sidebar.slider(
         "Select Gameweek:", 
         min_value=min_gameweek, 
         max_value=max_gameweek, 
-        value=min_gameweek  # Default to the first available gameweek
+        value=min_gameweek 
     )
-
 
 # --- FDR Matrix Calculation and Display ---
 if selected_display == 'Fixture Difficulty Rating': 
