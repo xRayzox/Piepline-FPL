@@ -17,6 +17,9 @@ st.markdown(
         color: #333;
         background-color: #f5f5f5;
     }
+    .css-1lcbmhc {
+            gap: 5px; /* Adjust this value to reduce the space between columns */
+        }
     .stMarkdown>h2 {
         text-align: center;
     }
@@ -53,6 +56,7 @@ st.markdown(
         border-radius: 5px;
         margin-bottom: 5px;
         background-color: #f9f9f9; /* Light background for fixture box */
+        text-align: center; /* Center content */
     }
     .fixture-box p {
         margin: 0; /* Remove default paragraph margins for tight spacing */
@@ -61,10 +65,13 @@ st.markdown(
         font-size: 0.8rem; /* Slightly smaller font size */
         color: #555; /* Darker gray color */
         text-align: center; /* Center the text */
+        margin-top: 5px;
     }
     .score {  /* Style for the score */
         font-weight: bold;
         color: green; /* Green color for the score */
+        margin: 0; /* Remove margin */
+        text-align: center;
     }
 </style>
 """,
