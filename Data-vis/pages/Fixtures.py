@@ -59,6 +59,7 @@ st.markdown(
     .kickoff { /* Style for kickoff time */
         font-size: 0.8rem; /* Slightly smaller font size */
         color: #555; /* Darker gray color */
+        text-align: center; /* Center the text */
     }
     .score {  /* Style for the score */
         font-weight: bold;
