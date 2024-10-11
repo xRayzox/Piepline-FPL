@@ -69,17 +69,19 @@ def color_fdr(team, gameweek):
     fdr_value = fdr_values.get((team, gameweek), None)
     
     if fdr_value is None:  # Handle NaN values
-        return 'background-color: white;'  # Neutral color for NaN
+        return 'background-color: white; color: black;'  # Neutral color for NaN
 
     # Color coding based on FDR value
     colors = {
-        1: '#257d5a',  # Green
-        2: '#00ff86',  # Light Green
-        3: '#ebebe4',  # Yellow
-        4: '#ff005a',  # Orange
-        5: '#861d46',  # Red
+        1: ('#257d5a', 'black'),  # Green
+        2: ('#00ff86', 'black'),  # Light Green
+        3: ('#ebebe4', 'black'),  # Yellow
+        4: ('#ff005a', 'white'),   # Orange
+        5: ('#861d46', 'white'),   # Red
     }
-    return f'background-color: {colors.get(fdr_value, "white")};'
+
+    bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
+    return f'background-color: {bg_color}; color: {font_color};'
 
 # Create a styled DataFrame to visualize FDR values with color coding
 styled_fdr_table = fdr_matrix.copy()  # Copy to apply styles
