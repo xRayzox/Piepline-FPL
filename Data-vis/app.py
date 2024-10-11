@@ -2,7 +2,7 @@ import streamlit as st
 
 # Create a sidebar for navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Select a page:", ["Home", "Page 1", "Page 2"])
+page = st.sidebar.radio("Select a page:", ["Home", "Fixtures"])
 
 # Show different pages based on selection
 if page == "Home":
@@ -10,5 +10,4 @@ if page == "Home":
     st.write("Welcome to the multi-page app!")
 elif page == "Page 1":
     import fixture  # Import your page1.py
-elif page == "Page 2":
-    import Hello  # Import your page2.py
+
