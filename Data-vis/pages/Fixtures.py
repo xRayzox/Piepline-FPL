@@ -40,12 +40,20 @@ for index, row in upcoming_gameweeks.iterrows():
     fdr_a = row['team_a_difficulty']
     fdr_h = row['team_h_difficulty']
 
-    fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"
-    fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"
+    fdr_matrix.at[team_a, gameweek] = f"{team_h} ({fdr_a})"  # Include FDR with team
+    fdr_matrix.at[team_h, gameweek] = f"{team_a} ({fdr_h})"
     fdr_values[(team_a, gameweek)] = fdr_a
     fdr_values[(team_h, gameweek)] = fdr_h
 
 fdr_matrix = fdr_matrix.astype(str)
+
+# --- Function to Sort DataFrame by FDR for a Specific Gameweek ---
+def sort_fdr_by_gameweek(df, gameweek):
+    df['fdr'] = df[gameweek].str.extract(r'\((\d)\)')  # Extract FDR value
+    df['fdr'] = pd.to_numeric(df['fdr'])
+    df = df.sort_values(by='fdr')
+    df = df.drop(columns='fdr')  # Drop temporary FDR column
+    return df
 
 # --- Color Coding Function ---
 def color_fdr(team, gameweek):
@@ -105,6 +113,12 @@ if selected_display == 'Fixture Difficulty Rating':
     # --- Filter FDR Table for Next 10 Gameweeks ---
     filtered_fdr_matrix = fdr_matrix.copy()
     filtered_fdr_matrix = filtered_fdr_matrix[[f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in filtered_fdr_matrix.columns]]
+
+    # --- Sort FDR Table by Gameweek ---
+    for gw in range(selected_gameweek, selected_gameweek + 10):
+        gameweek_col = f'GW{gw}'
+        if gameweek_col in filtered_fdr_matrix.columns:
+            filtered_fdr_matrix = sort_fdr_by_gameweek(filtered_fdr_matrix, gameweek_col)
 
     st.markdown(f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**", unsafe_allow_html=True)
     styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
