@@ -94,7 +94,7 @@ if selected_display == 'Fixture Difficulty Rating':
     teams = upcoming_gameweeks['team_a_short'].unique()
     unique_gameweeks = upcoming_gameweeks['event'].unique()
     formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
-    fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)  # Define fdr_matrix here
+    fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks) 
     fdr_values = {}
 
     for index, row in upcoming_gameweeks.iterrows():
@@ -110,6 +110,19 @@ if selected_display == 'Fixture Difficulty Rating':
         fdr_values[(team_h, gameweek)] = fdr_h
 
     fdr_matrix = fdr_matrix.astype(str)
+
+    # --- Color Coding Function ---
+    def color_fdr(team, gameweek):  # Function definition included
+        fdr_value = fdr_values.get((team, gameweek), None)
+        colors = {
+            1: ('#257d5a', 'black'), 
+            2: ('#00ff86', 'black'),  
+            3: ('#ebebe4', 'black'), 
+            4: ('#ff005a', 'white'),  
+            5: ('#861d46', 'white'),   
+        }
+        bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
+        return f'background-color: {bg_color}; color: {font_color};'
 
     # Slider for FDR starting from the upcoming gameweek
     selected_gameweek = st.sidebar.slider(
