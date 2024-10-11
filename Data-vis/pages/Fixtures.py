@@ -146,16 +146,16 @@ if selected_display == 'Premier League Fixtures':
     grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
     # Use centered container for fixtures
-    with st.container():  # Centering the content
+    with st.container():
         for date, matches in grouped_fixtures:
             st.markdown(f"<h3 style='text-align: center;'>{date}</h3>", unsafe_allow_html=True)
             for _, match in matches.iterrows():
                 # Create a fixture box for each match
                 with st.container():
-                    col1, col2, col3 = st.columns([3, 1, 3])  
+                    col1, col2, col3 = st.columns([4, 1, 4])  # Adjust column proportions
 
                     with col1:
-                        st.markdown(f"**{match['team_h']}**")
+                        st.markdown(f"**{match['team_h']}**", unsafe_allow_html=True)
                     with col2:
                         if match['finished']:
                             st.markdown(
@@ -163,9 +163,9 @@ if selected_display == 'Premier League Fixtures':
                                 unsafe_allow_html=True
                             )
                         else:
-                            st.markdown(f"<p>vs</p>", unsafe_allow_html=True)
+                            st.markdown(f"<p style='text-align: center;'>vs</p>", unsafe_allow_html=True)
                     with col3:
-                        st.markdown(f"**{match['team_a']}**")
+                        st.markdown(f"**{match['team_a']}**", unsafe_allow_html=True)
 
                     if not match['finished']:
                         st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>", unsafe_allow_html=True)
