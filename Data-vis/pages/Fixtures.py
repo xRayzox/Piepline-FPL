@@ -53,9 +53,9 @@ for index, row in upcoming_gameweeks.iterrows():
     fdr_a = row['team_a_difficulty']  # FDR for team_a
     fdr_h = row['team_h_difficulty']  # FDR for team_h
 
-    # Assign home/away display values to the matrix with tooltips
-    fdr_matrix.at[team_a, gameweek] = f"<span title='FDR: {fdr_a}'>{team_h} (A)</span>"  # Team A is playing away
-    fdr_matrix.at[team_h, gameweek] = f"<span title='FDR: {fdr_h}'>{team_a} (H)</span>"  # Team H is playing at home
+    # Assign home/away display values to the matrix
+    fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"  # Team A is playing away
+    fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"  # Team H is playing at home
 
     # Store FDR values for coloring later
     fdr_values[(team_a, gameweek)] = fdr_a
@@ -152,28 +152,22 @@ elif st.session_state['display_option'] == 'Premier League Fixtures':
                     <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
                         <p style='text-align: center;'>
                             <strong>{match['team_h']}</strong> 
-                            <span style='color: gray;'>({match['local_hour']})</span> 
-                            - 
+                            <span style='color: green;'> 
+                                {int(match['team_h_score'])} - {int(match['team_a_score'])}
+                            </span> 
                             <strong>{match['team_a']}</strong>
                         </p>
-                        <p style='text-align: center; font-size: 14px; color: gray;'>
-                            Result: {match['team_h_score']} - {match['team_a_score']}
-                        </p>
                     </div>
-                """, unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
             else:
-                # Display upcoming matches
+                # Display upcoming matches with only the time (local_hour)
                 st.markdown(f"""
-                    <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
+                    <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f0f0f0;'>
                         <p style='text-align: center;'>
-                            <strong>{match['team_h']}</strong> 
-                            <span style='color: gray;'>({match['local_hour']})</span> 
-                            - 
-                            <strong>{match['team_a']}</strong>
+                            <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
+                        </p>
+                        <p style='text-align: center; color: gray;'>
+                            Kickoff at {match['local_hour']}
                         </p>
                     </div>
-                """, unsafe_allow_html=True)
-
-# Footer with additional information
-st.markdown("<hr>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: gray;'>Data sourced from Fantasy Premier League API.</p>", unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
