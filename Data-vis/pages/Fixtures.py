@@ -90,14 +90,13 @@ if selected_display == 'Fixture Difficulty Rating':
         max_value=max_gameweek,
         value=next_unfinished_gameweek       
     )
-
 # --- Premier League Fixtures Display ---
 elif selected_display == 'Premier League Fixtures':
     # --- Premier League Fixtures: Gameweek Navigation ---
     if 'selected_gameweek' not in st.session_state:
         st.session_state.selected_gameweek = next_unfinished_gameweek
 
-    col1, col2, col3 = st.columns([1,1,1])
+    col1, col2, col3 = st.columns([1, 2, 1])  # Adjust column ratios as needed
 
     with col1:
         if st.button("Previous"):
@@ -111,7 +110,15 @@ elif selected_display == 'Premier League Fixtures':
                 st.session_state.selected_gameweek + 1, max_gameweek
             )
 
-    selected_gameweek = st.session_state.selected_gameweek
+    # Selectbox for choosing a specific gameweek
+    with col2:
+        selected_gameweek = st.selectbox(
+            "Select Gameweek:",
+            options=range(min_gameweek, max_gameweek + 1),
+            index=st.session_state.selected_gameweek - min_gameweek
+        )
+
+    st.session_state.selected_gameweek = selected_gameweek  # Update session state
 
     # --- Display Fixtures for Selected Gameweek ---
     st.markdown(
