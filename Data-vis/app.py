@@ -28,13 +28,7 @@ df_fixtures['team_a_short'] = df_fixtures['team_a'].map(lambda x: team_short_nam
 df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
 df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 
-
 # Step 1: Prepare the Data for FDR Table
-# Get the upcoming fixtures for Gameweek 8 and beyond
-import pandas as pd
-
-# Sample DataFrame: df_fixtures
-# df_fixtures = pd.read_csv('your_file.csv')  # Ensure your DataFrame is already loaded.
 upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 
 # Create an empty DataFrame to hold the home/away labels
@@ -77,30 +71,21 @@ def color_fdr(team, gameweek):
         return 'background-color: white;'  # Neutral color for NaN
 
     # Color coding based on FDR value
-    if fdr_value == 1:  # Class for FDR 1
-        return 'background-color: #257d5a;'  # Green
-    elif fdr_value == 2:  # Class for FDR 2
-        return 'background-color: #00ff86;'  # Light Green
-    elif fdr_value == 3:  # Class for FDR 3
-        return 'background-color: #ebebe4;'  # Yellow
-    elif fdr_value == 4:  # Class for FDR 4
-        return 'background-color: #ff005a;'  # Orange
-    elif fdr_value == 5:  # Class for FDR 5
-        return 'background-color: #861d46;'  # Red
-    else:
-        return ''  # No color for other values
+    colors = {
+        1: '#257d5a',  # Green
+        2: '#00ff86',  # Light Green
+        3: '#ebebe4',  # Yellow
+        4: '#ff005a',  # Orange
+        5: '#861d46',  # Red
+    }
+    return f'background-color: {colors.get(fdr_value, "white")};'
 
 # Create a styled DataFrame to visualize FDR values with color coding
 styled_fdr_table = fdr_matrix.copy()  # Copy to apply styles
 
 # Apply color to each cell based on FDR values while retaining team names
-def apply_color(row):
-    return [color_fdr(row.name, col) for col in row.index]
+styled_fdr_table = styled_fdr_table.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
 
-# Applying the style to the entire DataFrame
-styled_fdr_table = styled_fdr_table.style.apply(apply_color, axis=1)
-
-#############################################
 # Add gameweek data
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
 df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
@@ -126,14 +111,10 @@ grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 display_option = st.radio("Select Display", ('Fixture Difficulty Rating', 'Premier League Fixtures'))
 
 if display_option == 'Fixture Difficulty Rating':
-    # Title of the FDR table
     st.title('Fantasy Premier League Fixture Difficulty Ratings')
-    
-    # Display the styled FDR table
     st.write(styled_fdr_table)
 
 elif display_option == 'Premier League Fixtures':
-    # Display navigation buttons
     st.markdown("<h3 style='text-align: center;'>Gameweek Navigation</h3>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 2, 1])
 
@@ -147,7 +128,6 @@ elif display_option == 'Premier League Fixtures':
         if current_index < len(gameweeks) - 1:
             st.session_state['selected_gameweek'] = gameweeks[current_index + 1]
 
-    # Display the current gameweek title
     st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}</h2>", unsafe_allow_html=True)
 
     # Display grouped fixtures with the date as the title and time for each match
@@ -157,7 +137,7 @@ elif display_option == 'Premier League Fixtures':
             if match['finished']:
                 # Display finished matches with the result
                 st.markdown(f"""
-                    <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                    <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
                         <p style='text-align: center;'><strong>{match['team_h']}</strong> 
                         <span style='color: green;'> {match['team_h_score']} - {match['team_a_score']} </span> 
                         <strong>{match['team_a']}</strong></p>
@@ -166,7 +146,7 @@ elif display_option == 'Premier League Fixtures':
             else:
                 # Display upcoming matches with only the time (local_hour)
                 st.markdown(f"""
-        <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+        <div style='border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f0f0f0;'>
             <p style='text-align: center;'>
                 <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong>
             </p>
