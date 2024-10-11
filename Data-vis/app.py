@@ -82,15 +82,14 @@ def color_fdr(team, gameweek):
         return ''  # No color for other values
 
 # Create a styled DataFrame to visualize FDR values with color coding
-styled_fdr_matrix = fdr_matrix.copy()  # Copy to apply styles
+styled_fdr_table = fdr_matrix.copy()  # Copy to apply styles
 
 # Apply color to each cell based on FDR values while retaining team names
 def apply_color(row):
     return [color_fdr(row.name, col) for col in row.index]
 
 # Applying the style to the entire DataFrame
-styled_fdr_matrix = styled_fdr_matrix.style.apply(apply_color, axis=1)
-
+styled_fdr_table = styled_fdr_table.style.apply(apply_color, axis=1)
 #############################################
 # Add gameweek data
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
