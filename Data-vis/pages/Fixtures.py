@@ -86,11 +86,11 @@ else:
     # For Premier League Fixtures, allow selection from all gameweeks
     next_gameweek = min_gameweek 
 
-selected_gameweek = st.sidebar.slider(
+# Use a selectbox for gameweek selection
+selected_gameweek = st.sidebar.selectbox(
     "Select Gameweek:",
-    min_value=min_gameweek,
-    max_value=max_gameweek,
-    value=next_gameweek  # Default to the dynamically determined gameweek
+    options=range(min_gameweek, max_gameweek + 1),
+    index=selected_gameweek - min_gameweek 
 )
 
 # --- FDR Matrix Calculation and Display ---
@@ -105,7 +105,7 @@ if selected_display == 'Fixture Difficulty Rating':
 
     # --- FDR Legend (Optimized) ---
     st.sidebar.markdown("**Legend:**")
-    fdr_colors = { # Associate FDR values with colors
+    fdr_colors = { 
         1: ('#257d5a', 'black'),  
         2: ('#00ff86', 'black'), 
         3: ('#ebebe4', 'black'), 
@@ -127,7 +127,7 @@ elif selected_display == 'Premier League Fixtures':
     grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
     for date, matches in grouped_fixtures:
-        st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='text-align: center;'><strong> {date}</strong></div>", unsafe_allow_html=True)
         for _, match in matches.iterrows():
             if match['finished']:
                 st.markdown(f"""
