@@ -87,10 +87,17 @@ st.write(styled_filtered_fdr_table)
 
 # --- FDR Legend ---
 st.sidebar.markdown("**Legend:**")
-for fdr, (bg_color, _) in enumerate(color_fdr(None, None).items()):
+fdr_colors = {
+    1: ('#257d5a', 'black'),  
+    2: ('#00ff86', 'black'), 
+    3: ('#ebebe4', 'black'), 
+    4: ('#ff005a', 'white'), 
+    5: ('#861d46', 'white')   
+}
+for fdr, (bg_color, font_color) in fdr_colors.items():
     st.sidebar.markdown(
-        f"<span style='background-color: {bg_color}; color: {'white' if fdr > 2 else 'black'}; padding: 2px 5px; border-radius: 3px;'>"
-        f"{fdr + 1} - {'Very Easy' if fdr == 0 else 'Easy' if fdr == 1 else 'Medium' if fdr == 2 else 'Difficult' if fdr == 3 else 'Very Difficult'}"
+        f"<span style='background-color: {bg_color}; color: {font_color}; padding: 2px 5px; border-radius: 3px;'>"
+        f"{fdr} - {'Very Easy' if fdr == 1 else 'Easy' if fdr == 2 else 'Medium' if fdr == 3 else 'Difficult' if fdr == 4 else 'Very Difficult'}"
         f"</span>",
         unsafe_allow_html=True
     )
