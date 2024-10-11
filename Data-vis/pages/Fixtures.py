@@ -76,21 +76,11 @@ selected_display = st.sidebar.radio(
 min_gameweek = int(df_fixtures['event'].min())
 max_gameweek = int(df_fixtures['event'].max())
 
-if selected_display == 'Fixture Difficulty Rating':
-    # Get the next gameweek that has not yet finished for FDR
-    next_gameweek = next(
-        (gw for gw in range(min_gameweek, max_gameweek + 1) if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
-        min_gameweek  # Fallback to the first gameweek if all games are finished
-    )
-else:
-    # For Premier League Fixtures, allow selection from all gameweeks
-    next_gameweek = min_gameweek 
-
-# Use a selectbox for gameweek selection
+# Use a selectbox for gameweek selection 
 selected_gameweek = st.sidebar.selectbox(
     "Select Gameweek:",
     options=range(min_gameweek, max_gameweek + 1),
-    index=selected_gameweek - min_gameweek 
+    index=0  # Set the initial index to 0 
 )
 
 # --- FDR Matrix Calculation and Display ---
