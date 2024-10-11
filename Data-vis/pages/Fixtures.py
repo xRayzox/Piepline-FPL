@@ -1,5 +1,4 @@
 import pandas as pd
-from datetime import datetime, timezone
 import numpy as np
 import streamlit as st
 import os
@@ -24,10 +23,9 @@ team_short_name_mapping = pd.Series(df_teams.short_name.values, index=df_teams.i
 df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
 df_fixtures['team_h'] = df_fixtures['team_h'].replace(team_name_mapping)
 
-# Add team_a_short and team_h_short columns using the original team IDs
+# Add team_a_short and team_h_short columns
 df_fixtures['team_a_short'] = df_fixtures['team_a'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
 df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
-df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 
 # Prepare Data for FDR Table
 upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
@@ -55,15 +53,8 @@ for index, row in upcoming_gameweeks.iterrows():
     fdr_values[(team_a, gameweek)] = fdr_a
     fdr_values[(team_h, gameweek)] = fdr_h
 
-fdr_matrix = fdr_matrix.astype(str)
-
-# Define a function to color the DataFrame based on original FDR values
-def color_fdr(team, gameweek):
-    fdr_value = fdr_values.get((team, gameweek), None)
-    
-    if fdr_value is None:
-        return 'background-color: white; color: black;'
-    
+# Color coding based on FDR values
+def color_fdr(fdr_value):
     colors = {
         1: ('#257d5a', 'black'),  # Green
         2: ('#00ff86', 'black'),  # Light Green
@@ -71,49 +62,36 @@ def color_fdr(team, gameweek):
         4: ('#ff005a', 'white'),   # Orange
         5: ('#861d46', 'white'),   # Red
     }
+    return colors.get(fdr_value, ('white', 'black'))
 
-    bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
-    return f'background-color: {bg_color}; color: {font_color};'
-
-# Function to create interactive FDR table
+# Create interactive FDR table
 def create_interactive_fdr_table(fdr_matrix):
-    # Create a placeholder for the FDR table
-    fdr_placeholder = st.empty()
-
-    # Display the FDR matrix
     for team in fdr_matrix.index:
-        row_html = ""
-        for gameweek in fdr_matrix.columns:
+        cols = st.columns(len(fdr_matrix.columns))
+        for i, gameweek in enumerate(fdr_matrix.columns):
             fdr_value = fdr_values.get((team, gameweek), None)
             team_display = fdr_matrix.at[team, gameweek]
+
             if fdr_value is not None:
-                color_code = color_fdr(team, gameweek)
-                tooltip = f"{team_display} - FDR: {fdr_value}"
+                bg_color, font_color = color_fdr(fdr_value)
                 cell_html = f"""
-                    <div style='display: inline-block; border: 1px solid #ccc; padding: 5px; margin: 1px; border-radius: 4px; {color_code}'>
-                        <span title="{tooltip}" style="cursor: pointer;" onclick="handleCellClick('{team}', '{gameweek}')">{team_display}</span>
+                    <div style='border: 1px solid #ccc; padding: 5px; margin: 1px; border-radius: 4px; background-color: {bg_color}; color: {font_color}; cursor: pointer;' 
+                         onclick="document.getElementById('selected_fixture').innerText = 'Selected Fixture: {team_display} - FDR: {fdr_value}';">
+                        {team_display}
                     </div>
                 """
+                cols[i].markdown(cell_html, unsafe_allow_html=True)
             else:
-                cell_html = f"<div style='display: inline-block; border: 1px solid #ccc; padding: 5px; margin: 1px; border-radius: 4px; background-color: white; color: black;'>{team_display}</div>"
+                cols[i].markdown(f"<div style='border: 1px solid #ccc; padding: 5px; margin: 1px; border-radius: 4px; background-color: white; color: black;'>{team_display}</div>", unsafe_allow_html=True)
 
-            row_html += cell_html
-        fdr_placeholder.markdown(f"<div style='display: flex; justify-content: center;'>{row_html}</div>", unsafe_allow_html=True)
-
-# Add the FDR table to the Streamlit app
+# Streamlit app title
 st.title('Fantasy Premier League - Fixture Difficulty Rating')
+
+# Display the FDR matrix
 create_interactive_fdr_table(fdr_matrix)
 
-# Initialize session state for selected fixture
-if 'selected_fixture' not in st.session_state:
-    st.session_state['selected_fixture'] = None
-
-# Optionally, display details for a specific fixture when clicked
-if st.session_state['selected_fixture']:
-    selected_team, selected_gameweek = st.session_state['selected_fixture']
-    # Fetch and display detailed info for the selected fixture here
-    st.write(f"Details for {selected_team} in {selected_gameweek}:")
-    # Add further information retrieval and display logic here
+# Selected fixture placeholder
+st.markdown("<h4 id='selected_fixture'>Selected Fixture: None</h4>", unsafe_allow_html=True)
 
 # Handle gameweek navigation
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
@@ -133,10 +111,6 @@ if 'selected_gameweek' not in st.session_state:
 
 # Radio button for display option
 display_option = st.radio("Select Display", ('Fixture Difficulty Rating', 'Premier League Fixtures'), index=0)
-
-# Filter fixtures based on the selected gameweek
-current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
-grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
 # Handle display option
 if display_option == 'Fixture Difficulty Rating':
@@ -158,14 +132,16 @@ elif display_option == 'Premier League Fixtures':
 
     st.markdown(f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {st.session_state['selected_gameweek']}</h2>", unsafe_allow_html=True)
 
-    # Display grouped fixtures with the date as the title and time for each match
+    current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
+    grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
+
     for date, matches in grouped_fixtures:
         st.markdown(f"<div style='text-align: center;'><strong>🕒 {date}</strong></div>", unsafe_allow_html=True)
         for _, match in matches.iterrows():
             if match['finished']:
-                st.write(f"{match['team_h']} vs {match['team_a']} - {match['local_hour']} (Finished)")
+                st.markdown(f"<p style='text-align: center;'><strong>{match['team_h']}</strong> <span style='color: green;'> {int(match['team_h_score'])} - {int(match['team_a_score'])} </span> <strong>{match['team_a']}</strong></p>", unsafe_allow_html=True)
             else:
-                st.write(f"{match['team_h']} vs {match['team_a']} - {match['local_hour']} (Upcoming)")
+                st.markdown(f"<p style='text-align: center;'> <strong>{match['team_h']}</strong> vs <strong>{match['team_a']}</strong> - Kickoff at {match['local_hour']}</p>", unsafe_allow_html=True)
 
 # Run the Streamlit application
 if __name__ == "__main__":
