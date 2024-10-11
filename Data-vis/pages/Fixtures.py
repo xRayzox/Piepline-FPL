@@ -76,7 +76,7 @@ selected_display = st.sidebar.radio(
 min_gameweek = int(df_fixtures['event'].min())
 max_gameweek = int(df_fixtures['event'].max())
 
-# Get the next unfinished gameweek for FDR
+# Get the next unfinished gameweek 
 next_unfinished_gameweek = next(
     (gw for gw in range(min_gameweek, max_gameweek + 1) if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
     min_gameweek  # Default to the first gameweek if all games are finished
@@ -88,14 +88,14 @@ if selected_display == 'Fixture Difficulty Rating':
         "Select Gameweek:",
         min_value=next_unfinished_gameweek,
         max_value=max_gameweek,
-        value=next_unfinished_gameweek
+        value=next_unfinished_gameweek       
     )
 else:
-    # Selectbox for Premier League Fixtures
+    # Selectbox for Premier League Fixtures defaulting to upcoming gameweek
     selected_gameweek = st.sidebar.selectbox(
         "Select Gameweek:",
         options=range(min_gameweek, max_gameweek + 1),
-        index=0 
+        index=next_unfinished_gameweek - min_gameweek  # Default to upcoming gameweek
     )
 
 # --- FDR Matrix Calculation and Display ---
