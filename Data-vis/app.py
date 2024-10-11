@@ -161,5 +161,3 @@ for date, matches in grouped_fixtures:
                 </div>
                 """, unsafe_allow_html=True)
 
-# Step 3: Add Player Analysis Section
-st.header("Player Analysis")  # Header for Player Analysis
