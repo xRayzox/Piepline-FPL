@@ -40,36 +40,29 @@ st.markdown(
     /* Center content */
     .centered {
         display: flex;
-        flex-direction: column; /* Stack elements vertically */
         justify-content: center;
         align-items: center;
-        text-align: center;
         height: 100vh; /* Optional: Center vertically on the page */
     }
     .fixture-container {
-        margin: 10px; /* Reduced margin for compact layout */
-        width: 100%; /* Make fixture container take full width */
+        text-align: center;
+        margin: 20px;
     }
     .fixture-box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         border: 1px solid #ddd;
-        padding: 5px;
+        padding: 10px;
         border-radius: 5px;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         background-color: #f9f9f9; /* Light background for fixture box */
     }
     .fixture-box p {
-        margin: 0; /* Remove default paragraph margins for tight spacing */
+        margin-bottom: 5px; /* Reduce spacing between team names and score/vs */
     }
-    .kickoff { /* Style for kickoff time */
-        font-size: 0.8rem; /* Slightly smaller font size */
-        color: #555; /* Darker gray color */
+    .fixture-box .kickoff { /* Style for kickoff time */
+        text-align: center; 
     }
     .score {  /* Style for the score */
-        font-weight: bold;
-        color: green; /* Green color for the score */
+        text-align: center;
     }
 </style>
 """,
@@ -77,7 +70,27 @@ st.markdown(
 )
 
 # --- Data Loading and Preprocessing ---
-# ... (This part remains the same as in the previous responses) 
+# Get the absolute path for the data directory
+data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
+
+# Load DataFrames
+df_teams = pd.read_csv(os.path.join(data_dir, "Teams.csv"))
+df_fixtures = pd.read_csv(os.path.join(data_dir, "Fixtures.csv"))
+
+# --- Data Preprocessing (Including Fixtures) ---
+team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
+team_short_name_mapping = pd.Series(df_teams.short_name.values, index=df_teams.id).to_dict()
+df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
+df_fixtures['team_h'] = df_fixtures['team_h'].replace(team_name_mapping)
+df_fixtures['team_a_short'] = df_fixtures['team_a'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
+df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
+df_fixtures = df_fixtures.drop(columns=['pulse_id'])
+
+# Add datetime columns
+df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
+df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
+df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y')
+df_fixtures['local_hour'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%H:%M')
 
 # --- Streamlit App ---
 st.title('Fantasy Premier League: Fixtures & FDR')
@@ -115,7 +128,7 @@ with st.sidebar:
 # --- Premier League Fixtures Display ---
 if selected_display == 'Premier League Fixtures':
     # --- Gameweek Navigation ---
-    col1, col2, col3 = st.columns([1, 2, 1]) 
+    col1, col2, col3 = st.columns([1, 2, 1])
 
     with col1:
         if st.button("Previous"):
@@ -145,7 +158,7 @@ if selected_display == 'Premier League Fixtures':
             for _, match in matches.iterrows():
                 # Create a fixture box for each match
                 with st.container():
-                    col1, col2, col3 = st.columns([3, 1, 3])  # Adjusted column ratios 
+                    col1, col2, col3 = st.columns([2, 1, 2])
 
                     with col1:
                         st.markdown(f"**{match['team_h']}**")
@@ -156,15 +169,15 @@ if selected_display == 'Premier League Fixtures':
                                 unsafe_allow_html=True
                             )
                         else:
-                            st.markdown(f"<p>vs</p>", unsafe_allow_html=True)
+                            st.markdown(f"<p style='text-align: center;'>vs</p>", unsafe_allow_html=True)
                     with col3:
                         st.markdown(f"**{match['team_a']}**")
 
                     if not match['finished']:
-                        st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>", unsafe_allow_html=True)
+                        st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>", unsafe_allow_html=True) 
 
 # --- FDR Matrix Display ---
-elif selected_display == "Fixture Difficulty Rating":
+elif selected_display == 'Fixture Difficulty Rating':
     # --- FDR Matrix Calculation ---
     upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
     teams = upcoming_gameweeks['team_a_short'].unique()
