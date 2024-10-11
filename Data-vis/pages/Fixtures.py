@@ -33,14 +33,14 @@ st.markdown(
     /* Center content */
     .centered {
         display: flex;
-        flex-direction: column;
+        flex-direction: column; /* Stack elements vertically */
         justify-content: center;
         align-items: center;
         text-align: center;
-        height: 100vh;
+        height: 100vh; /* Optional: Center vertically on the page */
     }
     .fixture-container {
-        margin: 5px; /* Reduced margin for compact layout */
+        margin: 10px; /* Reduced margin for compact layout */
         width: 100%; /* Make fixture container take full width */
     }
     .fixture-box {
@@ -48,28 +48,25 @@ st.markdown(
         justify-content: space-between;
         align-items: center;
         border: 1px solid #ddd;
-        padding: 3px; /* Reduce padding for less space */
+        padding: 5px;
         border-radius: 5px;
-        margin-bottom: 3px; /* Reduce margin for tighter spacing */
-        background-color: #f9f9f9;
+        margin-bottom: 5px;
+        background-color: #f9f9f9; /* Light background for fixture box */
     }
     .fixture-box p {
-        margin: 0;
+        margin: 0; /* Remove default paragraph margins for tight spacing */
     }
-    .kickoff { 
-        font-size: 0.8rem;
-        color: #555;
-        text-align: center; /* Center kickoff time */
-        width: 100px; /* Optional: Set a width to center within the container */
+    .kickoff { /* Style for kickoff time */
+        font-size: 0.8rem; /* Slightly smaller font size */
+        color: #555; /* Darker gray color */
     }
-    .score {  
+    .score {  /* Style for the score */
         font-weight: bold;
-        color: green;
-        text-align: center; /* Center score */
-        width: 100px; /* Optional: Set a width to center within the container */
+        color: green; /* Green color for the score */
     }
 </style>
-"""
+""",
+    unsafe_allow_html=True,
 )
 
 # --- Data Loading and Preprocessing ---
