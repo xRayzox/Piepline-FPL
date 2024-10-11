@@ -115,11 +115,32 @@ st.title('Fantasy Premier League')
 
 display_option = st.radio("Select Display", ('Fixture Difficulty Rating', 'Premier League Fixtures'), index=0)
 
+# Add a slider for selecting the gameweek range
+min_gameweek, max_gameweek = st.slider(
+    "Select Gameweek Range",
+    min_value=min(gameweeks),
+    max_value=max(gameweeks),
+    value=(min(gameweeks), max(gameweeks))
+)
+
+# Filter available gameweeks based on the selected range
+available_gameweeks = [gw for gw in gameweeks if min_gameweek <= gw <= max_gameweek]
+
+# Add a multi-select for team filtering
+selected_teams = st.multiselect(
+    "Select Teams",
+    options=teams,
+    default=list(teams),  # Default select all teams
+)
+
 # Update session state when the display option changes
 st.session_state['display_option'] = display_option
 
 # Filter fixtures based on the selected gameweek
-current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == st.session_state['selected_gameweek']]
+current_gameweek_fixtures = df_fixtures[
+    (df_fixtures['event'].isin(available_gameweeks)) & 
+    (df_fixtures['team_a_short'].isin(selected_teams) | df_fixtures['team_h_short'].isin(selected_teams))
+]
 grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
 # Handle display option
