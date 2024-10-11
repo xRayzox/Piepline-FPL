@@ -29,22 +29,23 @@ df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_nam
 df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 
 # Step 1: Prepare the Data for FDR Table
+# Get upcoming gameweeks
 upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
 
-# Create an empty DataFrame to hold the home/away labels
+# Create an empty DataFrame to hold the display values
 teams = upcoming_gameweeks['team_a_short'].unique()  # Get unique team short names
 unique_gameweeks = upcoming_gameweeks['event'].unique()  # Get unique gameweeks from upcoming games
 
 # Format gameweek numbers with 'GW' prefix
 formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
 
-# Create matrix based on unique gameweeks
+# Create a matrix based on unique gameweeks
 fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
 
 # Dictionary to store original FDR values for color coding
 fdr_values = {}
 
-# Populate the FDR matrix with team names and home/away labels
+# Populate the FDR matrix with display values and keep track of FDR values
 for index, row in upcoming_gameweeks.iterrows():
     gameweek = f'GW{row["event"]}'  # Format gameweek with 'GW'
     team_a = row['team_a_short']
@@ -52,7 +53,7 @@ for index, row in upcoming_gameweeks.iterrows():
     fdr_a = row['team_a_difficulty']  # FDR for team_a
     fdr_h = row['team_h_difficulty']  # FDR for team_h
 
-    # Assign team name with home/away indication
+    # Assign home/away display values to the matrix
     fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"  # Team A is playing away
     fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"  # Team H is playing at home
 
@@ -83,7 +84,7 @@ def color_fdr(team, gameweek):
 # Create a styled DataFrame to visualize FDR values with color coding
 styled_fdr_table = fdr_matrix.copy()  # Copy to apply styles
 
-# Apply color to each cell based on FDR values while retaining team names
+# Apply color to each cell based on FDR values while retaining the display values
 styled_fdr_table = styled_fdr_table.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
 
 # Add gameweek data
