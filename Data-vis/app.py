@@ -139,7 +139,7 @@ elif display_option == 'Premier League Fixtures':
                 st.markdown(f"""
                     <div style='border: 2px solid #f0f0f0; padding: 10px; border-radius: 5px; margin-bottom: 10px; background-color: #f9f9f9;'>
                         <p style='text-align: center;'><strong>{match['team_h']}</strong> 
-                        <span style='color: green;'> {match['team_h_score']} - {match['team_a_score']} </span> 
+                        <span style='color: green;'> {int(match['team_h_score'])} - {int(match['team_a_score'])} </span> 
                         <strong>{match['team_a']}</strong></p>
                     </div>
                     """, unsafe_allow_html=True)
