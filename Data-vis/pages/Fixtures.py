@@ -42,6 +42,7 @@ st.markdown(
     .fixture-container {
         margin: 10px; /* Reduced margin for compact layout */
         width: 100%; /* Make fixture container take full width */
+        text-align: center; /* Center content */
     }
     .fixture-box {
         display: flex;
