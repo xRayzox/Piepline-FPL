@@ -195,7 +195,11 @@ elif selected_display == "Fixture Difficulty Rating":
             4: ('#ff005a', 'white'),
             5: ('#861d46', 'white'),
         }
-        bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
+        if fdr_value is not None:
+            bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
+        else:
+            bg_color, font_color = 'white', 'black'
+        
         return f'background-color: {bg_color}; color: {font_color};'
     
     selected_gameweek = st.sidebar.slider(
@@ -210,7 +214,9 @@ elif selected_display == "Fixture Difficulty Rating":
     filtered_fdr_matrix = filtered_fdr_matrix[[f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in filtered_fdr_matrix.columns]]
 
     st.markdown(f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**", unsafe_allow_html=True)
-    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
+    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(
+    lambda row: [color_fdr(row.name, col) for col in row.index], axis=1
+)
 
     st.dataframe(styled_filtered_fdr_table.set_table_attributes("style='width:80%; margin:auto;'").set_table_styles({
         ('', ''): {'border': '1px solid black'}
