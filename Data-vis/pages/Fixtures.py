@@ -58,6 +58,12 @@ st.markdown(
     .fixture-box p {
         margin-bottom: 5px; /* Reduce spacing between team names and score/vs */
     }
+    .fixture-box .kickoff { /* Style for kickoff time */
+        text-align: center; 
+    }
+    .score {  /* Style for the score */
+        text-align: center;
+    }
 </style>
 """,
     unsafe_allow_html=True,
@@ -97,23 +103,32 @@ with st.sidebar:
         "Select Display:", ['Premier League Fixtures', 'Fixture Difficulty Rating'] 
     )
 
-# --- Dynamic Gameweek Selection ---
-min_gameweek = int(df_fixtures['event'].min())
-max_gameweek = int(df_fixtures['event'].max())
+    # --- Dynamic Gameweek Selection ---
+    min_gameweek = int(df_fixtures['event'].min())
+    max_gameweek = int(df_fixtures['event'].max())
 
-# Get the next unfinished gameweek
-next_unfinished_gameweek = next(
-    (gw for gw in range(min_gameweek, max_gameweek + 1) if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
-    min_gameweek
-)
+    # Get the next unfinished gameweek
+    next_unfinished_gameweek = next(
+        (gw for gw in range(min_gameweek, max_gameweek + 1) if df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
+        min_gameweek
+    )
+
+    if selected_display == "Premier League Fixtures":
+        # --- Gameweek Selection (moved under Navigation)---
+        if 'selected_gameweek' not in st.session_state:
+            st.session_state.selected_gameweek = next_unfinished_gameweek
+
+        selected_gameweek = st.selectbox(
+            "Select Gameweek:",
+            options=range(min_gameweek, max_gameweek + 1),
+            index=st.session_state.selected_gameweek - min_gameweek
+        )
+        st.session_state.selected_gameweek = selected_gameweek
 
 # --- Premier League Fixtures Display ---
 if selected_display == 'Premier League Fixtures':
     # --- Gameweek Navigation ---
-    if 'selected_gameweek' not in st.session_state:
-        st.session_state.selected_gameweek = next_unfinished_gameweek
-
-    col1, col2, col3 = st.columns([1, 2, 1])  # Adjusted column ratios for better spacing
+    col1, col2, col3 = st.columns([1, 2, 1])
 
     with col1:
         if st.button("Previous"):
@@ -126,16 +141,6 @@ if selected_display == 'Premier League Fixtures':
             st.session_state.selected_gameweek = min(
                 st.session_state.selected_gameweek + 1, max_gameweek
             )
-
-    # Selectbox for choosing a specific gameweek (now above the fixtures)
-    with col2:
-        selected_gameweek = st.selectbox(
-            "Select Gameweek:",
-            options=range(min_gameweek, max_gameweek + 1),
-            index=st.session_state.selected_gameweek - min_gameweek
-        )
-
-    st.session_state.selected_gameweek = selected_gameweek
 
     # --- Display Fixtures for Selected Gameweek ---
     st.markdown(
@@ -160,7 +165,7 @@ if selected_display == 'Premier League Fixtures':
                     with col2:
                         if match['finished']:
                             st.markdown(
-                                f"<p style='text-align: center; color: green;'>{int(match['team_h_score'])} - {int(match['team_a_score'])}</p>",
+                                f"<p class='score'>{int(match['team_h_score'])} - {int(match['team_a_score'])}</p>",
                                 unsafe_allow_html=True
                             )
                         else:
@@ -169,7 +174,7 @@ if selected_display == 'Premier League Fixtures':
                         st.markdown(f"**{match['team_a']}**")
 
                     if not match['finished']:
-                        st.caption(f"Kickoff: {match['local_hour']}")
+                        st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>", unsafe_allow_html=True) 
 
 # --- FDR Matrix Display ---
 elif selected_display == 'Fixture Difficulty Rating':
