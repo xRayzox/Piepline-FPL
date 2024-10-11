@@ -17,13 +17,6 @@ st.markdown(
         color: #333;
         background-color: #f5f5f5;
     }
-    .stButton>button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 5px;
-    }
     .stMarkdown>h2 {
         text-align: center;
     }
@@ -134,21 +127,6 @@ with st.sidebar:
 
 # --- Premier League Fixtures Display ---
 if selected_display == 'Premier League Fixtures':
-    # --- Gameweek Navigation ---
-    col1, col2, col3 = st.columns([1, 2, 1]) 
-
-    with col1:
-        if st.button("Previous"):
-            st.session_state.selected_gameweek = max(
-                st.session_state.selected_gameweek - 1, min_gameweek
-            )
-
-    with col3:
-        if st.button("Next"):
-            st.session_state.selected_gameweek = min(
-                st.session_state.selected_gameweek + 1, max_gameweek
-            )
-
     # --- Display Fixtures for Selected Gameweek ---
     st.markdown(
         f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {selected_gameweek}</h2>",
@@ -159,13 +137,13 @@ if selected_display == 'Premier League Fixtures':
     grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
     # Use centered container for fixtures
-    with st.container(): 
+    with st.container():  # Centering the content
         for date, matches in grouped_fixtures:
             st.markdown(f"<h3 style='text-align: center;'>{date}</h3>", unsafe_allow_html=True)
             for _, match in matches.iterrows():
                 # Create a fixture box for each match
                 with st.container():
-                    col1, col2, col3 = st.columns([3, 1, 3])  # Adjusted column ratios 
+                    col1, col2, col3 = st.columns([3, 1, 3])  
 
                     with col1:
                         st.markdown(f"**{match['team_h']}**")
