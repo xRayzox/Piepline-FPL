@@ -1,11 +1,12 @@
 import pandas as pd
+from datetime import datetime, timezone
 import streamlit as st
 import os
 
 # --- Page Configuration ---
 st.set_page_config(
     page_title="FPL Fixtures & FDR",
-    layout="wide"
+    layout="wide"  # Use the full width of the screen
 )
 
 # --- Theme Customization ---
@@ -17,11 +18,12 @@ st.markdown(
         background-color: #f5f5f5;
     }
     .css-1lcbmhc {
-        gap: 5px;
-    }
+            gap: 5px; /* Adjust this value to reduce the space between columns */
+        }
     .stMarkdown>h2 {
         text-align: center;
     }
+    /* Styles for the FDR table */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -31,18 +33,19 @@ st.markdown(
         padding: 8px;
         border: 1px solid #ddd; 
     }
+    /* Center content */
     .centered {
         display: flex;
-        flex-direction: column;
+        flex-direction: column; /* Stack elements vertically */
         justify-content: center;
         align-items: center;
         text-align: center;
-        height: 100vh;
+        height: 100vh; /* Optional: Center vertically on the page */
     }
     .fixture-container {
-        margin: 10px;
-        width: 100%;
-        text-align: center; 
+        margin: 10px; /* Reduced margin for compact layout */
+        width: 100%; /* Make fixture container take full width */
+        text-align: center; /* Center content */
     }
     .fixture-box {
         display: flex;
@@ -52,46 +55,23 @@ st.markdown(
         padding: 5px;
         border-radius: 5px;
         margin-bottom: 5px;
-        background-color: #f9f9f9;
-        text-align: center; 
+        background-color: #f9f9f9; /* Light background for fixture box */
+        text-align: center; /* Center content */
     }
     .fixture-box p {
-        margin: 0;
+        margin: 0; /* Remove default paragraph margins for tight spacing */
     }
-    .kickoff { 
-        font-size: 0.8rem; 
-        color: #555; 
-        text-align: center; 
+    .kickoff { /* Style for kickoff time */
+        font-size: 0.8rem; /* Slightly smaller font size */
+        color: #555; /* Darker gray color */
+        text-align: center; /* Center the text */
         margin-top: 5px;
     }
-    .score { 
+    .score {  /* Style for the score */
         font-weight: bold;
-        color: green; 
-        margin: 0; 
+        color: green; /* Green color for the score */
+        margin: 0; /* Remove margin */
         text-align: center;
-    }
-    /* Style for Attack and Defense Stars */
-    .star-rating {
-        font-size: 1.5rem; 
-        color: gold;
-    }
-    .star-rating::before {
-        content: '☆☆☆☆☆';
-    }
-    .star-rating[data-rating="1"]::before {
-        content: '★☆☆☆☆';
-    }
-    .star-rating[data-rating="2"]::before {
-        content: '★★☆☆☆';
-    }
-    .star-rating[data-rating="3"]::before {
-        content: '★★★☆☆';
-    }
-    .star-rating[data-rating="4"]::before {
-        content: '★★★★☆';
-    }
-    .star-rating[data-rating="5"]::before {
-        content: '★★★★★';
     }
 </style>
 """,
@@ -106,7 +86,7 @@ data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__
 df_teams = pd.read_csv(os.path.join(data_dir, "Teams.csv"))
 df_fixtures = pd.read_csv(os.path.join(data_dir, "Fixtures.csv"))
 
-# --- Data Preprocessing ---
+# --- Data Preprocessing (Including Fixtures) ---
 team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_dict()
 team_short_name_mapping = pd.Series(df_teams.short_name.values, index=df_teams.id).to_dict()
 df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
@@ -121,103 +101,149 @@ df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London
 df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y')
 df_fixtures['local_hour'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%H:%M')
 
-# --- Get Unique Gameweeks ---
-gameweeks = [f'GW{gw}' for gw in sorted(df_fixtures['event'].unique())]
-
 # --- Streamlit App ---
-st.title('Fantasy Premier League: Team Strength & FDR')
+st.title('Fantasy Premier League: Fixtures & FDR')
 
-# --- Sidebar: Gameweek Selection ---
+# --- Sidebar: Gameweek Navigation and Display Options ---
 with st.sidebar:
     st.header("Navigation")
-    selected_gameweek_index = st.selectbox(
-        "Select Gameweek:", 
-        gameweeks,
-        index=0  # Start with the first gameweek in the list
+
+    selected_display = st.radio(
+        "Select Display:", ['Premier League Fixtures', 'Fixture Difficulty Rating']
     )
 
-# Get the selected gameweek as an integer (e.g., 8 from 'GW8')
-selected_gameweek_num = int(selected_gameweek_index.replace("GW", ""))
+    # --- Dynamic Gameweek Selection ---
+    min_gameweek = int(df_fixtures['event'].min())
+    max_gameweek = int(df_fixtures['event'].max())
 
-# --- Extract Attack, Defense, and Points Data from Your DataFrames ---
-team_data = {}
-for index, row in df_teams.iterrows():
-    team_name = row['team_name']
-    team_data[team_name] = {
-        'Att': row['strength_attack_home'],
-        'Def': row['strength_defence_home'],
-        'Pts': 0 
-    }
+    # Get the next unfinished gameweek
+    next_unfinished_gameweek = next(
+        (gw for gw in range(min_gameweek, max_gameweek + 1) if
+         df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
+        min_gameweek
+    )
 
-# --- Calculate Points (You'll need to implement your points logic here) ---
-# Example: Award 3 points for a win, 1 for a draw
-for index, row in df_fixtures.iterrows():
-    if row['finished'] and row['event'] <= selected_gameweek_num:  # Consider only finished games up to the selected gameweek
-        if row['team_h_score'] > row['team_a_score']:
-            team_data[row['team_h']]['Pts'] += 3
-        elif row['team_h_score'] == row['team_a_score']:
-            team_data[row['team_h']]['Pts'] += 1
-            team_data[row['team_a']]['Pts'] += 1
-        else:
-            team_data[row['team_a']]['Pts'] += 3
+    if selected_display == "Premier League Fixtures":
+        # --- Gameweek Selection (moved under Navigation)---
+        if 'selected_gameweek' not in st.session_state:
+            st.session_state.selected_gameweek = next_unfinished_gameweek
 
-# --- Prepare Data for FDR Matrix ---
-fdr_data = {}
-for index, row in df_fixtures.iterrows():
-    gameweek = f'GW{row["event"]}'
-    team_a = row['team_a_short']
-    team_h = row['team_h_short']
-    fdr_a = row['team_a_difficulty']
-    fdr_h = row['team_h_difficulty']
+        selected_gameweek = st.selectbox(
+            "Select Gameweek:",
+            options=range(min_gameweek, max_gameweek + 1),
+            index=st.session_state.selected_gameweek - min_gameweek
+        )
+        st.session_state.selected_gameweek = selected_gameweek
 
-    if team_a not in fdr_data:
-        fdr_data[team_a] = {}
-    fdr_data[team_a][gameweek] = f"{team_h} ({fdr_a:.2f})"
-
-    if team_h not in fdr_data:
-        fdr_data[team_h] = {} 
-    fdr_data[team_h][gameweek] = f"{team_a} ({fdr_h:.2f})" 
-
-# --- Display Team Strength ---
-st.subheader("Team Strength")
-st.markdown("This table shows the attack and defense strength of each team based on a 5-star rating system.")
-
-# Convert team_data dictionary to a DataFrame for better display
-team_data_df = pd.DataFrame.from_dict(team_data, orient='index').reset_index()
-team_data_df.columns = ['Team', 'Att', 'Def', 'Pts']
-
-for index, row in team_data_df.iterrows():
-    col1, col2, col3, col4 = st.columns([2, 2, 1, 5])  
-    with col1:
-        st.write(row['Team'])
-    with col2:
-        st.markdown(f"<div class='star-rating' data-rating='{int(row['Att'])}'></div>", unsafe_allow_html=True) 
-    with col3:
-        st.markdown(f"<div class='star-rating' data-rating='{int(row['Def'])}'></div>", unsafe_allow_html=True) 
-    with col4:
-        st.write(f"**Pts:** {row['Pts']:.1f}")
-
-# --- Display FDR Matrix ---
-st.subheader("Fixture Difficulty Rating (FDR)")
-st.markdown(f"This table shows the FDR for each team in **{selected_gameweek_index}**.  Lower numbers indicate easier fixtures.")
-
-fdr_df = pd.DataFrame(fdr_data).T
-fdr_df = fdr_df[[col for col in gameweeks if col in fdr_df.columns]] # Order columns by gameweek 
-st.table(fdr_df[selected_gameweek_index]) 
-
-# --- FDR Legend ---
-st.sidebar.markdown("**FDR Legend:**")
-fdr_colors = {
-    (1.0, 1.5): ("#257d5a", "black", "Very Easy"),  # Dark Green
-    (1.51, 2.0): ("#00ff86", "black", "Easy"),      # Light Green
-    (2.01, 2.5): ("#ebebe4", "black", "Medium"),    # Light Gray
-    (2.51, 3.0): ("#ff005a", "white", "Difficult"),   # Red
-    (3.01, 5.0): ("#861d46", "white", "Very Difficult") # Dark Red 
-}
-for (fdr_min, fdr_max), (bg_color, font_color, label) in fdr_colors.items():
-    st.sidebar.markdown(
-        f"<span style='background-color: {bg_color}; color: {font_color}; padding: 2px 5px; border-radius: 3px;'>"
-        f"{fdr_min:.2f} - {fdr_max:.2f} - {label}"
-        f"</span>",
+################# --- Premier League Fixtures Display ---
+if selected_display == 'Premier League Fixtures':
+    # --- Display Fixtures for Selected Gameweek ---
+    st.markdown(
+        f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {selected_gameweek}</h2>",
         unsafe_allow_html=True,
     )
+
+    current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == selected_gameweek]
+    grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
+
+    # Use centered container for fixtures
+    with st.container():
+        for date, matches in grouped_fixtures:
+            st.markdown(f"<h3 style='text-align: center;'>{date}</h3>", unsafe_allow_html=True)
+            for _, match in matches.iterrows():
+                # Create a fixture box for each match
+                with st.container():
+                    col1, col2, col3 = st.columns([4, 1, 4])  # Adjust column proportions
+
+                    with col1:
+                        st.markdown(f"**{match['team_h']}**", unsafe_allow_html=True)
+                    with col2:
+                        if match['finished']:
+                            st.markdown(
+                                f"<p class='score'>{int(match['team_h_score'])} - {int(match['team_a_score'])}</p>",
+                                unsafe_allow_html=True
+                            )
+                        else:
+                            st.markdown(f"<p style='text-align: center;'>vs</p>", unsafe_allow_html=True)
+                    with col3:
+                        st.markdown(f"**{match['team_a']}**", unsafe_allow_html=True)
+
+                    if not match['finished']:
+                        st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>",
+                                    unsafe_allow_html=True)
+
+################# --- FDR Matrix Display ---
+elif selected_display == "Fixture Difficulty Rating":
+    # --- FDR Matrix Calculation ---
+    upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
+    teams = upcoming_gameweeks['team_a_short'].unique()
+    unique_gameweeks = upcoming_gameweeks['event'].unique()
+    formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
+    fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
+    fdr_values = {}
+
+    for index, row in upcoming_gameweeks.iterrows():
+        gameweek = f'GW{row["event"]}'
+        team_a = row['team_a_short']
+        team_h = row['team_h_short']
+        fdr_a = row['team_a_difficulty']
+        fdr_h = row['team_h_difficulty']
+
+        fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"
+        fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"
+        fdr_values[(team_a, gameweek)] = fdr_a
+        fdr_values[(team_h, gameweek)] = fdr_h
+
+    fdr_matrix = fdr_matrix.astype(str)
+
+    # --- Color Coding Function ---
+    def color_fdr(team, gameweek):
+        fdr_value = fdr_values.get((team, gameweek), None)
+        colors = {
+            1: ('#257d5a', 'black'),
+            2: ('#00ff86', 'black'),
+            3: ('#ebebe4', 'black'),
+            4: ('#ff005a', 'white'),
+            5: ('#861d46', 'white'),
+        }
+        bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
+        return f'background-color: {bg_color}; color: {font_color};'
+
+    # Slider for FDR starting from the upcoming gameweek
+    selected_gameweek = st.sidebar.slider(
+        "Select Gameweek:",
+        min_value=next_unfinished_gameweek,
+        max_value=max_gameweek,
+        value=next_unfinished_gameweek
+    )
+
+    # --- Filter FDR Table for Next 10 Gameweeks ---
+    filtered_fdr_matrix = fdr_matrix.copy()
+    filtered_fdr_matrix = filtered_fdr_matrix[
+        [f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in
+         filtered_fdr_matrix.columns]]
+
+    st.markdown(
+        f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**",
+        unsafe_allow_html=True)
+    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(
+        lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
+    st.write(styled_filtered_fdr_table)
+
+    # --- FDR Legend ---
+    with st.sidebar:
+        st.markdown("**Legend:**")
+        fdr_colors = {
+            1: ("#257d5a", "black"),
+            2: ("#00ff86", "black"),
+            3: ("#ebebe4", "black"),
+            4: ("#ff005a", "white"),
+            5: ("#861d46", "white"),
+        }
+        for fdr, (bg_color, font_color) in fdr_colors.items():
+            st.sidebar.markdown(
+                f"<span style='background-color: {bg_color}; color: {font_color}; padding: 2px 5px; border-radius: 3px;'>"
+                f"{fdr} - {'Very Easy' if fdr == 1 else 'Easy' if fdr == 2 else 'Medium' if fdr == 3 else 'Difficult' if fdr == 4 else 'Very Difficult'}"
+                f"</span>",
+                unsafe_allow_html=True,
+            )
