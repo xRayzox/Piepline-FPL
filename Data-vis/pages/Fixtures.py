@@ -2,7 +2,6 @@ import pandas as pd
 from datetime import datetime, timezone
 import streamlit as st
 import os
-from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -19,8 +18,8 @@ st.markdown(
         background-color: #f5f5f5;
     }
     .css-1lcbmhc {
-        gap: 5px; /* Adjust this value to reduce the space between columns */
-    }
+            gap: 5px; /* Adjust this value to reduce the space between columns */
+        }
     .stMarkdown>h2 {
         text-align: center;
     }
@@ -74,11 +73,6 @@ st.markdown(
         margin: 0; /* Remove margin */
         text-align: center;
     }
-    /* Style the table header (Gameweek labels) */
-    .ag-header-cell-label {
-        font-weight: bold;
-        background-color: #f0f0f0; /* Light gray background */
-    }
 </style>
 """,
     unsafe_allow_html=True,
@@ -130,6 +124,7 @@ with st.sidebar:
     )
 
     if selected_display == "Premier League Fixtures":
+        # --- Gameweek Selection (moved under Navigation)---
         if 'selected_gameweek' not in st.session_state:
             st.session_state.selected_gameweek = next_unfinished_gameweek
 
@@ -142,34 +137,44 @@ with st.sidebar:
 
 ################# --- Premier League Fixtures Display ---
 if selected_display == 'Premier League Fixtures':
+    # --- Display Fixtures for Selected Gameweek ---
     st.markdown(
         f"<h2 style='text-align: center;'>Premier League Fixtures - Gameweek {selected_gameweek}</h2>",
         unsafe_allow_html=True,
     )
 
-    current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == selected_gameweek].copy()
-    
-    # --- Prepare data for AgGrid ---
-    current_gameweek_fixtures['Fixture'] = current_gameweek_fixtures.apply(
-        lambda row: f"{row['team_h']} vs {row['team_a']}", axis=1
-    )
-    current_gameweek_fixtures['Score'] = current_gameweek_fixtures.apply(
-        lambda row: f"{int(row['team_h_score'])} - {int(row['team_a_score'])}" if row['finished'] else "-",
-        axis=1
-    )
+    current_gameweek_fixtures = df_fixtures[df_fixtures['event'] == selected_gameweek]
+    grouped_fixtures = current_gameweek_fixtures.groupby('local_date')
 
-    # --- Create AgGrid ---
-    gb = GridOptionsBuilder.from_dataframe(current_gameweek_fixtures[['local_date', 'local_hour', 'Fixture', 'Score']])
-    gb.configure_column("local_date", header_name="Date", type=["customDateTimeFormat"], custom_format_string='EEE dd MMM yyyy')
-    gb.configure_column("local_hour", header_name="Kickoff Time")
-    gb.configure_grid_options(domLayout='autoHeight')  # Auto-adjust grid height
-    gridOptions = gb.build()
+    # Use centered container for fixtures
+    with st.container():
+        for date, matches in grouped_fixtures:
+            st.markdown(f"<h3 style='text-align: center;'>{date}</h3>", unsafe_allow_html=True)
+            for _, match in matches.iterrows():
+                # Create a fixture box for each match
+                with st.container():
+                    col1, col2, col3 = st.columns([4, 1, 4])  # Adjust column proportions
 
-    AgGrid(current_gameweek_fixtures, gridOptions=gridOptions, allow_unsafe_jscode=True)
+                    with col1:
+                        st.markdown(f"**{match['team_h']}**", unsafe_allow_html=True)
+                    with col2:
+                        if match['finished']:
+                            st.markdown(
+                                f"<p class='score'>{int(match['team_h_score'])} - {int(match['team_a_score'])}</p>",
+                                unsafe_allow_html=True
+                            )
+                        else:
+                            st.markdown(f"<p style='text-align: center;'>vs</p>", unsafe_allow_html=True)
+                    with col3:
+                        st.markdown(f"**{match['team_a']}**", unsafe_allow_html=True)
+
+                    if not match['finished']:
+                        st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>",
+                                    unsafe_allow_html=True)
 
 ################# --- FDR Matrix Display ---
 elif selected_display == "Fixture Difficulty Rating":
-   # --- FDR Matrix Calculation ---
+    # --- FDR Matrix Calculation ---
     upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
     teams = upcoming_gameweeks['team_a_short'].unique()
     unique_gameweeks = upcoming_gameweeks['event'].unique()
@@ -191,6 +196,19 @@ elif selected_display == "Fixture Difficulty Rating":
 
     fdr_matrix = fdr_matrix.astype(str)
 
+    # --- Color Coding Function ---
+    def color_fdr(team, gameweek):
+        fdr_value = fdr_values.get((team, gameweek), None)
+        colors = {
+            1: ('#257d5a', 'black'),
+            2: ('#00ff86', 'black'),
+            3: ('#ebebe4', 'black'),
+            4: ('#ff005a', 'white'),
+            5: ('#861d46', 'white'),
+        }
+        bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
+        return f'background-color: {bg_color}; color: {font_color};'
+
     # Slider for FDR starting from the upcoming gameweek
     selected_gameweek = st.sidebar.slider(
         "Select Gameweek:",
@@ -205,40 +223,12 @@ elif selected_display == "Fixture Difficulty Rating":
         [f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in
          filtered_fdr_matrix.columns]]
 
-    # --- Create AgGrid for FDR Matrix ---
-    fdr_matrix_for_aggrid = filtered_fdr_matrix.reset_index().rename(columns={'index': 'Team'})
-    gb = GridOptionsBuilder.from_dataframe(fdr_matrix_for_aggrid)
-
-    # --- Apply cellStyle for color-coding ---
-    cellstyle_jscode = JsCode(
-        """
-        function(params) {
-            const fdrValues = {
-                '1': {'backgroundColor': '#257d5a', 'color': 'black'},
-                '2': {'backgroundColor': '#00ff86', 'color': 'black'},
-                '3': {'backgroundColor': '#ebebe4', 'color': 'black'},
-                '4': {'backgroundColor': '#ff005a', 'color': 'white'},
-                '5': {'backgroundColor': '#861d46', 'color': 'white'}
-            };
-
-            const fdr = params.value.match(/\((\d)\)/); // Extract FDR value
-            if (fdr && fdrValues[fdr[1]]) {
-                return fdrValues[fdr[1]];
-            }
-        }
-        """
-    )
-    for col in filtered_fdr_matrix.columns:
-        gb.configure_column(col, cellStyle=cellstyle_jscode)
-
-    gb.configure_grid_options(domLayout='autoHeight')
-    gridOptions = gb.build()
-
     st.markdown(
         f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**",
         unsafe_allow_html=True)
-
-    AgGrid(fdr_matrix_for_aggrid, gridOptions=gridOptions, allow_unsafe_jscode=True)
+    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(
+        lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
+    st.write(styled_filtered_fdr_table)
 
     # --- FDR Legend ---
     with st.sidebar:
