@@ -175,7 +175,6 @@ if selected_display == 'Premier League Fixtures':
 ################# --- FDR Matrix Display ---
 elif selected_display == "Fixture Difficulty Rating":
     # --- FDR Matrix Calculation ---
-    # --- FDR Matrix Calculation ---
     upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
     teams = upcoming_gameweeks['team_a_short'].unique()
     unique_gameweeks = upcoming_gameweeks['event'].unique()
@@ -190,8 +189,7 @@ elif selected_display == "Fixture Difficulty Rating":
         fdr_a = row['team_a_difficulty']
         fdr_h = row['team_h_difficulty']
 
-        # Add tooltips for FDR values
-        fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"  # Display opponent and match type
+        fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"
         fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"
         fdr_values[(team_a, gameweek)] = fdr_a
         fdr_values[(team_h, gameweek)] = fdr_h
@@ -223,35 +221,14 @@ elif selected_display == "Fixture Difficulty Rating":
     filtered_fdr_matrix = fdr_matrix.copy()
     filtered_fdr_matrix = filtered_fdr_matrix[
         [f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in
-        filtered_fdr_matrix.columns]]
+         filtered_fdr_matrix.columns]]
 
     st.markdown(
         f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**",
         unsafe_allow_html=True)
-
-    # --- Create a styled DataFrame with tooltips ---
-    def tooltiped_fdr_matrix(df):
-        styled_df = df.copy()
-        for col in df.columns:
-            for idx in df.index:
-                team = df.at[idx, col]
-                fdr_value = fdr_values.get((idx, col), None)
-                # Create the tooltip text showing the FDR value
-                if fdr_value is not None:
-                    tooltip = f"{team} (FDR: {fdr_value})"
-                    styled_df.at[idx, col] = f"<span title='{tooltip}'>{team}</span>"
-                else:
-                    styled_df.at[idx, col] = team  # No tooltip if FDR value not available
-        return styled_df
-
-    # Generate the tooltiped FDR matrix
-    tooltiped_fdr_matrix = tooltiped_fdr_matrix(filtered_fdr_matrix)
-
-    # Display the styled DataFrame with tooltips
-    styled_filtered_fdr_table = tooltiped_fdr_matrix.style.apply(
+    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(
         lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
-
-    st.write(styled_filtered_fdr_table, unsafe_allow_html=True)
+    st.write(styled_filtered_fdr_table)
 
     # --- FDR Legend ---
     with st.sidebar:
