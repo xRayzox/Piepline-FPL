@@ -181,33 +181,19 @@ elif selected_display == "Fixture Difficulty Rating":
     
     # Create a DataFrame for FDR with teams as rows and gameweeks as columns
     fdr_data = {team: [''] * len(unique_gameweeks) for team in teams}
-    gameweek_dates = {gw: "" for gw in unique_gameweeks}
 
     for index, row in upcoming_gameweeks.iterrows():
         gameweek_index = int(row['event']) - 1  # Get the index for the gameweek (0-based)
         team_a = row['team_a_short']
         team_h = row['team_h_short']
-        fdr_a = row['team_a_difficulty']
-        fdr_h = row['team_h_difficulty']
-        
+
         # Fill the FDR data
         fdr_data[team_a][gameweek_index] = f"{team_h} (A)"
         fdr_data[team_h][gameweek_index] = f"{team_a} (H)"
-        
-        # Store gameweek date
-        gameweek_dates[row['event']] = row['date']  # Assuming 'date' is a column in your df_fixtures
 
     # Convert to DataFrame
     fdr_df = pd.DataFrame.from_dict(fdr_data, orient='index', columns=[f'GW{gw}' for gw in unique_gameweeks])
     
-    # Create a new DataFrame for displaying gameweek dates
-    gw_date_df = pd.DataFrame(list(gameweek_dates.items()), columns=["Gameweek", "Date"])
-    gw_date_df.set_index("Gameweek", inplace=True)
-
-    # Create a multi-index DataFrame to display dates
-    fdr_table = pd.concat([gw_date_df, fdr_df], axis=1)
-    fdr_table.columns = pd.MultiIndex.from_product([['Date'], fdr_table.columns[1:]])
-
     # Slider for FDR starting from the upcoming gameweek
     selected_gameweek = st.sidebar.slider(
         "Select Gameweek:",
@@ -218,7 +204,7 @@ elif selected_display == "Fixture Difficulty Rating":
 
     # --- Filter FDR Table for the Selected Gameweeks ---
     selected_gws = [f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10)]
-    filtered_fdr_table = fdr_table[selected_gws]
+    filtered_fdr_table = fdr_df[selected_gws]
 
     st.markdown(
         f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**",
