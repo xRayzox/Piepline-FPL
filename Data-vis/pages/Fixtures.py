@@ -178,22 +178,37 @@ elif selected_display == "Fixture Difficulty Rating":
     upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
     teams = upcoming_gameweeks['team_a_short'].unique()
     unique_gameweeks = upcoming_gameweeks['event'].unique()
-    
-    # Create a DataFrame for FDR with teams as rows and gameweeks as columns
-    fdr_data = {team: [''] * len(unique_gameweeks) for team in teams}
+    formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
+    fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
+    fdr_values = {}
 
     for index, row in upcoming_gameweeks.iterrows():
-        gameweek_index = int(row['event']) - 1  # Get the index for the gameweek (0-based)
+        gameweek = f'GW{row["event"]}'
         team_a = row['team_a_short']
         team_h = row['team_h_short']
+        fdr_a = row['team_a_difficulty']
+        fdr_h = row['team_h_difficulty']
 
-        # Fill the FDR data
-        fdr_data[team_a][gameweek_index] = f"{team_h} (A)"
-        fdr_data[team_h][gameweek_index] = f"{team_a} (H)"
+        fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"
+        fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"
+        fdr_values[(team_a, gameweek)] = fdr_a
+        fdr_values[(team_h, gameweek)] = fdr_h
 
-    # Convert to DataFrame
-    fdr_df = pd.DataFrame.from_dict(fdr_data, orient='index', columns=[f'GW{gw}' for gw in unique_gameweeks])
-    
+    fdr_matrix = fdr_matrix.astype(str)
+
+    # --- Color Coding Function ---
+    def color_fdr(team, gameweek):
+        fdr_value = fdr_values.get((team, gameweek), None)
+        colors = {
+            1: ('#257d5a', 'black'),
+            2: ('#00ff86', 'black'),
+            3: ('#ebebe4', 'black'),
+            4: ('#ff005a', 'white'),
+            5: ('#861d46', 'white'),
+        }
+        bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
+        return f'background-color: {bg_color}; color: {font_color};'
+
     # Slider for FDR starting from the upcoming gameweek
     selected_gameweek = st.sidebar.slider(
         "Select Gameweek:",
@@ -202,17 +217,18 @@ elif selected_display == "Fixture Difficulty Rating":
         value=next_unfinished_gameweek
     )
 
-    # --- Filter FDR Table for the Selected Gameweeks ---
-    selected_gws = [f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10)]
-    filtered_fdr_table = fdr_df[selected_gws]
+    # --- Filter FDR Table for Next 10 Gameweeks ---
+    filtered_fdr_matrix = fdr_matrix.copy()
+    filtered_fdr_matrix = filtered_fdr_matrix[
+        [f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in
+         filtered_fdr_matrix.columns]]
 
     st.markdown(
         f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**",
-        unsafe_allow_html=True
-    )
-
-    # Render the interactive table
-    st.write(filtered_fdr_table.style.hide_index(), unsafe_allow_html=True)
+        unsafe_allow_html=True)
+    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(
+        lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
+    st.write(styled_filtered_fdr_table)
 
     # --- FDR Legend ---
     with st.sidebar:
