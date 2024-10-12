@@ -31,7 +31,7 @@ st.markdown(
     th, td {
         text-align: center;
         padding: 8px;
-        border: 1px solid #ddd;
+        border: 1px solid #ddd; 
     }
     /* Center content */
     .centered {
@@ -91,22 +91,15 @@ team_name_mapping = pd.Series(df_teams.team_name.values, index=df_teams.id).to_d
 team_short_name_mapping = pd.Series(df_teams.short_name.values, index=df_teams.id).to_dict()
 df_fixtures['team_a'] = df_fixtures['team_a'].replace(team_name_mapping)
 df_fixtures['team_h'] = df_fixtures['team_h'].replace(team_name_mapping)
-df_fixtures['team_a_short'] = df_fixtures['team_a'].map(
-    lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in
-    team_name_mapping.values() else None)
-df_fixtures['team_h_short'] = df_fixtures['team_h'].map(
-    lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in
-    team_name_mapping.values() else None)
+df_fixtures['team_a_short'] = df_fixtures['team_a'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
+df_fixtures['team_h_short'] = df_fixtures['team_h'].map(lambda x: team_short_name_mapping[df_teams[df_teams.team_name == x].id.values[0]] if x in team_name_mapping.values() else None)
 df_fixtures = df_fixtures.drop(columns=['pulse_id'])
 
 # Add datetime columns
 df_fixtures['datetime'] = pd.to_datetime(df_fixtures['kickoff_time'], utc=True)
-df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime(
-    '%A %d %B %Y %H:%M')
-df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime(
-    '%A %d %B %Y')
-df_fixtures['local_hour'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime(
-    '%H:%M')
+df_fixtures['local_time'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y %H:%M')
+df_fixtures['local_date'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%A %d %B %Y')
+df_fixtures['local_hour'] = df_fixtures['datetime'].dt.tz_convert('Europe/London').dt.strftime('%H:%M')
 
 # --- Streamlit App ---
 st.title('Fantasy Premier League: Fixtures & FDR')
@@ -126,8 +119,7 @@ with st.sidebar:
     # Get the next unfinished gameweek
     next_unfinished_gameweek = next(
         (gw for gw in range(min_gameweek, max_gameweek + 1) if
-         df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[
-             0] > 0),
+         df_fixtures[(df_fixtures['event'] == gw) & (df_fixtures['finished'] == False)].shape[0] > 0),
         min_gameweek
     )
 
@@ -143,7 +135,7 @@ with st.sidebar:
         )
         st.session_state.selected_gameweek = selected_gameweek
 
-# --- Premier League Fixtures Display ---
+################# --- Premier League Fixtures Display ---
 if selected_display == 'Premier League Fixtures':
     # --- Display Fixtures for Selected Gameweek ---
     st.markdown(
@@ -172,8 +164,7 @@ if selected_display == 'Premier League Fixtures':
                                 unsafe_allow_html=True
                             )
                         else:
-                            st.markdown(f"<p style='text-align: center;'>vs</p>",
-                                        unsafe_allow_html=True)
+                            st.markdown(f"<p style='text-align: center;'>vs</p>", unsafe_allow_html=True)
                     with col3:
                         st.markdown(f"**{match['team_a']}**", unsafe_allow_html=True)
 
@@ -181,7 +172,7 @@ if selected_display == 'Premier League Fixtures':
                         st.markdown(f"<p class='kickoff'>Kickoff: {match['local_hour']}</p>",
                                     unsafe_allow_html=True)
 
-# --- FDR Matrix Display ---
+################# --- FDR Matrix Display ---
 elif selected_display == "Fixture Difficulty Rating":
     # --- FDR Matrix Calculation ---
     upcoming_gameweeks = df_fixtures[df_fixtures['finished'] == False]
@@ -189,7 +180,7 @@ elif selected_display == "Fixture Difficulty Rating":
     unique_gameweeks = upcoming_gameweeks['event'].unique()
     formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
     fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
-    fdr_values = {}  # Store FDR values separately
+    fdr_values = {}
 
     for index, row in upcoming_gameweeks.iterrows():
         gameweek = f'GW{row["event"]}'
@@ -198,23 +189,12 @@ elif selected_display == "Fixture Difficulty Rating":
         fdr_a = row['team_a_difficulty']
         fdr_h = row['team_h_difficulty']
 
-        # Store FDR values for sorting
+        fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"
+        fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"
         fdr_values[(team_a, gameweek)] = fdr_a
         fdr_values[(team_h, gameweek)] = fdr_h
 
-        # Display opponent and (H) or (A) in the matrix
-        fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"
-        fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"
-
     fdr_matrix = fdr_matrix.astype(str)
-
-    # --- Sort the FDR matrix columns based on FDR values ---
-    def sort_by_fdr(col):
-        col_fdr = [fdr_values.get((team, col.name), -1) for team in col.index]
-        return sorted(zip(col_fdr, col.values), key=lambda x: x[0])
-
-    for col in fdr_matrix.columns:
-        fdr_matrix[col] = [team for _, team in sort_by_fdr(fdr_matrix[col])]
 
     # --- Color Coding Function ---
     def color_fdr(team, gameweek):
