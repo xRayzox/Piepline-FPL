@@ -179,8 +179,8 @@ elif selected_display == "Fixture Difficulty Rating":
     teams = upcoming_gameweeks['team_a_short'].unique()
     unique_gameweeks = upcoming_gameweeks['event'].unique()
     formatted_gameweeks = [f'GW{gw}' for gw in unique_gameweeks]
-    fdr_matrix = pd.DataFrame(index=teams, columns=formatted_gameweeks)
-    fdr_values = {}
+    
+    fdr_data = []
 
     for index, row in upcoming_gameweeks.iterrows():
         gameweek = f'GW{row["event"]}'
@@ -189,16 +189,21 @@ elif selected_display == "Fixture Difficulty Rating":
         fdr_a = row['team_a_difficulty']
         fdr_h = row['team_h_difficulty']
 
-        fdr_matrix.at[team_a, gameweek] = f"{team_h} (A)"
-        fdr_matrix.at[team_h, gameweek] = f"{team_a} (H)"
-        fdr_values[(team_a, gameweek)] = fdr_a
-        fdr_values[(team_h, gameweek)] = fdr_h
+        fdr_data.append({
+            "Gameweek": gameweek,
+            "Team A": team_a,
+            "Opponent A": team_h,
+            "FDR A": fdr_a,
+            "Team H": team_h,
+            "Opponent H": team_a,
+            "FDR H": fdr_h
+        })
 
-    fdr_matrix = fdr_matrix.astype(str)
+    # Convert to DataFrame
+    fdr_df = pd.DataFrame(fdr_data)
 
     # --- Color Coding Function ---
-    def color_fdr(team, gameweek):
-        fdr_value = fdr_values.get((team, gameweek), None)
+    def color_fdr(fdr_value):
         colors = {
             1: ('#257d5a', 'black'),
             2: ('#00ff86', 'black'),
@@ -206,8 +211,14 @@ elif selected_display == "Fixture Difficulty Rating":
             4: ('#ff005a', 'white'),
             5: ('#861d46', 'white'),
         }
-        bg_color, font_color = colors.get(fdr_value, ('white', 'black'))
-        return f'background-color: {bg_color}; color: {font_color};'
+        return colors.get(fdr_value, ('white', 'black'))
+
+    # Apply color coding
+    for index, row in fdr_df.iterrows():
+        bg_color_a, font_color_a = color_fdr(row['FDR A'])
+        bg_color_h, font_color_h = color_fdr(row['FDR H'])
+        fdr_df.at[index, 'FDR A'] = f"<span style='background-color: {bg_color_a}; color: {font_color_a}; padding: 2px;'>{row['FDR A']}</span>"
+        fdr_df.at[index, 'FDR H'] = f"<span style='background-color: {bg_color_h}; color: {font_color_h}; padding: 2px;'>{row['FDR H']}</span>"
 
     # Slider for FDR starting from the upcoming gameweek
     selected_gameweek = st.sidebar.slider(
@@ -218,17 +229,14 @@ elif selected_display == "Fixture Difficulty Rating":
     )
 
     # --- Filter FDR Table for Next 10 Gameweeks ---
-    filtered_fdr_matrix = fdr_matrix.copy()
-    filtered_fdr_matrix = filtered_fdr_matrix[
-        [f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10) if f'GW{gw}' in
-         filtered_fdr_matrix.columns]]
+    filtered_fdr_df = fdr_df[fdr_df['Gameweek'].isin([f'GW{gw}' for gw in range(selected_gameweek, selected_gameweek + 10)])]
 
     st.markdown(
         f"**Fixture Difficulty Rating (FDR) for the Next 10 Gameweeks (Starting GW{selected_gameweek})**",
         unsafe_allow_html=True)
-    styled_filtered_fdr_table = filtered_fdr_matrix.style.apply(
-        lambda row: [color_fdr(row.name, col) for col in row.index], axis=1)
-    st.write(styled_filtered_fdr_table)
+    
+    # Render the interactive table
+    st.write(filtered_fdr_df.to_html(escape=False), unsafe_allow_html=True)
 
     # --- FDR Legend ---
     with st.sidebar:
