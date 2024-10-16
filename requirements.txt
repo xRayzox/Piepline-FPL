@@ -3,12 +3,8 @@ pandas
 streamlit
 matplotlib
 streamlit-aggrid
-pandas-datadict>=0.2.3
-plotly==4.8.1
-ipywidgets>=7.5.1
-pulp>=1.6.8
-pandas-fpl>=0.3.4
-streamlit 
-matplotlib 
+pandas-datadict
 plotly
-Icicle
+ipywidgets
+pulp
+pandas-fpl
