@@ -45,7 +45,6 @@ for i, player in enumerate(df_merged['web_name']):
     plt.annotate(player, (df_merged['price'][i], df_merged['total_points'][i]), textcoords="offset points", xytext=(0,10), ha='center')
 
 # Display plot in Streamlit
-plt
 st.pyplot(plt)
 
 
