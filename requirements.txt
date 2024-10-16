@@ -8,3 +8,4 @@ plotly
 ipywidgets
 pulp
 pandas-fpl
+seaborn
