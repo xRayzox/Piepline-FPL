@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timezone
 import numpy as np
 import streamlit as st
-
+import plotly.express as px
 
 # Load all CSV files
 df_fact_player = pd.read_csv('../data/Fact_Player.csv')
