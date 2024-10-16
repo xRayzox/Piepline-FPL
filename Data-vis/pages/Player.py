@@ -43,3 +43,14 @@ for i, player in enumerate(df_merged['web_name']):
 # Display plot in Streamlit
 plt
 st.pyplot(plt)
+
+
+st.title("Player Performance Scatter Plot")
+
+# Scatter plot using Plotly
+fig = px.scatter(df_merged, x='price', y='total_points', text='web_name', title='Player Performance: Cost vs Total Points')
+fig.update_traces(textposition='top center')  # Position text labels
+fig.update_layout(xaxis_title='Cost', yaxis_title='Total Points')
+
+# Display plot in Streamlit
+st.plotly_chart(fig)
