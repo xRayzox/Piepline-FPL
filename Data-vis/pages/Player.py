@@ -1,8 +1,7 @@
 import pandas as pd
-from datetime import datetime, timezone
-import numpy as np
 import streamlit as st
-import plotly.express as px
+import matplotlib.pyplot as plt
+import seaborn as sns
 import os
 
 data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
