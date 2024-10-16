@@ -3,15 +3,19 @@ from datetime import datetime, timezone
 import numpy as np
 import streamlit as st
 import plotly.express as px
+import os
+
+data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
 
 # Load all CSV files
-df_fact_player = pd.read_csv('../data/Fact_Player.csv')
-df_gameweeks = pd.read_csv('../data/Gameweeks.csv')
-df_player_history = pd.read_csv('../data/Player_history.csv')
-df_players = pd.read_csv('../data/Players.csv')
-df_positions = pd.read_csv('../data/Positions.csv')
-df_teams = pd.read_csv('../data/Teams.csv')
-df_fixtures=pd.read_csv('../data/Fixtures.csv')
+df_teams = pd.read_csv(os.path.join(data_dir, "Teams.csv"))
+df_fixtures = pd.read_csv(os.path.join(data_dir, "Fixtures.csv"))
+df_fact_player = pd.read_csv(os.path.join(data_dir, "Fact_Player.csv"))
+df_gameweeks = pd.read_csv(os.path.join(data_dir, "Gameweeks.csv"))
+df_player_history = pd.read_csv(os.path.join(data_dir, "Player_history.csv"))
+df_players = pd.read_csv(os.path.join(data_dir, "Players.csv"))
+df_positions = pd.read_csv(os.path.join(data_dir, "Positions.csv"))
+
 
 # Merge DataFrames with correct column names based on your schema
 df_merged = (
