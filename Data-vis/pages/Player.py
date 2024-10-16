@@ -33,7 +33,7 @@ st.title("Player Performance Scatter Plot")
 
 # Scatter plot using Matplotlib
 plt.figure(figsize=(10, 6))
-plt.scatter(df_merged['price'], df_merged['total_points'], color='blue', alpha=0.5)
+plt.scatter(df_merged['cost'], df_merged['total_points'], color='blue', alpha=0.5)
 
 # Adding labels and title
 plt.title('Player Performance: Cost vs Total Points')
@@ -42,7 +42,7 @@ plt.ylabel('Total Points')
 
 # Annotate players
 for i, player in enumerate(df_merged['web_name']):
-    plt.annotate(player, (df_merged['price'][i], df_merged['total_points'][i]), textcoords="offset points", xytext=(0,10), ha='center')
+    plt.annotate(player, (df_merged['cost'][i], df_merged['total_points'][i]), textcoords="offset points", xytext=(0,10), ha='center')
 
 # Display plot in Streamlit
 st.pyplot(plt)
@@ -51,7 +51,7 @@ st.pyplot(plt)
 st.title("Player Performance Scatter Plot")
 
 # Scatter plot using Plotly
-fig = px.scatter(df_merged, x='price', y='total_points', text='web_name', title='Player Performance: Cost vs Total Points')
+fig = px.scatter(df_merged, x='cost', y='total_points', text='web_name', title='Player Performance: Cost vs Total Points')
 fig.update_traces(textposition='top center')  # Position text labels
 fig.update_layout(xaxis_title='Cost', yaxis_title='Total Points')
 
