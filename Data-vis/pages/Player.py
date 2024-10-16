@@ -1,10 +1,16 @@
 import streamlit as st
 import pandas as pd
+import os
 
+data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
 # Load your FPL data
-players_df = pd.read_csv('players.csv')
-player_history_df = pd.read_csv('player_history.csv')
-fixtures_df = pd.read_csv('fixtures.csv')
+df_teams = pd.read_csv(os.path.join(data_dir, "Teams.csv"))
+df_fixtures = pd.read_csv(os.path.join(data_dir, "Fixtures.csv"))
+df_fact_player = pd.read_csv(os.path.join(data_dir, "Fact_Player.csv"))
+df_gameweeks = pd.read_csv(os.path.join(data_dir, "Gameweeks.csv"))
+df_player_history = pd.read_csv(os.path.join(data_dir, "Player_history.csv"))
+df_players = pd.read_csv(os.path.join(data_dir, "Players.csv"))
+df_positions = pd.read_csv(os.path.join(data_dir, "Positions.csv"))
 
 # Function to filter players based on selected metrics
 def filter_players(players_df, metrics):
