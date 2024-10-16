@@ -45,10 +45,6 @@ selected_players = st.sidebar.multiselect(
     default=filtered_players['web_name'].unique()[:5]  # Default to first 5 players
 )
 
-# Display filtered player data
-st.subheader("Filtered Player Data")
-st.dataframe(filtered_players)
-
 # Points per Cost Calculation
 filtered_players['pp_cost'] = filtered_players['total_points'] / filtered_players['now_cost']
 
@@ -68,7 +64,7 @@ st.pyplot(fig)
 if selected_players:
     selected_data = filtered_players[filtered_players['web_name'].isin(selected_players)]
     
-    st.subheader("Selected Players Comparison")
+    st.subheader("Cost vs Total Points for Selected Players")
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.scatterplot(data=selected_data, x='now_cost', y='total_points', hue='web_name', s=100, ax=ax)
     plt.xlabel('Cost')
@@ -76,16 +72,27 @@ if selected_players:
     plt.title('Cost vs Total Points for Selected Players')
     st.pyplot(fig)
 
-# Show additional stats of selected players
-if selected_players:
-    st.subheader("Additional Stats for Selected Players")
-    stats_data = selected_data[['web_name', 'total_points', 'now_cost', 'points_per_game', 'goals_scored', 'assists', 'clean_sheets']]
-    st.dataframe(stats_data)
+    # Radar Chart for Selected Players
+    st.subheader("Performance Metrics for Selected Players")
+    radar_data = selected_data[['web_name', 'goals_scored', 'assists', 'clean_sheets', 'points_per_game']]
+    
+    # Create a radar chart
+    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
+    num_vars = len(radar_data.columns) - 1
+    angles = [n / float(num_vars) * 2 * 3.141592653589793 for n in range(num_vars)]
+    angles += angles[:1]
 
-# Display player info
-if st.sidebar.checkbox("Show Full Player Data"):
-    st.subheader("Full Player Data")
-    st.dataframe(df_players)
+    for index, row in radar_data.iterrows():
+        values = row[1:].values.flatten().tolist()
+        values += values[:1]
+        ax.fill(angles, values, alpha=0.1)
+        ax.plot(angles, values, label=row['web_name'])
+
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(radar_data.columns[1:])
+    ax.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1))
+    plt.title('Performance Metrics Radar Chart')
+    st.pyplot(fig)
 
 # Add your contact or other information
 st.sidebar.markdown("---")
