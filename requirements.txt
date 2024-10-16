@@ -11,3 +11,4 @@ pandas-fpl>=0.3.4
 streamlit 
 matplotlib 
 plotly
+Icicle
