@@ -12,7 +12,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 184029,13,Ødegaard,3,1,3,0,Ankle injury - Unknown return date,0.9,Martin Ødegaard
 154561,15,Raya,1,1,3,1,No news,6.4,David Raya Martin
 204480,16,Rice,3,1,3,0,No news,1.3,Declan Rice
-223340,17,Saka,3,1,3,2,No news,5.3,Bukayo Saka
+223340,17,Saka,3,1,3,2,Leg injury - 75% chance of playing,5.3,Bukayo Saka
 462424,18,Saliba,2,1,3,0,No news,3.7,William Saliba
 167199,20,Thomas,3,1,3,0,No news,4.6,Thomas Partey
 192895,21,Tierney,2,1,3,0,Hamstring injury - Unknown return date,0.0,Kieran Tierney
@@ -102,7 +102,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 191866,86,Ajer,2,4,94,0,No news,1.6,Kristoffer Ajer
 494041,87,Brierley,3,4,94,0,No news,0.0,Ethan Brierley
 432830,88,Collins,2,4,94,1,No news,5.6,Nathan Collins
-440089,89,Damsgaard,3,4,94,0,No news,4.4,Mikkel Damsgaard
+440089,89,Damsgaard,3,4,94,0,Knock - 75% chance of playing,4.4,Mikkel Damsgaard
 183656,90,Dasilva,3,4,94,0,Knee injury - Unknown return date,0.0,Josh Dasilva
 118342,91,Flekken,1,4,94,0,No news,4.2,Mark Flekken
 194010,92,Henry,2,4,94,0,Lack of match fitness - 50% chance of playing,0.0,Rico Henry
@@ -132,7 +132,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 626464,634,G.Nunes,3,4,94,0,Back injury - 50% chance of playing,0.0,Gustavo Nunes Fernandes Gomes
 499717,649,Meghoma,2,4,94,0,No news,0.0,Jayden Meghoma
 592662,661,Yogane,3,4,94,0,No news,0.0,Tony Yogane
-535818,113,Adingra,3,5,36,0,Muscle injury - 50% chance of playing,2.5,Simon Adingra
+535818,113,Adingra,3,5,36,0,Muscle injury - 50% chance of playing,2.6,Simon Adingra
 475480,114,Baker-Boaitey,3,5,36,0,Loaned to Port Vale,0.0,Benicio Baker-Boaitey
 535301,115,Baleba,3,5,36,1,No news,4.2,Carlos Baleba
 543158,116,Barco,2,5,36,0,Loaned to Sevilla,0.0,Valentín Barco
@@ -172,7 +172,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 509416,600,Ayari,3,5,36,0,No news,1.6,Yasin Ayari
 513834,601,Moran,3,5,36,0,Loaned to Stoke City,0.0,Andrew Moran
 472739,615,Rushworth,1,5,36,0,Loaned to Hull City,0.0,Carl Rushworth
-463067,618,Georginio,3,5,36,1,No news,4.5,Georginio Rutter
+463067,618,Georginio,3,5,36,1,Knock - 75% chance of playing,4.5,Georginio Rutter
 231416,628,F.Kadıoğlu,2,5,36,0,No news,0.2,Ferdi Kadioglu
 219249,629,O'Riley,3,5,36,0,Ankle injury - Unknown return date,0.0,Matt O'Riley
 447720,663,Samuels,2,5,36,0,No news,0.0,Imari Samuels
@@ -240,7 +240,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 450542,213,Rak-Sakyi,3,7,31,0,Loaned to Sheffield United,0.0,Jesurun Rak-Sakyi
 86417,214,Schlupp,3,7,31,0,No news,1.0,Jeffrey Schlupp
 55494,215,Ward,2,7,31,0,No news,0.0,Joel Ward
-496221,216,Wharton,3,7,31,0,No news,2.5,Adam Wharton
+496221,216,Wharton,3,7,31,0,Groin Injury - 75% chance of playing,2.5,Adam Wharton
 224068,445,Turner,1,7,31,0,Ineligible to face his parent club on 21/10. - Expected back 27 Oct,0.0,Matt Turner
 232185,585,I.Sarr,3,7,31,0,No news,1.7,Ismaïla Sarr
 574398,644,Umeh-Chibueze,3,7,31,0,No news,0.0,Franco Umeh-Chibueze
@@ -261,7 +261,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 194164,225,Holgate,2,8,11,0,Loaned to West Bromwich Albion,0.2,Mason Holgate
 490094,226,Iroegbunam,3,8,11,0,No news,1.8,Tim Iroegbunam
 222627,227,J.Virginia,1,8,11,0,No news,0.0,João Neves Virgínia
-106611,228,Keane,2,8,11,0,No news,3.8,Michael Keane
+106611,228,Keane,2,8,11,0,No news,3.7,Michael Keane
 115382,229,Maupay,4,8,11,0,Transferred to Marseille,0.0,Neal Maupay
 433154,230,McNeil,3,8,11,2,No news,7.2,Dwight McNeil
 224967,231,Mykolenko,2,8,11,0,Calf injury - 75% chance of playing,1.2,Vitalii Mykolenko
@@ -315,7 +315,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 196411,265,Chaplin,3,10,40,0,No news,1.3,Conor Chaplin
 232228,266,H.Clarke,2,10,40,0,No news,0.0,Harry Clarke
 455084,267,Davis,2,10,40,1,No news,4.0,Leif Davis
-463034,268,Delap,4,10,40,1,No news,5.5,Liam Delap
+463034,268,Delap,4,10,40,1,No news,5.4,Liam Delap
 214964,269,Edmundson,2,10,40,0,Loaned to Middlesbrough,0.2,George Edmundson
 449429,270,Greaves,2,10,40,0,No news,2.7,Jacob Greaves
 167191,271,Harness,3,10,40,0,Loaned to Derby County,0.4,Marcus Myers-Harness
@@ -349,7 +349,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 94147,288,Coady,2,11,13,0,No news,0.0,Conor Coady
 245419,289,Daka,4,11,13,0,Ankle injury - Unknown return date,0.0,Patson Daka
 96994,290,De Cordova-Reid,3,11,13,0,No news,1.3,Bobby De Cordova-Reid
-218218,291,Faes,2,11,13,0,No news,4.4,Wout Faes
+218218,291,Faes,2,11,13,0,No news,4.3,Wout Faes
 549640,292,Golding,3,11,13,0,No news,0.0,Michael Golding
 467189,293,Hermansen,1,11,13,0,No news,4.7,Mads Hermansen
 207270,294,Iversen,1,11,13,0,No news,0.0,Daniel Iversen
@@ -389,7 +389,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 206915,324,Jones,3,12,14,0,No news,1.1,Curtis Jones
 200720,325,Kelleher,1,12,14,0,No news,2.0,Caoimhin Kelleher
 204716,326,Konaté,2,12,14,0,No news,7.1,Ibrahima Konaté
-244731,327,Luis Díaz,3,12,14,3,No news,6.7,Luis Díaz
+244731,327,Luis Díaz,3,12,14,3,No news,6.8,Luis Díaz
 118748,328,M.Salah,3,12,14,2,No news,4.9,Mohamed Salah
 243016,329,Mac Allister,3,12,14,0,No news,2.4,Alexis Mac Allister
 491501,330,McConnell,3,12,14,0,No news,0.0,James McConnell
@@ -417,7 +417,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 223094,351,Haaland,4,13,43,3,No news,4.4,Erling Haaland
 461358,352,J.Alvarez,4,13,43,0,Transferred to Atletico Madrid,0.0,Julián Álvarez
 121145,353,João Cancelo,2,13,43,0,Permanent transfer to Saudi club Al-Hilal,0.0,João Cavaco Cancelo
-91651,354,Kovačić,3,13,43,2,No news,6.5,Mateo Kovačić
+91651,354,Kovačić,3,13,43,2,No news,6.4,Mateo Kovačić
 477064,355,Lewis,2,13,43,0,No news,4.5,Rico Lewis
 465351,356,Matheus N.,3,13,43,0,No news,1.4,Matheus Luiz Nunes
 432714,357,McAtee,3,13,43,0,No news,0.2,James McAtee
@@ -474,7 +474,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 114243,402,J.Murphy,3,15,4,0,No news,3.1,Jacob Murphy
 180974,403,Joelinton,3,15,4,1,No news,3.2,Joelinton Cássio Apolinário de Lira
 235530,404,Kelly,2,15,4,0,No news,1.8,Lloyd Kelly
-111773,405,Krafth,2,15,4,0,No news,2.2,Emil Krafth
+111773,405,Krafth,2,15,4,0,No news,2.3,Emil Krafth
 564510,406,Kuol,3,15,4,0,No news,0.0,Garang Kuol
 101148,407,Lascelles,2,15,4,0,Knee injury - Expected back 28 Dec,0.0,Jamaal Lascelles
 194799,408,Lewis,2,15,4,0,Loaned to  Sao Paulo,0.0,Jamal Lewis
@@ -515,7 +515,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 466404,440,Omobamidele,2,16,17,0,No news,0.0,Andrew Omobamidele
 209035,441,Panzo,2,16,17,0,On a season long loan to Rio Ave,0.0,Jonathan Panzo
 210462,442,Sangaré,3,16,17,0,Hamstring injury - Expected back 23 Nov,0.9,Ibrahim Sangaré
-85633,443,Sels,1,16,17,0,No news,5.8,Matz Sels
+85633,443,Sels,1,16,17,0,Knock - 75% chance of playing,5.8,Matz Sels
 114241,444,Toffolo,2,16,17,0,No news,0.2,Harry Toffolo
 201440,446,Ui-jo,4,16,17,0,Transferred to Alanyaspor,0.0,Hwang Ui-jo
 60689,447,Wood,4,16,17,0,No news,6.3,Chris Wood
@@ -588,7 +588,7 @@ code,id,web_name,element_type,team,team_code,dreamteam_count,news,value_season,f
 482442,499,P.M.Sarr,3,18,6,0,No news,2.0,Pape Matar Sarr
 490145,500,Scarlett,4,18,6,0,Loaned to Oxford United,0.0,Dane Scarlett
 235674,502,Solomon,3,18,6,0,Season long loan to Leeds United,0.0,Manor Solomon
-85971,503,Son,3,18,6,1,Hamstring injury - 25% chance of playing,3.3,Son Heung-min
+85971,503,Son,3,18,6,1,Hamstring injury - 25% chance of playing,3.4,Son Heung-min
 232859,504,Spence,2,18,6,0,No news,0.5,Djed Spence
 487053,505,Udogie,2,18,6,0,No news,2.7,Destiny Udogie
 491279,506,Van de Ven,2,18,6,1,No news,5.4,Micky van de Ven
